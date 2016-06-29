@@ -1,0 +1,413 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9B2CAF201D23F2990081FA45 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2CAF1F1D23F2990081FA45 /* AppDelegate.m */; };
+		9B2CAF221D23F2990081FA45 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2CAF211D23F2990081FA45 /* main.m */; };
+		9B2CAF241D23F2990081FA45 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B2CAF231D23F2990081FA45 /* Images.xcassets */; };
+		9B2CAF271D23F2990081FA45 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9B2CAF251D23F2990081FA45 /* MainMenu.xib */; };
+		9B2CAF331D23F2990081FA45 /* PlutoHelperAgentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2CAF321D23F2990081FA45 /* PlutoHelperAgentTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9B2CAF2D1D23F2990081FA45 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9B2CAF111D23F2990081FA45 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9B2CAF181D23F2990081FA45;
+			remoteInfo = PlutoHelperAgent;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		9B2CAF191D23F2990081FA45 /* PlutoHelperAgent.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlutoHelperAgent.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9B2CAF1D1D23F2990081FA45 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9B2CAF1E1D23F2990081FA45 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		9B2CAF1F1D23F2990081FA45 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		9B2CAF211D23F2990081FA45 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		9B2CAF231D23F2990081FA45 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		9B2CAF261D23F2990081FA45 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		9B2CAF2C1D23F2990081FA45 /* PlutoHelperAgentTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlutoHelperAgentTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9B2CAF311D23F2990081FA45 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9B2CAF321D23F2990081FA45 /* PlutoHelperAgentTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlutoHelperAgentTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9B2CAF161D23F2990081FA45 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9B2CAF291D23F2990081FA45 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9B2CAF101D23F2990081FA45 = {
+			isa = PBXGroup;
+			children = (
+				9B2CAF1B1D23F2990081FA45 /* PlutoHelperAgent */,
+				9B2CAF2F1D23F2990081FA45 /* PlutoHelperAgentTests */,
+				9B2CAF1A1D23F2990081FA45 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9B2CAF1A1D23F2990081FA45 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9B2CAF191D23F2990081FA45 /* PlutoHelperAgent.app */,
+				9B2CAF2C1D23F2990081FA45 /* PlutoHelperAgentTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9B2CAF1B1D23F2990081FA45 /* PlutoHelperAgent */ = {
+			isa = PBXGroup;
+			children = (
+				9B2CAF1E1D23F2990081FA45 /* AppDelegate.h */,
+				9B2CAF1F1D23F2990081FA45 /* AppDelegate.m */,
+				9B2CAF231D23F2990081FA45 /* Images.xcassets */,
+				9B2CAF251D23F2990081FA45 /* MainMenu.xib */,
+				9B2CAF1C1D23F2990081FA45 /* Supporting Files */,
+			);
+			path = PlutoHelperAgent;
+			sourceTree = "<group>";
+		};
+		9B2CAF1C1D23F2990081FA45 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9B2CAF1D1D23F2990081FA45 /* Info.plist */,
+				9B2CAF211D23F2990081FA45 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9B2CAF2F1D23F2990081FA45 /* PlutoHelperAgentTests */ = {
+			isa = PBXGroup;
+			children = (
+				9B2CAF321D23F2990081FA45 /* PlutoHelperAgentTests.m */,
+				9B2CAF301D23F2990081FA45 /* Supporting Files */,
+			);
+			path = PlutoHelperAgentTests;
+			sourceTree = "<group>";
+		};
+		9B2CAF301D23F2990081FA45 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9B2CAF311D23F2990081FA45 /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9B2CAF181D23F2990081FA45 /* PlutoHelperAgent */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9B2CAF361D23F2990081FA45 /* Build configuration list for PBXNativeTarget "PlutoHelperAgent" */;
+			buildPhases = (
+				9B2CAF151D23F2990081FA45 /* Sources */,
+				9B2CAF161D23F2990081FA45 /* Frameworks */,
+				9B2CAF171D23F2990081FA45 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PlutoHelperAgent;
+			productName = PlutoHelperAgent;
+			productReference = 9B2CAF191D23F2990081FA45 /* PlutoHelperAgent.app */;
+			productType = "com.apple.product-type.application";
+		};
+		9B2CAF2B1D23F2990081FA45 /* PlutoHelperAgentTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9B2CAF391D23F2990081FA45 /* Build configuration list for PBXNativeTarget "PlutoHelperAgentTests" */;
+			buildPhases = (
+				9B2CAF281D23F2990081FA45 /* Sources */,
+				9B2CAF291D23F2990081FA45 /* Frameworks */,
+				9B2CAF2A1D23F2990081FA45 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9B2CAF2E1D23F2990081FA45 /* PBXTargetDependency */,
+			);
+			name = PlutoHelperAgentTests;
+			productName = PlutoHelperAgentTests;
+			productReference = 9B2CAF2C1D23F2990081FA45 /* PlutoHelperAgentTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9B2CAF111D23F2990081FA45 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0620;
+				ORGANIZATIONNAME = "Guardian News & Media";
+				TargetAttributes = {
+					9B2CAF181D23F2990081FA45 = {
+						CreatedOnToolsVersion = 6.2;
+					};
+					9B2CAF2B1D23F2990081FA45 = {
+						CreatedOnToolsVersion = 6.2;
+						TestTargetID = 9B2CAF181D23F2990081FA45;
+					};
+				};
+			};
+			buildConfigurationList = 9B2CAF141D23F2990081FA45 /* Build configuration list for PBXProject "PlutoHelperAgent" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9B2CAF101D23F2990081FA45;
+			productRefGroup = 9B2CAF1A1D23F2990081FA45 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9B2CAF181D23F2990081FA45 /* PlutoHelperAgent */,
+				9B2CAF2B1D23F2990081FA45 /* PlutoHelperAgentTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9B2CAF171D23F2990081FA45 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9B2CAF241D23F2990081FA45 /* Images.xcassets in Resources */,
+				9B2CAF271D23F2990081FA45 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9B2CAF2A1D23F2990081FA45 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9B2CAF151D23F2990081FA45 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9B2CAF221D23F2990081FA45 /* main.m in Sources */,
+				9B2CAF201D23F2990081FA45 /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9B2CAF281D23F2990081FA45 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9B2CAF331D23F2990081FA45 /* PlutoHelperAgentTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9B2CAF2E1D23F2990081FA45 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9B2CAF181D23F2990081FA45 /* PlutoHelperAgent */;
+			targetProxy = 9B2CAF2D1D23F2990081FA45 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		9B2CAF251D23F2990081FA45 /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9B2CAF261D23F2990081FA45 /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		9B2CAF341D23F2990081FA45 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		9B2CAF351D23F2990081FA45 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		9B2CAF371D23F2990081FA45 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = PlutoHelperAgent/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		9B2CAF381D23F2990081FA45 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = PlutoHelperAgent/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		9B2CAF3A1D23F2990081FA45 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = PlutoHelperAgentTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PlutoHelperAgent.app/Contents/MacOS/PlutoHelperAgent";
+			};
+			name = Debug;
+		};
+		9B2CAF3B1D23F2990081FA45 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = PlutoHelperAgentTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PlutoHelperAgent.app/Contents/MacOS/PlutoHelperAgent";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9B2CAF141D23F2990081FA45 /* Build configuration list for PBXProject "PlutoHelperAgent" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9B2CAF341D23F2990081FA45 /* Debug */,
+				9B2CAF351D23F2990081FA45 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9B2CAF361D23F2990081FA45 /* Build configuration list for PBXNativeTarget "PlutoHelperAgent" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9B2CAF371D23F2990081FA45 /* Debug */,
+				9B2CAF381D23F2990081FA45 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		9B2CAF391D23F2990081FA45 /* Build configuration list for PBXNativeTarget "PlutoHelperAgentTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9B2CAF3A1D23F2990081FA45 /* Debug */,
+				9B2CAF3B1D23F2990081FA45 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9B2CAF111D23F2990081FA45 /* Project object */;
+}
