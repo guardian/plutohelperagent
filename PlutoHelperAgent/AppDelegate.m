@@ -50,4 +50,19 @@
     // Insert code here to tear down your application
 }
 
+@synthesize statusBar = _statusBar;
+
+- (void) awakeFromNib {
+    self.statusBar = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+    
+    //self.statusBar.title = @"P";
+
+   
+    // you can also set an image
+    self.statusBar.image = [NSImage imageNamed:@"PlutoIcon"];
+    
+    self.statusBar.menu = self.statusMenu;
+    self.statusBar.highlightMode = YES;
+}
+
 @end
