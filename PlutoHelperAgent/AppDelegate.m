@@ -33,13 +33,21 @@
     //we are expecting something in the form of pluto:action:data
     NSString *url = [[event paramDescriptorForKeyword:keyDirectObject] stringValue];
     NSLog(@"getURL got %@",url);
+    
+    
     // Now you can parse the URL and perform whatever action is needed
     NSArray *parts = [url componentsSeparatedByString:@":"];
     
+    // Check the action, and then perform it
     NSString *action = [parts objectAtIndex:1];
     if([action compare:@"openfolder"]==NSOrderedSame){
         [[NSWorkspace sharedWorkspace]openFile:[parts objectAtIndex:2] withApplication:@"Finder"];
     }
+    
+    
+    
+    
+    
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
