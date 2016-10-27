@@ -40,8 +40,44 @@
     
     // Check the action, and then perform it
     NSString *action = [parts objectAtIndex:1];
-    if([action compare:@"openfolder"]==NSOrderedSame){
-        [[NSWorkspace sharedWorkspace]openFile:[parts objectAtIndex:2] withApplication:@"Finder"];
+    
+    // Check the action string to see if we recognise it
+    
+    if ([action isEqualToString:@"openfolder"]){
+        
+        NSWorkspace *ws = [NSWorkspace sharedWorkspace];
+        NSFileManager *fm =[NSFileManager defaultManager];
+        NSURL *folderUrl = [NSURL URLWithString:[parts objectAtIndex:2]];
+        NSString *folderToOpen = [folderUrl path];
+        BOOL isDir = NO;
+        
+        // Search and replace the first path component replacing /srv/ with /Volumes/
+        
+        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"^/srv/" options:NSRegularExpressionCaseInsensitive error:nil];
+        folderToOpen = [regex stringByReplacingMatchesInString:folderToOpen options:0 range:NSMakeRange(0, [folderToOpen length]) withTemplate:@"/Volumes/"];
+        
+        // Check if the folder is an available directory
+        [fm fileExistsAtPath:folderToOpen isDirectory:&isDir];
+        
+        if (!folderToOpen){
+            NSLog(@"No folder path passed.");
+        }
+        
+        if (!isDir){
+            NSLog(@"%@ is not a valid path on this filesystem.", folderToOpen);
+        }
+        
+        if (folderToOpen && isDir) {
+            
+            // Actually perform the action
+            [ws openFile:folderToOpen withApplication:@"Finder"];
+        
+        }
+        
+    } else {
+        
+        NSLog(@"%@ is not a recognised action for this helper", action);
+        
     }
     
     

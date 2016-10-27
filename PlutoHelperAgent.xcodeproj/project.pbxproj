@@ -328,6 +328,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = PlutoHelperAgent/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -339,6 +340,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = PlutoHelperAgent/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -398,6 +400,7 @@
 				9B2CAF381D23F2990081FA45 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9B2CAF391D23F2990081FA45 /* Build configuration list for PBXNativeTarget "PlutoHelperAgentTests" */ = {
 			isa = XCConfigurationList;
@@ -406,6 +409,7 @@
 				9B2CAF3B1D23F2990081FA45 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
