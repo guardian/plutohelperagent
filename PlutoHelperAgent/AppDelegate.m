@@ -38,6 +38,7 @@
     
     NSString *action = [parts objectAtIndex:1];
     if([action compare:@"openfolder"]==NSOrderedSame){
+        NSLog(@"Attempting to open %@", [parts objectAtIndex:2]);
         [[NSWorkspace sharedWorkspace]openFile:[parts objectAtIndex:2] withApplication:@"Finder"];
     } else {
         NSLog(@"Action %@ was not recognised", action);

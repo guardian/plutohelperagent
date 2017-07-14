@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>F6665FAB-D168-40A5-B818-258E2A25A45F</string>
+	<key>IDESourceControlProjectName</key>
+	<string>PlutoHelperAgent</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>189910D6A9034AF77323E64657E9FFFFDF576C84</key>
+		<string>https://github.com/guardian/plutohelperagent.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>PlutoHelperAgent.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>189910D6A9034AF77323E64657E9FFFFDF576C84</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/guardian/plutohelperagent.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>189910D6A9034AF77323E64657E9FFFFDF576C84</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>189910D6A9034AF77323E64657E9FFFFDF576C84</string>
+			<key>IDESourceControlWCCName</key>
+			<string>PlutoHelperAgent</string>
+		</dict>
+	</array>
+</dict>
+</plist>
