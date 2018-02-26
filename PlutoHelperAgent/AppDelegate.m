@@ -109,4 +109,10 @@
     self.statusBar.highlightMode = YES;
 }
 
+- (IBAction)preferencesClicked:(id)sender {
+    if(!_preferencesWindowController) {
+        _preferencesWindowController = [[PreferencesWindowController alloc] initWithWindowNibName:@"PreferencesWindowController"];
+    }
+    [_preferencesWindowController showWindow:self];
+}
 @end
