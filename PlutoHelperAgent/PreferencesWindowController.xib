@@ -7,6 +7,9 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="PreferencesWindowController">
             <connections>
+                <outlet property="PasswordText" destination="Fhd-6T-EXt" id="W51-Ux-ekD"/>
+                <outlet property="UsernameText" destination="0re-Qh-QVU" id="WQ6-On-4JI"/>
+                <outlet property="usernameText" destination="0re-Qh-QVU" id="eFG-cs-wkd"/>
                 <outlet property="window" destination="F0z-JX-Cv5" id="gIp-Ho-8D9"/>
             </connections>
         </customObject>
