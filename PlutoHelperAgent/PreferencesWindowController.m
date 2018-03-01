@@ -14,8 +14,8 @@
 
 @implementation PreferencesWindowController
 
-- (void)windowDidLoad {
-    [super windowDidLoad];
+
+- (void) grab_data_from_keychain {
     
     UInt32 pwLength = 0;
     
@@ -24,8 +24,8 @@
     SecKeychainItemRef itemRef = NULL;
     
     NSString* service = @"PlutoHelperAgent";
-
-    OSStatus status = SecKeychainFindGenericPassword(
+    
+    OSStatus pwAccessStatus = SecKeychainFindGenericPassword(
                                                      
                                                      NULL,         // Search default keychains
                                                      
@@ -45,13 +45,11 @@
                                                      
                                                      );
     
-    if (status == errSecSuccess) {
+    if (pwAccessStatus == errSecSuccess) {
         
         NSData* data = [NSData dataWithBytes:pwData length:pwLength];
         
         NSString* password = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        
-        //NSLog(@"Read password %@", password);
         
         _PasswordText.stringValue = password;
         
@@ -62,41 +60,36 @@
         };
         
         SecKeychainAttributeList attributes2 = { 1, attrs2 };
-
-        OSStatus status5 = SecKeychainItemCopyContent(itemRef, NULL, &attributes2, NULL, NULL);
         
-        if (status5 == errSecSuccess) {
+        OSStatus unAccessStatus = SecKeychainItemCopyContent(itemRef, NULL, &attributes2, NULL, NULL);
+        
+        if (unAccessStatus == errSecSuccess) {
             
-            NSLog(@"Access sucessful");
+            NSLog(@"Username retrived from Apple Keychain");
             
-            //char const* usefuldata = attributes2.attr->data;
-            
-            //NSLog(@"Account %s", (char *)usefuldata);
-
             NSData* data8 = [NSData dataWithBytes:attributes2.attr->data length:attributes2.attr->length];
             
             NSString* usernamedata = [[NSString alloc] initWithData:data8 encoding:NSUTF8StringEncoding];
-
+            
             _UsernameText.stringValue = usernamedata;
-   
+            
         } else {
             
-            NSLog(@"Access failed");
+            NSLog(@"Username not retrived from Apple Keychain");
         }
-
+        
     } else {
         
-        NSLog(@"Read failed: %@", SecCopyErrorMessageString(status, NULL));
+        NSLog(@"Read failed: %@", SecCopyErrorMessageString(pwAccessStatus, NULL));
         
     }
     
     if (pwData) SecKeychainItemFreeContent(NULL, pwData);  // Free memory
     
-    // Implement this method to handle any initialization after your window controller's window has been loaded from its nib file.
 }
 
 
-- (IBAction)saveClicked:(id)sender {
+- (void) write_data_to_keychain {
     
     NSString* service2 = @"PlutoHelperAgent";
     
@@ -111,51 +104,43 @@
     void* pwData2 = NULL;
     
     SecKeychainItemRef itemRef2 = NULL;
+
+    OSStatus pwSearchStatus = SecKeychainFindGenericPassword(
+                                                      
+                                                      NULL,         // Search default keychains
+                                                      
+                                                      (UInt32)service2.length,
+                                                      
+                                                      [service2 UTF8String],
+                                                      
+                                                      0,
+                                                      
+                                                      NULL,
+                                                      
+                                                      &pwLength2,
+                                                      
+                                                      &pwData2,
+                                                      
+                                                      &itemRef2      // Get a reference this time
+                                                      
+                                                      );
     
-    
-    OSStatus status2 = SecKeychainFindGenericPassword(
-                                                     
-                                                     NULL,         // Search default keychains
-                                                     
-                                                     (UInt32)service2.length,
-                                                     
-                                                     [service2 UTF8String],
-                                                     
-                                                     0,
-                                                     
-                                                     NULL,
-                                                     
-                                                     &pwLength2,
-                                                     
-                                                     &pwData2,
-                                                     
-                                                     &itemRef2      // Get a reference this time
-                                                     
-                                                     );
-    
-    
-    
-    if (status2 == errSecSuccess) {
-        
-        //NSData* data2 = [NSData dataWithBytes:pwData2 length:pwLength2];
-        
-        //NSString* password3 = [[NSString alloc] initWithData:data2 encoding:NSUTF8StringEncoding];
-        
-        //NSLog(@"Read password %@", password3);
+
+    if (pwSearchStatus == errSecSuccess) {
         
         char const* account2 = [account UTF8String];
         
         SecKeychainAttribute attrs[] = {
             
             { kSecAccountItemAttr, (UInt32)account.length, (char *)account2 }
-
+            
         };
         
         SecKeychainAttributeList attributes = { 1, attrs };
         
         
         
-        OSStatus status3 = SecKeychainItemModifyAttributesAndData(
+        OSStatus dataSaveStatus = SecKeychainItemModifyAttributesAndData(
                                                                   
                                                                   itemRef2,
                                                                   
@@ -166,47 +151,58 @@
                                                                   passwordData
                                                                   
                                                                   );
-        
-        
-        
-        if (status3 != errSecSuccess) {
+
+        if (dataSaveStatus != errSecSuccess) {
             
-            NSLog(@"Update failed: %@", SecCopyErrorMessageString(status3, NULL));
+            NSLog(@"Update failed: %@", SecCopyErrorMessageString(dataSaveStatus, NULL));
             
         }
         
     } else {
         
-        NSLog(@"Read failed: %@", SecCopyErrorMessageString(status2, NULL));
+        NSLog(@"Read failed: %@", SecCopyErrorMessageString(pwSearchStatus, NULL));
         
-        OSStatus status6 = SecKeychainAddGenericPassword(
-                                                        
-                                                        NULL,        // Use default keychain
-                                                        
-                                                        (UInt32)service2.length,
-                                                        
-                                                        [service2 UTF8String],
-                                                        
-                                                        (UInt32)account.length,
-                                                        
-                                                        [account UTF8String],
-                                                        
-                                                        (UInt32)password2.length,
-                                                        
-                                                        passwordData,
-                                                        
-                                                        NULL         // Uninterested in item reference
-                                                        
-                                                        );
+        OSStatus pwSaveStatus = SecKeychainAddGenericPassword(
+                                                         
+                                                         NULL,        // Use default keychain
+                                                         
+                                                         (UInt32)service2.length,
+                                                         
+                                                         [service2 UTF8String],
+                                                         
+                                                         (UInt32)account.length,
+                                                         
+                                                         [account UTF8String],
+                                                         
+                                                         (UInt32)password2.length,
+                                                         
+                                                         passwordData,
+                                                         
+                                                         NULL         // Uninterested in item reference
+                                                         
+                                                         );
         
-
-        if (status6 != errSecSuccess) {
+        
+        if (pwSaveStatus != errSecSuccess) {
             
-            NSLog(@"Write failed: %@", SecCopyErrorMessageString(status6, NULL));
+            NSLog(@"Write failed: %@", SecCopyErrorMessageString(pwSaveStatus, NULL));
             
         }
         
     }
+}
+
+
+- (void)windowDidLoad {
+    [super windowDidLoad];
+    [self grab_data_from_keychain];
+
+}
+
+
+- (IBAction)saveClicked:(id)sender {
+    
+    [self write_data_to_keychain];
     
     [super close];
     
