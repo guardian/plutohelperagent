@@ -70,7 +70,7 @@
             NSData* data8 = [NSData dataWithBytes:attributes2.attr->data length:attributes2.attr->length];
             
             NSString* usernamedata = [[NSString alloc] initWithData:data8 encoding:NSUTF8StringEncoding];
-            
+
             _UsernameText.stringValue = usernamedata;
             
         } else {
@@ -80,7 +80,7 @@
         
     } else {
         
-        NSLog(@"Read failed: %@", SecCopyErrorMessageString(pwAccessStatus, NULL));
+        NSLog(@"Keychain read failed: %@", SecCopyErrorMessageString(pwAccessStatus, NULL));
         
     }
     
@@ -154,13 +154,13 @@
 
         if (dataSaveStatus != errSecSuccess) {
             
-            NSLog(@"Update failed: %@", SecCopyErrorMessageString(dataSaveStatus, NULL));
+            NSLog(@"Keychain update failed: %@", SecCopyErrorMessageString(dataSaveStatus, NULL));
             
         }
         
     } else {
         
-        NSLog(@"Read failed: %@", SecCopyErrorMessageString(pwSearchStatus, NULL));
+        NSLog(@"Keychain read failed: %@", SecCopyErrorMessageString(pwSearchStatus, NULL));
         
         OSStatus pwSaveStatus = SecKeychainAddGenericPassword(
                                                          
@@ -185,7 +185,7 @@
         
         if (pwSaveStatus != errSecSuccess) {
             
-            NSLog(@"Write failed: %@", SecCopyErrorMessageString(pwSaveStatus, NULL));
+            NSLog(@"Keychain write failed: %@", SecCopyErrorMessageString(pwSaveStatus, NULL));
             
         }
         
