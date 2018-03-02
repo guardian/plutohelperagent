@@ -24,7 +24,54 @@
  		  forEventClass:kInternetEventClass
      andEventID:kAEGetURL];
     
+    [self setup_defaults];
+    [self login_to_project_server];
+    
     return self;
+}
+
+
+- (void)setup_defaults
+
+{
+    
+    NSString *userDefaultsValuesPath = [@"~/Library/Preferences/com.GNM.PlutoHelperAgent.plist" stringByExpandingTildeInPath];
+    NSDictionary *userDefaultsValuesDict;
+    userDefaultsValuesDict=[NSDictionary dictionaryWithContentsOfFile:userDefaultsValuesPath];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:userDefaultsValuesDict];
+    NSLog(@"Defaults %@", userDefaultsValuesDict);
+    
+}
+
+
+- (void) login_to_project_server {
+    
+    NSString *URLToUse = [NSString stringWithFormat: @"%@/api/login", [[NSUserDefaults standardUserDefaults] stringForKey:@"project_locker_url"]];
+    
+    NSURL *url = [NSURL URLWithString:URLToUse];
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    request.HTTPMethod = @"POST";
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    
+    NSDictionary *dictionary = @{@"username": @"username", @"password": @"password"};
+    NSError *error = nil;
+    NSData *data = [NSJSONSerialization dataWithJSONObject:dictionary
+                                                   options:kNilOptions error:&error];
+    
+    if (!error) {
+        NSURLSessionUploadTask *uploadTask = [session uploadTaskWithRequest:request
+                                                                   fromData:data completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
+                                                                       NSLog(@"Data %@", data);
+                                                                       NSLog(@"Response %@", response);
+                                                                       NSLog(@"Error %@", error);
+                                                                   }];
+        
+        [uploadTask resume];
+    }
+    
 }
 
 -    (void)getUrl:(NSAppleEventDescriptor *)event
