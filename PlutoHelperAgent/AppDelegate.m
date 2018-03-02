@@ -43,8 +43,94 @@
     
 }
 
+- (NSArray *) load_data_from_keychain {
+    
+    UInt32 pwLength = 0;
+    
+    void* pwData = NULL;
+    
+    SecKeychainItemRef itemRef = NULL;
+    
+    NSString* service = @"PlutoHelperAgent";
+    
+    OSStatus pwAccessStatus = SecKeychainFindGenericPassword(
+                                                             
+                                                             NULL,         // Search default keychains
+                                                             
+                                                             (UInt32)service.length,
+                                                             
+                                                             [service UTF8String],
+                                                             
+                                                             0,
+                                                             
+                                                             NULL,
+                                                             
+                                                             &pwLength,
+                                                             
+                                                             &pwData,
+                                                             
+                                                             &itemRef      // Get a reference this time
+                                                             
+                                                             );
+    
+    if (pwAccessStatus == errSecSuccess) {
+        
+        NSData* data = [NSData dataWithBytes:pwData length:pwLength];
+        
+        NSString* password = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        
+        SecKeychainAttribute attrs2[] = {
+            
+            { kSecAccountItemAttr, 0, NULL }
+            
+        };
+        
+        SecKeychainAttributeList attributes2 = { 1, attrs2 };
+        
+        OSStatus unAccessStatus = SecKeychainItemCopyContent(itemRef, NULL, &attributes2, NULL, NULL);
+        
+        if (unAccessStatus == errSecSuccess) {
+            
+            NSLog(@"Username retrived from Apple Keychain");
+            
+            NSData* data8 = [NSData dataWithBytes:attributes2.attr->data length:attributes2.attr->length];
+            
+            NSString* usernamedata = [[NSString alloc] initWithData:data8 encoding:NSUTF8StringEncoding];
+            
+            NSArray *returnStrings = [NSArray arrayWithObjects:
+                                    usernamedata,
+                                    password,
+                                    nil];
+            
+            return returnStrings;
+            
+
+        } else {
+            
+            NSLog(@"Username not retrived from Apple Keychain");
+        }
+        
+    } else {
+        
+        NSLog(@"Keychain read failed: %@", SecCopyErrorMessageString(pwAccessStatus, NULL));
+        
+    }
+    
+    if (pwData) SecKeychainItemFreeContent(NULL, pwData);  // Free memory
+    
+    NSArray *failedReturnStrings = [NSArray arrayWithObjects:
+                            @"Username not loaded",
+                            @"Password not loaded",
+                            nil];
+    
+    return failedReturnStrings;
+    
+}
+
 
 - (void) login_to_project_server {
+    
+    NSArray *dataFromKeychain = [self load_data_from_keychain];
     
     NSString *URLToUse = [NSString stringWithFormat: @"%@/api/login", [[NSUserDefaults standardUserDefaults] stringForKey:@"project_locker_url"]];
     
@@ -56,7 +142,7 @@
     request.HTTPMethod = @"POST";
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     
-    NSDictionary *dictionary = @{@"username": @"username", @"password": @"password"};
+    NSDictionary *dictionary = @{@"username": dataFromKeychain[0], @"password": dataFromKeychain[1]};
     NSError *error = nil;
     NSData *data = [NSJSONSerialization dataWithJSONObject:dictionary
                                                    options:kNilOptions error:&error];
