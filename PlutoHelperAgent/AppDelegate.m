@@ -209,6 +209,43 @@
     
 }
 
+
+- (void) logout_of_project_server {
+    
+    NSHTTPCookieStorage *cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    
+    NSString *URLToUse = [NSString stringWithFormat: @"%@/api/logout", [[NSUserDefaults standardUserDefaults] stringForKey:@"project_locker_url"]];
+    
+    NSURL *url = [NSURL URLWithString:URLToUse];
+    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
+    request.HTTPMethod = @"GET";
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    NSDictionary * headers = [NSHTTPCookie requestHeaderFieldsWithCookies:[cookieJar cookies]];
+    [request setAllHTTPHeaderFields:headers];
+    
+    NSError *error = nil;
+
+    if (!error) {
+        NSURLSessionDataTask *uploadTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
+            NSString *datastring = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            NSLog(@"Data before quit: %@", datastring);
+            NSLog(@"Response before quit: %@", response);
+            if (error != NULL) {
+                NSLog(@"Error before quit: %@", error);
+                
+            }
+            
+        }];
+        
+        [uploadTask resume];
+    }
+
+}
+
+
 -    (void)getUrl:(NSAppleEventDescriptor *)event
    withReplyEvent:(NSAppleEventDescriptor *)replyEvent
 {
@@ -274,6 +311,9 @@
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
     // Insert code here to tear down your application
+    NSLog(@"Application about to quit.");
+    [self logout_of_project_server];
+    sleep(1);
 }
 
 @synthesize statusBar = _statusBar;
