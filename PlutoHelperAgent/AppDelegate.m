@@ -150,9 +150,12 @@
     if (!error) {
         NSURLSessionUploadTask *uploadTask = [session uploadTaskWithRequest:request
                                                                    fromData:data completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
-                                                                       NSLog(@"Data %@", data);
+                                                                       NSString *datastring = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                                                                       NSLog(@"Data %@", datastring);
                                                                        NSLog(@"Response %@", response);
-                                                                       NSLog(@"Error %@", error);
+                                                                       if (error != NULL) {
+                                                                           NSLog(@"Error %@", error);
+                                                                       }
                                                                    }];
         
         [uploadTask resume];
