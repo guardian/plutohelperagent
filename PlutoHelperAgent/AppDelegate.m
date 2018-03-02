@@ -141,6 +141,7 @@
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
     request.HTTPMethod = @"POST";
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    NSLog(@"Request %@", request);
     
     NSDictionary *dictionary = @{@"username": dataFromKeychain[0], @"password": dataFromKeychain[1]};
     NSError *error = nil;
@@ -155,11 +156,56 @@
                                                                        NSLog(@"Response %@", response);
                                                                        if (error != NULL) {
                                                                            NSLog(@"Error %@", error);
+
                                                                        }
+
+
                                                                    }];
         
         [uploadTask resume];
     }
+    
+    sleep(1);
+    
+    NSHTTPCookie *cookie;
+    NSHTTPCookieStorage *cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    for (cookie in [cookieJar cookies]) {
+        NSLog(@"%@", cookie);
+    }
+    
+    NSString *URLToUse2 = [NSString stringWithFormat: @"%@/api/isLoggedIn", [[NSUserDefaults standardUserDefaults] stringForKey:@"project_locker_url"]];
+    
+    NSURL *url2 = [NSURL URLWithString:URLToUse2];
+    NSURLSessionConfiguration *config2 = [NSURLSessionConfiguration defaultSessionConfiguration];
+    NSURLSession *session2 = [NSURLSession sessionWithConfiguration:config2];
+    
+    NSMutableURLRequest *request2 = [[NSMutableURLRequest alloc] initWithURL:url2];
+    request2.HTTPMethod = @"GET";
+    [request2 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    NSDictionary * headers = [NSHTTPCookie requestHeaderFieldsWithCookies:[cookieJar cookies]];
+    [request2 setAllHTTPHeaderFields:headers];
+    NSLog(@"Request %@", request2);
+    NSLog(@"Request %@", request2.allHTTPHeaderFields);
+    
+    NSError *error2 = nil;
+
+    
+    if (!error2) {
+        NSURLSessionDataTask *uploadTask2 = [session2 dataTaskWithRequest:request2 completionHandler:^(NSData *data2,NSURLResponse *response2,NSError *error2) {
+                                                                       NSString *datastring2 = [[NSString alloc] initWithData:data2 encoding:NSUTF8StringEncoding];
+                                                                       NSLog(@"Data2 %@", datastring2);
+                                                                       NSLog(@"Response2 %@", response2);
+                                                                       if (error2 != NULL) {
+                                                                           NSLog(@"Error2 %@", error2);
+                                                                           
+                                                                       }
+                                                                       
+
+                                                                   }];
+        
+        [uploadTask2 resume];
+    }
+
     
 }
 
