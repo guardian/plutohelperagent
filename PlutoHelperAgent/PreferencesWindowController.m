@@ -138,9 +138,18 @@
 
 - (IBAction)testClicked:(id)sender {
     [SharedFunctions logout_of_project_server];
-    NSString *connectionStatus = [SharedFunctions login_to_project_server];
     
-    _StatusText.stringValue = connectionStatus;
+    enum ReturnValues connectionStatus = [SharedFunctions login_to_project_server];
+    
+    switch(connectionStatus) {
+        case ALLOK:
+            _StatusText.stringValue = @"Connection Okay";
+            break;
+        case ERROR:
+            _StatusText.stringValue = @"Connection Failed";
+            break;
+    }
+    
     
 }
 

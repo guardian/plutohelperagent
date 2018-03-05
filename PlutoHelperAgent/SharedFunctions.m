@@ -154,7 +154,7 @@ int connectionStatus;
     
 }
 
-+ (NSString *) login_to_project_server {
++ (int) login_to_project_server {
     
     NSArray *dataFromKeychain = [self load_data_from_keychain];
     
@@ -193,15 +193,7 @@ int connectionStatus;
     
     sleep(1);
     
-    int connectionStatusResult = [self check_logged_in];
-    
-    connectionStatusString = @"Connection Failed";
-    
-    if (connectionStatusResult == 0) {
-        connectionStatusString = @"Connection Okay";
-    }
-
-    return connectionStatusString;
+    return [self check_logged_in];
     
 }
 
