@@ -7,86 +7,13 @@
 //
 
 #import "PreferencesWindowController.h"
+#import "SharedFunctions.h"
 
 @interface PreferencesWindowController ()
 
 @end
 
 @implementation PreferencesWindowController
-
-
-- (void) grab_data_from_keychain {
-    
-    UInt32 pwLength = 0;
-    
-    void* pwData = NULL;
-    
-    SecKeychainItemRef itemRef = NULL;
-    
-    NSString* service = @"PlutoHelperAgent";
-    
-    OSStatus pwAccessStatus = SecKeychainFindGenericPassword(
-                                                     
-                                                     NULL,         // Search default keychains
-                                                     
-                                                     (UInt32)service.length,
-                                                     
-                                                     [service UTF8String],
-                                                     
-                                                     0,
-                                                     
-                                                     NULL,
-                                                     
-                                                     &pwLength,
-                                                     
-                                                     &pwData,
-                                                     
-                                                     &itemRef      // Get a reference this time
-                                                     
-                                                     );
-    
-    if (pwAccessStatus == errSecSuccess) {
-        
-        NSData* data = [NSData dataWithBytes:pwData length:pwLength];
-        
-        NSString* password = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        
-        _PasswordText.stringValue = password;
-        
-        SecKeychainAttribute attrs2[] = {
-            
-            { kSecAccountItemAttr, 0, NULL }
-            
-        };
-        
-        SecKeychainAttributeList attributes2 = { 1, attrs2 };
-        
-        OSStatus unAccessStatus = SecKeychainItemCopyContent(itemRef, NULL, &attributes2, NULL, NULL);
-        
-        if (unAccessStatus == errSecSuccess) {
-            
-            NSLog(@"Username retrived from Apple Keychain");
-            
-            NSData* data8 = [NSData dataWithBytes:attributes2.attr->data length:attributes2.attr->length];
-            
-            NSString* usernamedata = [[NSString alloc] initWithData:data8 encoding:NSUTF8StringEncoding];
-
-            _UsernameText.stringValue = usernamedata;
-            
-        } else {
-            
-            NSLog(@"Username not retrived from Apple Keychain");
-        }
-        
-    } else {
-        
-        NSLog(@"Keychain read failed: %@", SecCopyErrorMessageString(pwAccessStatus, NULL));
-        
-    }
-    
-    if (pwData) SecKeychainItemFreeContent(NULL, pwData);  // Free memory
-    
-}
 
 
 - (void) write_data_to_keychain {
@@ -195,8 +122,9 @@
 
 - (void)windowDidLoad {
     [super windowDidLoad];
-    [self grab_data_from_keychain];
-
+    NSArray *dataFromKeychain = [SharedFunctions load_data_from_keychain];
+    _UsernameText.stringValue = dataFromKeychain[0];
+    _PasswordText.stringValue = dataFromKeychain[1];
 }
 
 
