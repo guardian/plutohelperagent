@@ -12,7 +12,11 @@
 
 extern NSString *connectionStatusString;
 
+extern int connectionStatus;
+
 + (NSArray *)load_data_from_keychain;
+
++ (int)check_logged_in;
 
 + (NSString *)login_to_project_server;
 
