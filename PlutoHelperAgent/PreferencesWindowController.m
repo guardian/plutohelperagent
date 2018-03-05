@@ -135,4 +135,13 @@
     [super close];
     
 }
+
+- (IBAction)testClicked:(id)sender {
+    [SharedFunctions logout_of_project_server];
+    NSString *connectionStatus = [SharedFunctions login_to_project_server];
+    
+    _StatusText.stringValue = connectionStatus;
+    
+}
+
 @end

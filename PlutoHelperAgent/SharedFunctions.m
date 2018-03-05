@@ -10,6 +10,8 @@
 
 @implementation SharedFunctions
 
+NSString *connectionStatusString;
+
 + (NSArray *) load_data_from_keychain {
     
     UInt32 pwLength = 0;
@@ -94,7 +96,7 @@
     
 }
 
-+ (void) login_to_project_server {
++ (NSString *) login_to_project_server {
     
     NSArray *dataFromKeychain = [self load_data_from_keychain];
     
@@ -155,6 +157,7 @@
     
     NSError *error2 = nil;
     
+    connectionStatusString = @"Connection Failed";
     
     if (!error2) {
         NSURLSessionDataTask *uploadTask2 = [session2 dataTaskWithRequest:request2 completionHandler:^(NSData *data2,NSURLResponse *response2,NSError *error2) {
@@ -166,12 +169,23 @@
                 
             }
             
+            NSString *compareThisPartOfTheString = [datastring2 substringToIndex:14];
             
+            if ([compareThisPartOfTheString isEqual: @"{\"status\":\"ok\""]) {
+                
+                connectionStatusString = @"Connection Okay";
+
+            }
+ 
         }];
         
         [uploadTask2 resume];
+
     }
     
+    sleep(1);
+
+    return connectionStatusString;
     
 }
 
@@ -208,8 +222,14 @@
         [uploadTask resume];
     }
     
-}
+    sleep(1);
 
+    NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    for (NSHTTPCookie *each in cookieStorage.cookies) {
+        [cookieStorage deleteCookie:each];
+    }
+    
+}
 
 
 @end

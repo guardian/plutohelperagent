@@ -10,9 +10,11 @@
 
 @interface SharedFunctions : NSObject {}
 
+extern NSString *connectionStatusString;
+
 + (NSArray *)load_data_from_keychain;
 
-+ (void)login_to_project_server;
++ (NSString *)login_to_project_server;
 
 + (void)logout_of_project_server;
 
