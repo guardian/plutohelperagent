@@ -10,10 +10,6 @@
 
 @implementation SharedFunctions
 
-+ (void) testfunction {
-    NSLog(@"Test Function Worked!");
-}
-
 + (NSArray *) load_data_from_keychain {
     
     UInt32 pwLength = 0;

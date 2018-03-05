@@ -10,8 +10,6 @@
 
 @interface SharedFunctions : NSObject {}
 
-+ (void)testfunction;
-
 + (NSArray *)load_data_from_keychain;
 
 + (void)login_to_project_server;
