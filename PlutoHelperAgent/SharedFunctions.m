@@ -122,7 +122,7 @@ int connectionStatus;
     
     NSError *error = nil;
     
-    connectionStatus = 0;
+    connectionStatus = 1;
     
     if (!error) {
         NSURLSessionDataTask *uploadTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
@@ -138,7 +138,7 @@ int connectionStatus;
             
             if ([compareThisPartOfTheString isEqual: @"{\"status\":\"ok\""]) {
                 
-                connectionStatus = 1;
+                connectionStatus = 0;
                 
             }
             
@@ -197,7 +197,7 @@ int connectionStatus;
     
     connectionStatusString = @"Connection Failed";
     
-    if (connectionStatusResult == 1) {
+    if (connectionStatusResult == 0) {
         connectionStatusString = @"Connection Okay";
     }
 
