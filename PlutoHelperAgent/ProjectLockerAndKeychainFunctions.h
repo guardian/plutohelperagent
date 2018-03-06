@@ -14,12 +14,16 @@ extern NSString *connectionStatusString;
 
 extern int connectionStatus;
 
+extern int communicationStatus;
+
 typedef NS_ENUM(NSUInteger, ReturnValues) {
     ALLOK=0,
     ERROR=1
 };
 
 + (NSDictionary *)load_data_from_keychain;
+
++ (int) communicate_with_server:(NSString*)url :(NSString*)method :(NSString*)type :(NSDictionary*)body :(BOOL)send_cookie :(BOOL)test_connection;
 
 + (int)check_logged_in;
 

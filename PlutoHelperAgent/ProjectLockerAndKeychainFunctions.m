@@ -14,6 +14,8 @@ NSString *connectionStatusString;
 
 int connectionStatus;
 
+int communicationStatus;
+
 + (NSDictionary *) load_data_from_keychain {
     
     UInt32 pwLength = 0;
@@ -101,57 +103,95 @@ int connectionStatus;
     
 }
 
-+ (int) check_logged_in {
++ (int) communicate_with_server:(NSString*)url :(NSString*)method :(NSString*)type :(NSDictionary*)body :(BOOL)send_cookie :(BOOL)test_connection {
+  
+    NSString *URLToUse = [NSString stringWithFormat: url, [[NSUserDefaults standardUserDefaults] stringForKey:@"project_locker_url"]];
     
-    NSHTTPCookie *cookie;
-    NSHTTPCookieStorage *cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-    for (cookie in [cookieJar cookies]) {
-        NSLog(@"%@", cookie);
-    }
-    
-    NSString *URLToUse = [NSString stringWithFormat: @"%@/api/isLoggedIn", [[NSUserDefaults standardUserDefaults] stringForKey:@"project_locker_url"]];
-    
-    NSURL *url = [NSURL URLWithString:URLToUse];
+    NSURL *urlComplete = [NSURL URLWithString:URLToUse];
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
     
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-    request.HTTPMethod = @"GET";
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    NSDictionary * headers = [NSHTTPCookie requestHeaderFieldsWithCookies:[cookieJar cookies]];
-    [request setAllHTTPHeaderFields:headers];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:urlComplete];
+    request.HTTPMethod = method;
+    [request setValue:type forHTTPHeaderField:@"Content-Type"];
+    
+    if (send_cookie == 1) {
+        
+        NSHTTPCookie *cookie;
+        NSHTTPCookieStorage *cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+        for (cookie in [cookieJar cookies]) {
+            NSLog(@"%@", cookie);
+        }
+        
+        NSDictionary * headers = [NSHTTPCookie requestHeaderFieldsWithCookies:[cookieJar cookies]];
+        [request setAllHTTPHeaderFields:headers];
+        
+    }
+    
     NSLog(@"Request %@", request);
-    NSLog(@"Request %@", request.allHTTPHeaderFields);
     
-    NSError *error = nil;
+    communicationStatus = 1;
     
-    connectionStatus = 1;
-    
-    if (!error) {
+    if (body != NULL) {
+        
+        NSError *error = nil;
+        NSData *data = [NSJSONSerialization dataWithJSONObject:body
+                                                       options:kNilOptions error:&error];
+        
+        if (!error) {
+            NSURLSessionUploadTask *uploadTask = [session uploadTaskWithRequest:request
+                                                                       fromData:data completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
+                                                                           NSString *datastring = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                                                                           NSLog(@"Data %@", datastring);
+                                                                           NSLog(@"Response %@", response);
+                                                                           if (error != NULL) {
+                                                                               NSLog(@"Error %@", error);
+                                                                           } else {
+                                                                               communicationStatus = 0;
+                                                                           }
+                                                                           
+                                                                       }];
+            
+            [uploadTask resume];
+        }
+        
+        sleep(1);
+        
+    } else {
+        
         NSURLSessionDataTask *uploadTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
             NSString *datastring = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
             NSLog(@"Data %@", datastring);
             NSLog(@"Response %@", response);
             if (error != NULL) {
                 NSLog(@"Error %@", error);
-                
             }
             
-            NSString *compareThisPartOfTheString = [datastring substringToIndex:14];
-            
-            if ([compareThisPartOfTheString isEqual: @"{\"status\":\"ok\""]) {
+            if (test_connection == 1) {
+                NSString *compareThisPartOfTheString = [datastring substringToIndex:14];
                 
-                connectionStatus = 0;
-                
+                if ([compareThisPartOfTheString isEqual: @"{\"status\":\"ok\""]) {
+                    connectionStatus = 0;
+                }
             }
             
         }];
         
         [uploadTask resume];
         
+        sleep(1);
+        
     }
     
-    sleep(1);
+    return communicationStatus;
+    
+}
+
++ (int) check_logged_in {
+    
+    connectionStatus = 1;
+    
+    [self communicate_with_server:@"%@/api/isLoggedIn" :@"GET" :@"application/json" :NULL :1 :1];
     
     return connectionStatus;
     
@@ -161,73 +201,14 @@ int connectionStatus;
     
     NSDictionary *dataFromKeychain = [self load_data_from_keychain];
     
-    NSString *URLToUse = [NSString stringWithFormat: @"%@/api/login", [[NSUserDefaults standardUserDefaults] stringForKey:@"project_locker_url"]];
+    [self communicate_with_server:@"%@/api/login" :@"POST" :@"application/json" :@{@"username": dataFromKeychain[@"username"], @"password": dataFromKeychain[@"password"]} :0 :0];
     
-    NSURL *url = [NSURL URLWithString:URLToUse];
-    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-    request.HTTPMethod = @"POST";
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    NSLog(@"Request %@", request);
-    
-    NSDictionary *dictionary = @{@"username": dataFromKeychain[@"username"], @"password": dataFromKeychain[@"password"]};
-    NSError *error = nil;
-    NSData *data = [NSJSONSerialization dataWithJSONObject:dictionary
-                                                   options:kNilOptions error:&error];
-    
-    if (!error) {
-        NSURLSessionUploadTask *uploadTask = [session uploadTaskWithRequest:request
-                                                                   fromData:data completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
-                                                                       NSString *datastring = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                                                                       NSLog(@"Data %@", datastring);
-                                                                       NSLog(@"Response %@", response);
-                                                                       if (error != NULL) {
-                                                                           NSLog(@"Error %@", error);
-                                                                           
-                                                                       }
-                                                                       
-                                                                       
-                                                                   }];
-        
-        [uploadTask resume];
-    }
-    
-    sleep(1);
     
 }
 
 + (void) logout_of_project_server {
-    
-    NSHTTPCookieStorage *cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-    
-    NSString *URLToUse = [NSString stringWithFormat: @"%@/api/logout", [[NSUserDefaults standardUserDefaults] stringForKey:@"project_locker_url"]];
-    
-    NSURL *url = [NSURL URLWithString:URLToUse];
-    NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
-    NSURLSession *session = [NSURLSession sessionWithConfiguration:config];
-    
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:url];
-    request.HTTPMethod = @"GET";
-    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    NSDictionary * headers = [NSHTTPCookie requestHeaderFieldsWithCookies:[cookieJar cookies]];
-    [request setAllHTTPHeaderFields:headers];
-    
-    NSURLSessionDataTask *uploadTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
-        NSString *datastring = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        NSLog(@"Data before quit: %@", datastring);
-        NSLog(@"Response before quit: %@", response);
-        if (error != NULL) {
-            NSLog(@"Error before quit: %@", error);
-            
-        }
-        
-    }];
-    
-    [uploadTask resume];
-    
-    sleep(1);
+
+    [self communicate_with_server:@"%@/api/logout" :@"GET" :@"application/json" :NULL :1 :0];
 
     NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
     for (NSHTTPCookie *each in cookieStorage.cookies) {
@@ -236,6 +217,4 @@ int connectionStatus;
     
 }
 
-
 @end
-
