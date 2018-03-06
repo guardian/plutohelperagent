@@ -131,6 +131,8 @@
 - (IBAction)saveClicked:(id)sender {
     
     [self write_data_to_keychain];
+    [ProjectLockerAndKeychainFunctions logout_of_project_server];
+    [ProjectLockerAndKeychainFunctions login_to_project_server];
     
     [super close];
     
