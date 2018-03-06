@@ -213,22 +213,18 @@ int connectionStatus;
     NSDictionary * headers = [NSHTTPCookie requestHeaderFieldsWithCookies:[cookieJar cookies]];
     [request setAllHTTPHeaderFields:headers];
     
-    NSError *error = nil;
-    
-    if (!error) {
-        NSURLSessionDataTask *uploadTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
-            NSString *datastring = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            NSLog(@"Data before quit: %@", datastring);
-            NSLog(@"Response before quit: %@", response);
-            if (error != NULL) {
-                NSLog(@"Error before quit: %@", error);
-                
-            }
+    NSURLSessionDataTask *uploadTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
+        NSString *datastring = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        NSLog(@"Data before quit: %@", datastring);
+        NSLog(@"Response before quit: %@", response);
+        if (error != NULL) {
+            NSLog(@"Error before quit: %@", error);
             
-        }];
+        }
         
-        [uploadTask resume];
-    }
+    }];
+    
+    [uploadTask resume];
     
     sleep(1);
 
