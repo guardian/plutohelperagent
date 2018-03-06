@@ -138,8 +138,8 @@
 
 - (IBAction)testClicked:(id)sender {
     [ProjectLockerAndKeychainFunctions logout_of_project_server];
-    
-    enum ReturnValues connectionStatus = [ProjectLockerAndKeychainFunctions login_to_project_server];
+    [ProjectLockerAndKeychainFunctions login_to_project_server];
+    enum ReturnValues connectionStatus = [ProjectLockerAndKeychainFunctions check_logged_in];
     
     switch(connectionStatus) {
         case ALLOK:

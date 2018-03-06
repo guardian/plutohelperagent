@@ -154,7 +154,7 @@ int connectionStatus;
     
 }
 
-+ (int) login_to_project_server {
++ (void) login_to_project_server {
     
     NSArray *dataFromKeychain = [self load_data_from_keychain];
     
@@ -192,8 +192,6 @@ int connectionStatus;
     }
     
     sleep(1);
-    
-    return [self check_logged_in];
     
 }
 

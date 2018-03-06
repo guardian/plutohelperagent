@@ -23,7 +23,7 @@ typedef NS_ENUM(NSUInteger, ReturnValues) {
 
 + (int)check_logged_in;
 
-+ (int)login_to_project_server;
++ (void)login_to_project_server;
 
 + (void)logout_of_project_server;
 
