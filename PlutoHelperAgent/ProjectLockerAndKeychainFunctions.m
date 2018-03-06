@@ -6,9 +6,9 @@
 //  Copyright © 2018 Guardian News & Media. All rights reserved.
 //
 
-#import "SharedFunctions.h"
+#import "ProjectLockerAndKeychainFunctions.h"
 
-@implementation SharedFunctions
+@implementation ProjectLockerAndKeychainFunctions
 
 NSString *connectionStatusString;
 

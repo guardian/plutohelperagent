@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "SharedFunctions.h"
+#import "ProjectLockerAndKeychainFunctions.h"
 
 @interface AppDelegate ()
 
@@ -26,7 +26,7 @@
      andEventID:kAEGetURL];
     
     [self setup_defaults];
-    [SharedFunctions login_to_project_server];
+    [ProjectLockerAndKeychainFunctions login_to_project_server];
     
     return self;
 }
@@ -111,7 +111,7 @@
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
     // Insert code here to tear down your application
     NSLog(@"Application about to quit.");
-    [SharedFunctions logout_of_project_server];
+    [ProjectLockerAndKeychainFunctions logout_of_project_server];
     sleep(1);
 }
 

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface SharedFunctions : NSObject {}
+@interface ProjectLockerAndKeychainFunctions : NSObject {}
 
 extern NSString *connectionStatusString;
 

@@ -7,7 +7,7 @@
 //
 
 #import "PreferencesWindowController.h"
-#import "SharedFunctions.h"
+#import "ProjectLockerAndKeychainFunctions.h"
 
 @interface PreferencesWindowController ()
 
@@ -122,7 +122,7 @@
 
 - (void)windowDidLoad {
     [super windowDidLoad];
-    NSArray *dataFromKeychain = [SharedFunctions load_data_from_keychain];
+    NSArray *dataFromKeychain = [ProjectLockerAndKeychainFunctions load_data_from_keychain];
     _UsernameText.stringValue = dataFromKeychain[0];
     _PasswordText.stringValue = dataFromKeychain[1];
 }
@@ -137,9 +137,9 @@
 }
 
 - (IBAction)testClicked:(id)sender {
-    [SharedFunctions logout_of_project_server];
+    [ProjectLockerAndKeychainFunctions logout_of_project_server];
     
-    enum ReturnValues connectionStatus = [SharedFunctions login_to_project_server];
+    enum ReturnValues connectionStatus = [ProjectLockerAndKeychainFunctions login_to_project_server];
     
     switch(connectionStatus) {
         case ALLOK:
