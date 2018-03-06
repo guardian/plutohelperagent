@@ -19,7 +19,7 @@ typedef NS_ENUM(NSUInteger, ReturnValues) {
     ERROR=1
 };
 
-+ (NSArray *)load_data_from_keychain;
++ (NSDictionary *)load_data_from_keychain;
 
 + (int)check_logged_in;
 

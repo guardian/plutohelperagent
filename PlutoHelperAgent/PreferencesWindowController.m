@@ -122,9 +122,9 @@
 
 - (void)windowDidLoad {
     [super windowDidLoad];
-    NSArray *dataFromKeychain = [ProjectLockerAndKeychainFunctions load_data_from_keychain];
-    _UsernameText.stringValue = dataFromKeychain[0];
-    _PasswordText.stringValue = dataFromKeychain[1];
+    NSDictionary *dataFromKeychain = [ProjectLockerAndKeychainFunctions load_data_from_keychain];
+    _UsernameText.stringValue = dataFromKeychain[@"username"];
+    _PasswordText.stringValue = dataFromKeychain[@"password"];
 }
 
 

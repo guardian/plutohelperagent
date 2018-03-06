@@ -14,7 +14,7 @@ NSString *connectionStatusString;
 
 int connectionStatus;
 
-+ (NSArray *) load_data_from_keychain {
++ (NSDictionary *) load_data_from_keychain {
     
     UInt32 pwLength = 0;
     
@@ -67,14 +67,15 @@ int connectionStatus;
             NSData* data8 = [NSData dataWithBytes:attributes2.attr->data length:attributes2.attr->length];
             
             NSString* usernamedata = [[NSString alloc] initWithData:data8 encoding:NSUTF8StringEncoding];
-            
-            NSArray *returnStrings = [NSArray arrayWithObjects:
-                                      usernamedata,
-                                      password,
-                                      nil];
-            
-            return returnStrings;
-            
+       
+            return [NSDictionary dictionaryWithObjectsAndKeys:
+                    usernamedata,
+                    @"username",
+                    password,
+                    @"password",
+                    nil,
+                    @"error",
+                    nil];
             
         } else {
             
@@ -89,12 +90,14 @@ int connectionStatus;
     
     if (pwData) SecKeychainItemFreeContent(NULL, pwData);  // Free memory
     
-    NSArray *failedReturnStrings = [NSArray arrayWithObjects:
-                                    @"Username not loaded",
-                                    @"Password not loaded",
-                                    nil];
-    
-    return failedReturnStrings;
+    return [NSDictionary dictionaryWithObjectsAndKeys:
+            @"",
+            @"username",
+            nil,
+            @"password",
+            @"Could not load data",
+            @"error",
+            nil];
     
 }
 
@@ -156,7 +159,7 @@ int connectionStatus;
 
 + (void) login_to_project_server {
     
-    NSArray *dataFromKeychain = [self load_data_from_keychain];
+    NSDictionary *dataFromKeychain = [self load_data_from_keychain];
     
     NSString *URLToUse = [NSString stringWithFormat: @"%@/api/login", [[NSUserDefaults standardUserDefaults] stringForKey:@"project_locker_url"]];
     
@@ -169,7 +172,7 @@ int connectionStatus;
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     NSLog(@"Request %@", request);
     
-    NSDictionary *dictionary = @{@"username": dataFromKeychain[0], @"password": dataFromKeychain[1]};
+    NSDictionary *dictionary = @{@"username": dataFromKeychain[@"username"], @"password": dataFromKeychain[@"password"]};
     NSError *error = nil;
     NSData *data = [NSJSONSerialization dataWithJSONObject:dictionary
                                                    options:kNilOptions error:&error];
