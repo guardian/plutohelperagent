@@ -16,6 +16,8 @@ int connectionStatus;
 
 int communicationStatus;
 
+NSString *responseData;
+
 + (NSDictionary *) load_data_from_keychain {
     
     UInt32 pwLength = 0;
@@ -103,7 +105,7 @@ int communicationStatus;
     
 }
 
-+ (int) communicate_with_server:(NSString*)url :(NSString*)method :(NSString*)type :(NSDictionary*)body :(BOOL)send_cookie :(BOOL)test_connection {
++ (NSDictionary *) communicate_with_server:(NSString*)url :(NSString*)method :(NSString*)type :(NSDictionary*)body :(BOOL)send_cookie :(BOOL)test_connection {
   
     NSString *URLToUse = [NSString stringWithFormat: url, [[NSUserDefaults standardUserDefaults] stringForKey:@"project_locker_url"]];
     
@@ -162,6 +164,7 @@ int communicationStatus;
         NSURLSessionDataTask *uploadTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
             NSString *datastring = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
             NSLog(@"Data %@", datastring);
+            responseData = datastring;
             NSLog(@"Response %@", response);
             if (error != NULL) {
                 NSLog(@"Error %@", error);
@@ -183,7 +186,12 @@ int communicationStatus;
         
     }
     
-    return communicationStatus;
+    return [NSDictionary dictionaryWithObjectsAndKeys:
+            responseData,
+            @"data",
+            communicationStatus,
+            @"status",
+            nil];
     
 }
 
@@ -215,6 +223,50 @@ int communicationStatus;
         [cookieStorage deleteCookie:each];
     }
     
+}
+
++ (NSString *) get_data_from_server:(NSString*)url :(NSString*)url2 :(NSString*)inputid {
+
+    NSString *urlToUse;
+    
+    if (url2 != NULL) {
+        urlToUse = [NSString stringWithFormat: @"%@%@%@", url, inputid, url2];
+    } else {
+        
+        urlToUse = [NSString stringWithFormat: @"%@%@", url, inputid];
+    }
+
+    NSDictionary *dataFromServer = [self communicate_with_server:urlToUse :@"GET" :@"application/json" :NULL :0 :0];
+    return dataFromServer[@"data"];
+}
+
++ (NSDictionary *) parse_json:(NSString*)json {
+    
+    NSData *returnedData = [json dataUsingEncoding:NSUTF8StringEncoding];
+    
+    NSError *error = nil;
+    id object = [NSJSONSerialization
+                 JSONObjectWithData:returnedData
+                 options:0
+                 error:&error];
+    
+    if(error) {
+        NSLog(@"Could not parse JSON object.");
+        return NULL;
+        
+    }
+    
+    if([object isKindOfClass:[NSDictionary class]])
+    {
+        NSDictionary *results = object;
+        return results;
+        
+    }
+    else
+    {
+        NSLog(@"Could not parse JSON object.");
+        return NULL;
+    }
 }
 
 @end
