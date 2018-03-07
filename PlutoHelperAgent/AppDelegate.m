@@ -96,24 +96,14 @@
         
         NSString *projectid = [parts objectAtIndex:2];
         
-        NSLog(@"Got openproject URL.");
-        NSLog(@"Project id %@ found.", projectid);
         NSString *dataFromServer = [ProjectLockerAndKeychainFunctions get_data_from_server:@"%@/api/project/" :@"/files" :projectid];
-        NSLog(@"%@", dataFromServer);
         
         NSDictionary *results = [ProjectLockerAndKeychainFunctions parse_json:dataFromServer];
 
-        NSLog(@"%@", results);
-        NSLog(@"File id: %@", results[@"files"][0][@"id"]);
-        
         NSString *storageDataFromServer = [ProjectLockerAndKeychainFunctions get_data_from_server:@"%@/api/storage/" :NULL :results[@"files"][0][@"storage"]];
-        
-        NSLog(@"%@", storageDataFromServer);
-        
+
         NSDictionary *storageResults = [ProjectLockerAndKeychainFunctions parse_json:storageDataFromServer];
-        
-        NSLog(@"Storage root path: %@", storageResults[@"result"][@"rootpath"]);
-        
+
         NSString *pathToProcess = [NSString stringWithFormat: @"%@/%@", storageResults[@"result"][@"rootpath"], results[@"files"][0][@"filepath"]];
         
         NSString *pathToUse = [pathToProcess stringByReplacingOccurrencesOfString:@"/srv/projectfiles/" withString:@"/Volumes/Project_Files_MultiMedia_dev/"];
@@ -131,10 +121,6 @@
         NSLog(@"%@ is not a recognised action for this helper", action);
         
     }
-    
-    
-    
-    
     
 }
 
