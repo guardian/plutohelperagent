@@ -86,7 +86,7 @@
                         </textFieldCell>
                     </textField>
                     <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="x8K-XD-GPb">
-                        <rect key="frame" x="38" y="104" width="77" height="17"/>
+                        <rect key="frame" x="38" y="117" width="77" height="17"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Server URL:" id="ffT-la-9nH">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -94,7 +94,7 @@
                         </textFieldCell>
                     </textField>
                     <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fPJ-4n-err">
-                        <rect key="frame" x="115" y="101" width="331" height="22"/>
+                        <rect key="frame" x="115" y="114" width="331" height="22"/>
                         <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="g7b-bI-QrA">
                             <font key="font" metaFont="system"/>
                             <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
@@ -103,6 +103,25 @@
                         <connections>
                             <binding destination="kXv-I8-sIr" name="value" keyPath="values.project_locker_url" id="BeV-td-7Pa"/>
                         </connections>
+                    </textField>
+                    <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mnl-y1-EaP">
+                        <rect key="frame" x="115" y="75" width="331" height="22"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="1cF-bB-Yus">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                        <connections>
+                            <binding destination="kXv-I8-sIr" name="value" keyPath="values.local_shell_script" id="MRi-nN-FBK"/>
+                        </connections>
+                    </textField>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ucT-Fi-DML">
+                        <rect key="frame" x="35" y="78" width="80" height="17"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Local Script:" id="0o4-eh-oq9">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
                     </textField>
                 </subviews>
             </view>

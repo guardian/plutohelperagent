@@ -109,7 +109,7 @@
         NSString *pathToUse = [pathToProcess stringByReplacingOccurrencesOfString:@"/srv/projectfiles/" withString:@"/Volumes/Project_Files_MultiMedia_dev/"];
 
         NSTask *task = [[NSTask alloc] init];
-        [task setLaunchPath:@"/usr/local/bin/plutos_cantemo_agent_helper.sh"];
+        [task setLaunchPath:[[NSUserDefaults standardUserDefaults] stringForKey:@"local_shell_script"]];
         [task setArguments:[NSArray arrayWithObjects:pathToUse, nil]];
         [task setStandardOutput:[NSPipe pipe]];
         [task setStandardInput:[NSPipe pipe]];
