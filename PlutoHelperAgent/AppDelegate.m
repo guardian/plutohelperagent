@@ -104,9 +104,7 @@
 
         NSDictionary *storageResults = [ProjectLockerAndKeychainFunctions parse_json:storageDataFromServer];
 
-        NSString *pathToProcess = [NSString stringWithFormat: @"%@/%@", storageResults[@"result"][@"rootpath"], results[@"files"][0][@"filepath"]];
-        
-        NSString *pathToUse = [pathToProcess stringByReplacingOccurrencesOfString:@"/srv/projectfiles/" withString:@"/Volumes/Project_Files_MultiMedia_dev/"];
+        NSString *pathToUse = [NSString stringWithFormat: @"%@/%@", storageResults[@"result"][@"clientpath"], results[@"files"][0][@"filepath"]];
 
         NSTask *task = [[NSTask alloc] init];
         [task setLaunchPath:[[NSUserDefaults standardUserDefaults] stringForKey:@"local_shell_script"]];
