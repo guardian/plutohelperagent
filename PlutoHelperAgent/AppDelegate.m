@@ -104,6 +104,25 @@
 
         NSDictionary *storageResults = [ProjectLockerAndKeychainFunctions parse_json:storageDataFromServer];
 
+        if (storageResults[@"result"][@"clientpath"] == NULL) {
+            NSAlert *alert = [[NSAlert alloc] init];
+            
+            [alert addButtonWithTitle:@"Okay"];
+            
+            NSString *message = [NSString stringWithFormat: @"Project Locker Storage %@ has No Client Path Set", results[@"files"][0][@"storage"]];
+                                                                                                                                      
+            [alert setMessageText:message];
+            
+            [alert setInformativeText:@"Please contact Multimedia Technology."];
+            
+            [alert setAlertStyle:NSWarningAlertStyle];
+            
+            if ([alert runModal] == NSAlertFirstButtonReturn) {
+ 
+            }
+ 
+        }
+        
         NSString *pathToUse = [NSString stringWithFormat: @"%@/%@", storageResults[@"result"][@"clientpath"], results[@"files"][0][@"filepath"]];
 
         NSTask *task = [[NSTask alloc] init];
