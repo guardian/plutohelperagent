@@ -98,8 +98,8 @@
         
         NSString *projectid = [parts objectAtIndex:2];
         
-        [ProjectLockerAndKeychainFunctions get_data_from_server:@"%@/api/project/" :@"/files" :projectid completionHandler:^void (NSURLResponse *response,NSDictionary *filesResult){
-            [ProjectLockerAndKeychainFunctions get_data_from_server:@"%@/api/storage/" :NULL :filesResult[@"files"][0][@"storage"] completionHandler:^(NSURLResponse *response, NSDictionary *storageResult) {
+        [ProjectLockerAndKeychainFunctions get_data_from_server:@"/api/project/" :@"/files" :projectid completionHandler:^void (NSURLResponse *response,NSDictionary *filesResult){
+            [ProjectLockerAndKeychainFunctions get_data_from_server:@"/api/storage/" :NULL :filesResult[@"files"][0][@"storage"] completionHandler:^(NSURLResponse *response, NSDictionary *storageResult) {
                 if (storageResult[@"result"][@"clientpath"] == NULL) {
                     NSAlert *alert = [[NSAlert alloc] init];
                     

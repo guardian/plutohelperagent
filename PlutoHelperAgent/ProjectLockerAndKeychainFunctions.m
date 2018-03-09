@@ -108,7 +108,7 @@ NSString *responseData;
 + (NSURLSessionTask *) communicate_with_server:(NSString*)url :(NSString*)method :(NSString*)type :(NSDictionary*)body :(BOOL)send_cookie :(BOOL)test_connection
                          completionHandler:(void (^) (NSURLResponse*, NSDictionary *))completionHandlerBlock {
   
-    NSString *URLToUse = [NSString stringWithFormat: url, [[NSUserDefaults standardUserDefaults] stringForKey:@"project_locker_url"]];
+    NSString *URLToUse = [NSString stringWithFormat: @"%@%@", [[NSUserDefaults standardUserDefaults] stringForKey:@"project_locker_url"], url];
     
     NSURL *urlComplete = [NSURL URLWithString:URLToUse];
     NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
@@ -183,7 +183,7 @@ NSString *responseData;
 }
 
 + (NSURLSessionTask *) check_logged_in:(void (^) (enum ReturnValues))completionHandlerBlock {
-    return [self communicate_with_server:@"%@/api/isLoggedIn" :@"GET" :@"application/json" :NULL :1 :1 completionHandler:^(NSURLResponse *response,NSDictionary *jsonData) {
+    return [self communicate_with_server:@"/api/isLoggedIn" :@"GET" :@"application/json" :NULL :1 :1 completionHandler:^(NSURLResponse *response,NSDictionary *jsonData) {
         completionHandlerBlock([self returnValueFromStatusCode:[(NSHTTPURLResponse *)response statusCode]]);
     }];
 }
@@ -192,7 +192,7 @@ NSString *responseData;
     
     NSDictionary *dataFromKeychain = [self load_data_from_keychain];
     
-    [self communicate_with_server:@"%@/api/login" :@"POST" :@"application/json" :@{@"username": dataFromKeychain[@"username"], @"password": dataFromKeychain[@"password"]} :0 :0 completionHandler:^(NSURLResponse *response, NSDictionary *jsonData) {
+    [self communicate_with_server:@"/api/login" :@"POST" :@"application/json" :@{@"username": dataFromKeychain[@"username"], @"password": dataFromKeychain[@"password"]} :0 :0 completionHandler:^(NSURLResponse *response, NSDictionary *jsonData) {
         completionHandlerBlock([self returnValueFromStatusCode:[(NSHTTPURLResponse *)response statusCode]]);
     }];
     
@@ -200,7 +200,7 @@ NSString *responseData;
 
 + (void) logout_of_project_server:(void (^) (enum ReturnValues))completionHandlerBlock {
 
-    [self communicate_with_server:@"%@/api/logout" :@"GET" :@"application/json" :NULL :1 :0 completionHandler:^(NSURLResponse *response, NSDictionary *jsonData) {
+    [self communicate_with_server:@"/api/logout" :@"GET" :@"application/json" :NULL :1 :0 completionHandler:^(NSURLResponse *response, NSDictionary *jsonData) {
         
         NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
         for (NSHTTPCookie *each in cookieStorage.cookies) {
