@@ -98,14 +98,6 @@
         
         NSString *projectid = [parts objectAtIndex:2];
         
-//        NSString *dataFromServer = [ProjectLockerAndKeychainFunctions get_data_from_server:@"%@/api/project/" :@"/files" :projectid];
-//        
-//        NSDictionary *results = [ProjectLockerAndKeychainFunctions parse_json:dataFromServer];
-//
-//        NSString *storageDataFromServer = [ProjectLockerAndKeychainFunctions get_data_from_server:@"%@/api/storage/" :NULL :results[@"files"][0][@"storage"]];
-//
-//        NSDictionary *storageResults = [ProjectLockerAndKeychainFunctions parse_json:storageDataFromServer];
-        
         [ProjectLockerAndKeychainFunctions get_data_from_server:@"%@/api/project/" :@"/files" :projectid completionHandler:^void (NSURLResponse *response,NSDictionary *filesResult){
             [ProjectLockerAndKeychainFunctions get_data_from_server:@"%@/api/storage/" :NULL :filesResult[@"files"][0][@"storage"] completionHandler:^(NSURLResponse *response, NSDictionary *storageResult) {
                 if (storageResult[@"result"][@"clientpath"] == NULL) {
@@ -113,11 +105,11 @@
                     
                     [alert addButtonWithTitle:@"Okay"];
                     
-                    NSString *message = [NSString stringWithFormat: @"Project Locker Storage %@ has No Client Path Set", filesResult[@"files"][0][@"storage"]];
+                    NSString *message = [NSString stringWithFormat: @"No client path on storage ID %@", filesResult[@"files"][0][@"storage"]];
                     
                     [alert setMessageText:message];
                     
-                    [alert setInformativeText:@"Please contact Multimedia Technology."];
+                    [alert setInformativeText:@"Can't open project, because it's on a storage which has no client path set.\n\nPlease contact multimediatech@theguardian.com."];
                     
                     [alert setAlertStyle:NSWarningAlertStyle];
                     
@@ -125,17 +117,17 @@
                         
                     }
                     
+                } else {
+                    NSString *pathToUse = [NSString stringWithFormat: @"%@/%@", storageResult[@"result"][@"clientpath"], filesResult[@"files"][0][@"filepath"]];
+                
+                    NSTask *task = [[NSTask alloc] init];
+                    [task setLaunchPath:[[NSUserDefaults standardUserDefaults] stringForKey:@"local_shell_script"]];
+                    [task setArguments:[NSArray arrayWithObjects:pathToUse, nil]];
+                    [task setStandardOutput:[NSPipe pipe]];
+                    [task setStandardInput:[NSPipe pipe]];
+                
+                    [task launch];
                 }
-                
-                NSString *pathToUse = [NSString stringWithFormat: @"%@/%@", storageResult[@"result"][@"clientpath"], filesResult[@"files"][0][@"filepath"]];
-                
-                NSTask *task = [[NSTask alloc] init];
-                [task setLaunchPath:[[NSUserDefaults standardUserDefaults] stringForKey:@"local_shell_script"]];
-                [task setArguments:[NSArray arrayWithObjects:pathToUse, nil]];
-                [task setStandardOutput:[NSPipe pipe]];
-                [task setStandardInput:[NSPipe pipe]];
-                
-                [task launch];
             }];
         }];
 
