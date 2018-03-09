@@ -117,7 +117,7 @@ NSString *responseData;
     request.HTTPMethod = method;
     [request setValue:type forHTTPHeaderField:@"Content-Type"];
     
-    if (send_cookie == 1) {
+    if (send_cookie) {
         
         NSHTTPCookie *cookie;
         NSHTTPCookieStorage *cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage];
