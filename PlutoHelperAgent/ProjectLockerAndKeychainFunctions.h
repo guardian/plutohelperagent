@@ -18,15 +18,6 @@ typedef NS_ENUM(NSUInteger, ReturnValues) {
 
 @interface ProjectLockerAndKeychainFunctions : NSObject {}
 
-//extern NSString *connectionStatusString;
-//
-//extern int connectionStatus;
-//
-//extern int communicationStatus;
-//
-//extern NSString *responseData;
-
-
 + (NSDictionary *)load_data_from_keychain;
 
 + (NSURLSessionTask *) communicate_with_server:(NSString*)url :(NSString*)method :(NSString*)type :(NSDictionary*)body :(BOOL)send_cookie :(BOOL)test_connection completionHandler:(void (^) (NSURLResponse *,NSDictionary *))completionHandlerBlock;
