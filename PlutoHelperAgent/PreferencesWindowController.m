@@ -7,86 +7,13 @@
 //
 
 #import "PreferencesWindowController.h"
+#import "ProjectLockerAndKeychainFunctions.h"
 
 @interface PreferencesWindowController ()
 
 @end
 
 @implementation PreferencesWindowController
-
-
-- (void) grab_data_from_keychain {
-    
-    UInt32 pwLength = 0;
-    
-    void* pwData = NULL;
-    
-    SecKeychainItemRef itemRef = NULL;
-    
-    NSString* service = @"PlutoHelperAgent";
-    
-    OSStatus pwAccessStatus = SecKeychainFindGenericPassword(
-                                                     
-                                                     NULL,         // Search default keychains
-                                                     
-                                                     (UInt32)service.length,
-                                                     
-                                                     [service UTF8String],
-                                                     
-                                                     0,
-                                                     
-                                                     NULL,
-                                                     
-                                                     &pwLength,
-                                                     
-                                                     &pwData,
-                                                     
-                                                     &itemRef      // Get a reference this time
-                                                     
-                                                     );
-    
-    if (pwAccessStatus == errSecSuccess) {
-        
-        NSData* data = [NSData dataWithBytes:pwData length:pwLength];
-        
-        NSString* password = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        
-        _PasswordText.stringValue = password;
-        
-        SecKeychainAttribute attrs2[] = {
-            
-            { kSecAccountItemAttr, 0, NULL }
-            
-        };
-        
-        SecKeychainAttributeList attributes2 = { 1, attrs2 };
-        
-        OSStatus unAccessStatus = SecKeychainItemCopyContent(itemRef, NULL, &attributes2, NULL, NULL);
-        
-        if (unAccessStatus == errSecSuccess) {
-            
-            NSLog(@"Username retrived from Apple Keychain");
-            
-            NSData* data8 = [NSData dataWithBytes:attributes2.attr->data length:attributes2.attr->length];
-            
-            NSString* usernamedata = [[NSString alloc] initWithData:data8 encoding:NSUTF8StringEncoding];
-
-            _UsernameText.stringValue = usernamedata;
-            
-        } else {
-            
-            NSLog(@"Username not retrived from Apple Keychain");
-        }
-        
-    } else {
-        
-        NSLog(@"Keychain read failed: %@", SecCopyErrorMessageString(pwAccessStatus, NULL));
-        
-    }
-    
-    if (pwData) SecKeychainItemFreeContent(NULL, pwData);  // Free memory
-    
-}
 
 
 - (void) write_data_to_keychain {
@@ -195,16 +122,50 @@
 
 - (void)windowDidLoad {
     [super windowDidLoad];
-    [self grab_data_from_keychain];
-
+    NSDictionary *dataFromKeychain = [ProjectLockerAndKeychainFunctions load_data_from_keychain];
+    _UsernameText.stringValue = dataFromKeychain[@"username"];
+    _PasswordText.stringValue = dataFromKeychain[@"password"];
 }
 
 
 - (IBAction)saveClicked:(id)sender {
     
     [self write_data_to_keychain];
-    
-    [super close];
-    
+    [ProjectLockerAndKeychainFunctions logout_of_project_server:^(enum ReturnValues logoutResult) {
+        if(logoutResult!=ALLOK) NSLog(@"Could not log out of server, see log for details");
+        [ProjectLockerAndKeychainFunctions login_to_project_server:^(enum ReturnValues loginResult) {
+            if(loginResult!=ALLOK) NSLog(@"Could not log back in to of server, see log for details");
+            [super close];
+        }];
+    }];
 }
+
+- (IBAction)testClicked:(id)sender {
+    _StatusText.stringValue = @"Testing connection...";
+    
+    [ProjectLockerAndKeychainFunctions logout_of_project_server:^(enum ReturnValues logoutResult) {
+        if(logoutResult!=ALLOK) NSLog(@"Could not log out of server, see log for details");
+        [ProjectLockerAndKeychainFunctions login_to_project_server:^(enum ReturnValues loginResult) {
+            if(loginResult!=ALLOK) NSLog(@"Could not log back in to of server, see log for details");
+            [ProjectLockerAndKeychainFunctions check_logged_in:^(enum ReturnValues connectionStatus) {
+                switch(connectionStatus) {
+                    case ALLOK:
+                        _StatusText.stringValue = @"Connection Okay";
+                        break;
+                    case PERMISSION_DENIED:
+                        _StatusText.stringValue = @"Could not log in";
+                        break;
+                    case SERVER_ERROR:
+                        _StatusText.stringValue = @"Could not connect to server";
+                        break;
+                    default:
+                        _StatusText.stringValue = @"Unkown error";
+                        break;
+                        
+                }
+            }];
+        }];
+    }];
+}
+
 @end

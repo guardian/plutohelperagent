@@ -14,6 +14,10 @@
 
 @property (weak) IBOutlet NSTextField *PasswordText;
 
+@property (weak) IBOutlet NSTextFieldCell *StatusText;
+
 - (IBAction)saveClicked:(id)sender;
+
+- (IBAction)testClicked:(id)sender;
 
 @end
