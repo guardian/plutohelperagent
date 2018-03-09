@@ -26,7 +26,9 @@
      andEventID:kAEGetURL];
     
     [self setup_defaults];
-    [ProjectLockerAndKeychainFunctions login_to_project_server];
+    [ProjectLockerAndKeychainFunctions login_to_project_server:^(enum ReturnValues loginResult) {
+        if(loginResult!=ALLOK) NSLog(@"Could not log in to of server, see log for details");
+    }];
     
     return self;
 }
@@ -96,42 +98,47 @@
         
         NSString *projectid = [parts objectAtIndex:2];
         
-        NSString *dataFromServer = [ProjectLockerAndKeychainFunctions get_data_from_server:@"%@/api/project/" :@"/files" :projectid];
+//        NSString *dataFromServer = [ProjectLockerAndKeychainFunctions get_data_from_server:@"%@/api/project/" :@"/files" :projectid];
+//        
+//        NSDictionary *results = [ProjectLockerAndKeychainFunctions parse_json:dataFromServer];
+//
+//        NSString *storageDataFromServer = [ProjectLockerAndKeychainFunctions get_data_from_server:@"%@/api/storage/" :NULL :results[@"files"][0][@"storage"]];
+//
+//        NSDictionary *storageResults = [ProjectLockerAndKeychainFunctions parse_json:storageDataFromServer];
         
-        NSDictionary *results = [ProjectLockerAndKeychainFunctions parse_json:dataFromServer];
+        [ProjectLockerAndKeychainFunctions get_data_from_server:@"%@/api/project/" :@"/files" :projectid completionHandler:^void (NSURLResponse *response,NSDictionary *filesResult){
+            [ProjectLockerAndKeychainFunctions get_data_from_server:@"%@/api/storage/" :NULL :filesResult[@"files"][0][@"storage"] completionHandler:^(NSURLResponse *response, NSDictionary *storageResult) {
+                if (storageResult[@"result"][@"clientpath"] == NULL) {
+                    NSAlert *alert = [[NSAlert alloc] init];
+                    
+                    [alert addButtonWithTitle:@"Okay"];
+                    
+                    NSString *message = [NSString stringWithFormat: @"Project Locker Storage %@ has No Client Path Set", filesResult[@"files"][0][@"storage"]];
+                    
+                    [alert setMessageText:message];
+                    
+                    [alert setInformativeText:@"Please contact Multimedia Technology."];
+                    
+                    [alert setAlertStyle:NSWarningAlertStyle];
+                    
+                    if ([alert runModal] == NSAlertFirstButtonReturn) {
+                        
+                    }
+                    
+                }
+                
+                NSString *pathToUse = [NSString stringWithFormat: @"%@/%@", storageResult[@"result"][@"clientpath"], filesResult[@"files"][0][@"filepath"]];
+                
+                NSTask *task = [[NSTask alloc] init];
+                [task setLaunchPath:[[NSUserDefaults standardUserDefaults] stringForKey:@"local_shell_script"]];
+                [task setArguments:[NSArray arrayWithObjects:pathToUse, nil]];
+                [task setStandardOutput:[NSPipe pipe]];
+                [task setStandardInput:[NSPipe pipe]];
+                
+                [task launch];
+            }];
+        }];
 
-        NSString *storageDataFromServer = [ProjectLockerAndKeychainFunctions get_data_from_server:@"%@/api/storage/" :NULL :results[@"files"][0][@"storage"]];
-
-        NSDictionary *storageResults = [ProjectLockerAndKeychainFunctions parse_json:storageDataFromServer];
-
-        if (storageResults[@"result"][@"clientpath"] == NULL) {
-            NSAlert *alert = [[NSAlert alloc] init];
-            
-            [alert addButtonWithTitle:@"Okay"];
-            
-            NSString *message = [NSString stringWithFormat: @"Project Locker Storage %@ has No Client Path Set", results[@"files"][0][@"storage"]];
-                                                                                                                                      
-            [alert setMessageText:message];
-            
-            [alert setInformativeText:@"Please contact Multimedia Technology."];
-            
-            [alert setAlertStyle:NSWarningAlertStyle];
-            
-            if ([alert runModal] == NSAlertFirstButtonReturn) {
- 
-            }
- 
-        }
-        
-        NSString *pathToUse = [NSString stringWithFormat: @"%@/%@", storageResults[@"result"][@"clientpath"], results[@"files"][0][@"filepath"]];
-
-        NSTask *task = [[NSTask alloc] init];
-        [task setLaunchPath:[[NSUserDefaults standardUserDefaults] stringForKey:@"local_shell_script"]];
-        [task setArguments:[NSArray arrayWithObjects:pathToUse, nil]];
-        [task setStandardOutput:[NSPipe pipe]];
-        [task setStandardInput:[NSPipe pipe]];
-        
-        [task launch];
 
     } else {
         
@@ -148,8 +155,8 @@
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
     // Insert code here to tear down your application
     NSLog(@"Application about to quit.");
-    [ProjectLockerAndKeychainFunctions logout_of_project_server];
-    sleep(1);
+//    [ProjectLockerAndKeychainFunctions logout_of_project_server];
+//    sleep(1);
 }
 
 @synthesize statusBar = _statusBar;

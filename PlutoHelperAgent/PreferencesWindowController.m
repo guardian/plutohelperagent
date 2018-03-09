@@ -131,28 +131,41 @@
 - (IBAction)saveClicked:(id)sender {
     
     [self write_data_to_keychain];
-    [ProjectLockerAndKeychainFunctions logout_of_project_server];
-    [ProjectLockerAndKeychainFunctions login_to_project_server];
-    
-    [super close];
-    
+    [ProjectLockerAndKeychainFunctions logout_of_project_server:^(enum ReturnValues logoutResult) {
+        if(logoutResult!=ALLOK) NSLog(@"Could not log out of server, see log for details");
+        [ProjectLockerAndKeychainFunctions login_to_project_server:^(enum ReturnValues loginResult) {
+            if(loginResult!=ALLOK) NSLog(@"Could not log back in to of server, see log for details");
+            [super close];
+        }];
+    }];
 }
 
 - (IBAction)testClicked:(id)sender {
-    [ProjectLockerAndKeychainFunctions logout_of_project_server];
-    [ProjectLockerAndKeychainFunctions login_to_project_server];
-    enum ReturnValues connectionStatus = [ProjectLockerAndKeychainFunctions check_logged_in];
+    _StatusText.stringValue = @"Testing connection...";
     
-    switch(connectionStatus) {
-        case ALLOK:
-            _StatusText.stringValue = @"Connection Okay";
-            break;
-        case ERROR:
-            _StatusText.stringValue = @"Connection Failed";
-            break;
-    }
-    
-    
+    [ProjectLockerAndKeychainFunctions logout_of_project_server:^(enum ReturnValues logoutResult) {
+        if(logoutResult!=ALLOK) NSLog(@"Could not log out of server, see log for details");
+        [ProjectLockerAndKeychainFunctions login_to_project_server:^(enum ReturnValues loginResult) {
+            if(loginResult!=ALLOK) NSLog(@"Could not log back in to of server, see log for details");
+            [ProjectLockerAndKeychainFunctions check_logged_in:^(enum ReturnValues connectionStatus) {
+                switch(connectionStatus) {
+                    case ALLOK:
+                        _StatusText.stringValue = @"Connection Okay";
+                        break;
+                    case PERMISSION_DENIED:
+                        _StatusText.stringValue = @"Could not log in";
+                        break;
+                    case SERVER_ERROR:
+                        _StatusText.stringValue = @"Could not connect to server";
+                        break;
+                    default:
+                        _StatusText.stringValue = @"Unkown error";
+                        break;
+                        
+                }
+            }];
+        }];
+    }];
 }
 
 @end

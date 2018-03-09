@@ -105,7 +105,8 @@ NSString *responseData;
     
 }
 
-+ (NSDictionary *) communicate_with_server:(NSString*)url :(NSString*)method :(NSString*)type :(NSDictionary*)body :(BOOL)send_cookie :(BOOL)test_connection {
++ (NSURLSessionTask *) communicate_with_server:(NSString*)url :(NSString*)method :(NSString*)type :(NSDictionary*)body :(BOOL)send_cookie :(BOOL)test_connection
+                         completionHandler:(void (^) (NSURLResponse*, NSDictionary *))completionHandlerBlock {
   
     NSString *URLToUse = [NSString stringWithFormat: url, [[NSUserDefaults standardUserDefaults] stringForKey:@"project_locker_url"]];
     
@@ -134,98 +135,83 @@ NSString *responseData;
     
     communicationStatus = 1;
     
+    void (^urlCompletionHandler)(NSData *, NSURLResponse *, NSError *);
+    NSURLSessionTask *uploadTask;
+    
+    urlCompletionHandler = ^(NSData *data,NSURLResponse *response,NSError *error) {
+        NSString *datastring = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        NSLog(@"Data %@", datastring);
+        NSLog(@"Response %@", response);
+        if (error != NULL) {
+            NSLog(@"Error %@", error);
+        } else {
+            communicationStatus = 0;
+        }
+        completionHandlerBlock(response,[self parse_json:datastring]);
+    };
+
     if (body != NULL) {
-        
         NSError *error = nil;
-        NSData *data = [NSJSONSerialization dataWithJSONObject:body
-                                                       options:kNilOptions error:&error];
+        NSData *data = [NSJSONSerialization dataWithJSONObject:body options:kNilOptions error:&error];
         
         if (!error) {
-            NSURLSessionUploadTask *uploadTask = [session uploadTaskWithRequest:request
-                                                                       fromData:data completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
-                                                                           NSString *datastring = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                                                                           NSLog(@"Data %@", datastring);
-                                                                           NSLog(@"Response %@", response);
-                                                                           if (error != NULL) {
-                                                                               NSLog(@"Error %@", error);
-                                                                           } else {
-                                                                               communicationStatus = 0;
-                                                                           }
-                                                                           
-                                                                       }];
-            
+            uploadTask = [session uploadTaskWithRequest:request fromData:data completionHandler:urlCompletionHandler];
             [uploadTask resume];
         }
-        
-        sleep(1);
-        
     } else {
-        
-        NSURLSessionDataTask *uploadTask = [session dataTaskWithRequest:request completionHandler:^(NSData *data,NSURLResponse *response,NSError *error) {
-            NSString *datastring = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            NSLog(@"Data %@", datastring);
-            responseData = datastring;
-            NSLog(@"Response %@", response);
-            if (error != NULL) {
-                NSLog(@"Error %@", error);
-            }
-            
-            if (test_connection == 1) {
-                NSString *compareThisPartOfTheString = [datastring substringToIndex:14];
-                
-                if ([compareThisPartOfTheString isEqual: @"{\"status\":\"ok\""]) {
-                    connectionStatus = 0;
-                }
-            }
-            
-        }];
-        
+        uploadTask = [session dataTaskWithRequest:request completionHandler:urlCompletionHandler];
         [uploadTask resume];
-        
-        sleep(1);
-        
     }
     
-    return [NSDictionary dictionaryWithObjectsAndKeys:
-            responseData,
-            @"data",
-            communicationStatus,
-            @"status",
-            nil];
+    return uploadTask;
     
 }
 
-+ (int) check_logged_in {
-    
-    connectionStatus = 1;
-    
-    [self communicate_with_server:@"%@/api/isLoggedIn" :@"GET" :@"application/json" :NULL :1 :1];
-    
-    return connectionStatus;
-    
++ (enum ReturnValues) returnValueFromStatusCode:(NSInteger)statusCode{
+    switch(statusCode){
+        case 200:
+            return ALLOK;
+        case 403:
+            return PERMISSION_DENIED;
+        case 500:
+            return SERVER_ERROR;
+        case 400:
+            return DATA_ERROR;
+        default:
+            return UNKNOWN_ERROR;
+    }
 }
 
-+ (void) login_to_project_server {
++ (NSURLSessionTask *) check_logged_in:(void (^) (enum ReturnValues))completionHandlerBlock {
+    return [self communicate_with_server:@"%@/api/isLoggedIn" :@"GET" :@"application/json" :NULL :1 :1 completionHandler:^(NSURLResponse *response,NSDictionary *jsonData) {
+        completionHandlerBlock([self returnValueFromStatusCode:[(NSHTTPURLResponse *)response statusCode]]);
+    }];
+}
+
++ (void) login_to_project_server:(void (^) (enum ReturnValues))completionHandlerBlock {
     
     NSDictionary *dataFromKeychain = [self load_data_from_keychain];
     
-    [self communicate_with_server:@"%@/api/login" :@"POST" :@"application/json" :@{@"username": dataFromKeychain[@"username"], @"password": dataFromKeychain[@"password"]} :0 :0];
-    
-    
-}
-
-+ (void) logout_of_project_server {
-
-    [self communicate_with_server:@"%@/api/logout" :@"GET" :@"application/json" :NULL :1 :0];
-
-    NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-    for (NSHTTPCookie *each in cookieStorage.cookies) {
-        [cookieStorage deleteCookie:each];
-    }
+    [self communicate_with_server:@"%@/api/login" :@"POST" :@"application/json" :@{@"username": dataFromKeychain[@"username"], @"password": dataFromKeychain[@"password"]} :0 :0 completionHandler:^(NSURLResponse *response, NSDictionary *jsonData) {
+        completionHandlerBlock([self returnValueFromStatusCode:[(NSHTTPURLResponse *)response statusCode]]);
+    }];
     
 }
 
-+ (NSString *) get_data_from_server:(NSString*)url :(NSString*)url2 :(NSString*)inputid {
++ (void) logout_of_project_server:(void (^) (enum ReturnValues))completionHandlerBlock {
+
+    [self communicate_with_server:@"%@/api/logout" :@"GET" :@"application/json" :NULL :1 :0 completionHandler:^(NSURLResponse *response, NSDictionary *jsonData) {
+        
+        NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+        for (NSHTTPCookie *each in cookieStorage.cookies) {
+            [cookieStorage deleteCookie:each];
+        }
+        completionHandlerBlock([self returnValueFromStatusCode:[(NSHTTPURLResponse *)response statusCode]]);
+    }];
+    
+}
+
++ (NSURLSessionTask *) get_data_from_server:(NSString*)url :(NSString*)url2 :(NSString*)inputid completionHandler:(void (^) (NSURLResponse *, NSDictionary *))completionHandlerBlock{
 
     NSString *urlToUse;
     
@@ -236,8 +222,7 @@ NSString *responseData;
         urlToUse = [NSString stringWithFormat: @"%@%@", url, inputid];
     }
 
-    NSDictionary *dataFromServer = [self communicate_with_server:urlToUse :@"GET" :@"application/json" :NULL :0 :0];
-    return dataFromServer[@"data"];
+    return [self communicate_with_server:urlToUse :@"GET" :@"application/json" :NULL :0 :0 completionHandler:completionHandlerBlock];
 }
 
 + (NSDictionary *) parse_json:(NSString*)json {
@@ -251,7 +236,7 @@ NSString *responseData;
                  error:&error];
     
     if(error) {
-        NSLog(@"Could not parse JSON object.");
+        NSLog(@"Could not parse JSON object: %@", error);
         return NULL;
         
     }
@@ -260,11 +245,10 @@ NSString *responseData;
     {
         NSDictionary *results = object;
         return results;
-        
     }
     else
     {
-        NSLog(@"Could not parse JSON object.");
+        NSLog(@"Json parsed but is not a dictionary");
         return NULL;
     }
 }
