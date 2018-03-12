@@ -146,9 +146,26 @@
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
     // Insert code here to tear down your application
-    NSLog(@"Application about to quit.");
-//    [ProjectLockerAndKeychainFunctions logout_of_project_server];
-//    sleep(1);
+
+}
+
+- (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender {
+    
+    dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+    
+    [ProjectLockerAndKeychainFunctions logout_of_project_server:^(enum ReturnValues loginResult) {
+        dispatch_semaphore_signal(sema);
+        if (loginResult!=ALLOK) {
+            NSLog(@"Could not successfully log out of server, see log for details");
+        } else {
+            NSLog(@"Successfully logged out of server");
+        }
+    }];
+
+    dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
+
+    dispatch_semaphore_signal(sema);
+    return NSTerminateNow;
 }
 
 @synthesize statusBar = _statusBar;
