@@ -161,8 +161,12 @@
             NSLog(@"Successfully logged out of server");
         }
     }];
+    
+    unsigned long int nano_seconds_to_wait = 1000000000 * [[NSUserDefaults standardUserDefaults] integerForKey:@"quit_wait_time"];
+    
+    unsigned long int time_to_wait_till = dispatch_time(DISPATCH_TIME_NOW, nano_seconds_to_wait);
 
-    dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
+    dispatch_semaphore_wait(sema, time_to_wait_till);
 
     dispatch_semaphore_signal(sema);
     return NSTerminateNow;
