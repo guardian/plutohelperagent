@@ -20,7 +20,7 @@ typedef NS_ENUM(NSUInteger, ReturnValues) {
 
 + (NSDictionary *)load_data_from_keychain;
 
-+ (NSURLSessionTask *) communicate_with_server:(NSString*)url :(NSString*)method :(NSString*)type :(NSDictionary*)body :(BOOL)send_cookie :(BOOL)test_connection completionHandler:(void (^) (NSURLResponse *,NSDictionary *))completionHandlerBlock;
++ (NSURLSessionTask *) communicate_with_server:(NSString*)url :(NSString*)method :(NSString*)type :(NSDictionary*)body :(BOOL)send_cookie completionHandler:(void (^) (NSURLResponse *,NSDictionary *))completionHandlerBlock;
 
 + (NSURLSessionTask *)check_logged_in:(void (^) (enum ReturnValues))completionHandlerBlock;
 
