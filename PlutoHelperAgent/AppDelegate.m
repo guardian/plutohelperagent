@@ -15,6 +15,8 @@
 @end
 
 @implementation AppDelegate
+@synthesize errorAlert;
+@synthesize statusBar;
 
 - (id)init
 {
@@ -137,7 +139,6 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
-        [self setPreferencesWindowController:[[PreferencesWindowController alloc] initWithWindowNibName:@"PreferencesWindowController"]];
     // Insert code here to initialize your application
     self.statusBar = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
     
@@ -152,7 +153,7 @@
     [ProjectLockerAndKeychainFunctions login_to_project_server:^(enum ReturnValues loginResult) {
         if(loginResult!=ALLOK) {
             self.statusBar.image = [NSImage imageNamed:@"PlutoIconError"];
-            [[self preferencesWindowController] setErrorAlert:@"Could not log in to projectlocker, please check and test login credentials"];
+            [self setErrorAlert:@"Could not log in to projectlocker"];
             NSLog(@"Could not log in to projectlocker");
         }
     }];
@@ -165,10 +166,8 @@
 //    sleep(1);
 }
 
-@synthesize statusBar = _statusBar;
-
 - (void) awakeFromNib {
-
+    [self setPreferencesWindowController:[[PreferencesWindowController alloc] initWithWindowNibName:@"PreferencesWindowController"]];
 }
 
 - (IBAction)preferencesClicked:(id)sender {

@@ -16,8 +16,6 @@
 
 @property (weak) IBOutlet NSTextFieldCell *StatusText;
 
-@property (strong) NSString *errorAlert;    //text to display as an error
-
 - (IBAction)saveClicked:(id)sender;
 
 - (IBAction)testClicked:(id)sender;

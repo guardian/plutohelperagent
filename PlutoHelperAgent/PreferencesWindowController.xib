@@ -143,17 +143,6 @@
                             <action selector="testClicked:" target="-2" id="qoe-PM-ZEz"/>
                         </connections>
                     </button>
-                    <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Tuk-ei-l7E">
-                        <rect key="frame" x="7" y="43" width="455" height="47"/>
-                        <textFieldCell key="cell" sendsActionOnEndEditing="YES" alignment="center" title="Multiline Label" id="z7H-2b-y67">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                        <connections>
-                            <binding destination="EuZ-bS-Juq" name="value" keyPath="errorAlert" id="CCT-iG-uQy"/>
-                        </connections>
-                    </textField>
                 </subviews>
             </view>
             <connections>
@@ -162,7 +151,6 @@
             <point key="canvasLocation" x="410.5" y="321.5"/>
         </window>
         <userDefaultsController representsSharedInstance="YES" id="kXv-I8-sIr"/>
-        <customObject id="e2x-xC-iTv"/>
-        <customObject id="EuZ-bS-Juq" customClass="PreferencesWindowController"/>
+        <customObject id="e2x-xC-iTv" customClass="AppDelegate"/>
     </objects>
 </document>

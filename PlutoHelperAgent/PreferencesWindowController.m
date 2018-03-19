@@ -14,7 +14,6 @@
 @end
 
 @implementation PreferencesWindowController
-@synthesize errorAlert;
 
 - (void) write_data_to_keychain {
     
