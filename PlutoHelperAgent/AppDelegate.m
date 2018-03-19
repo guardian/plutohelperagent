@@ -24,11 +24,7 @@
      andSelector:@selector(getUrl:withReplyEvent:)
  		  forEventClass:kInternetEventClass
      andEventID:kAEGetURL];
-    
-    [self setup_defaults];
-    [ProjectLockerAndKeychainFunctions login_to_project_server:^(enum ReturnValues loginResult) {
-        if(loginResult!=ALLOK) NSLog(@"Could not log in to of server, see log for details");
-    }];
+
     
     return self;
 }
@@ -141,7 +137,25 @@
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+        [self setPreferencesWindowController:[[PreferencesWindowController alloc] initWithWindowNibName:@"PreferencesWindowController"]];
     // Insert code here to initialize your application
+    self.statusBar = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
+    
+    //set up the status bar
+    
+    self.statusBar.image = [NSImage imageNamed:@"PlutoIcon"];
+    
+    self.statusBar.menu = self.statusMenu;
+    self.statusBar.highlightMode = YES;
+    
+    [self setup_defaults];
+    [ProjectLockerAndKeychainFunctions login_to_project_server:^(enum ReturnValues loginResult) {
+        if(loginResult!=ALLOK) {
+            self.statusBar.image = [NSImage imageNamed:@"PlutoIconError"];
+            [[self preferencesWindowController] setErrorAlert:@"Could not log in to projectlocker, please check and test login credentials"];
+            NSLog(@"Could not log in to projectlocker");
+        }
+    }];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
@@ -154,22 +168,10 @@
 @synthesize statusBar = _statusBar;
 
 - (void) awakeFromNib {
-    self.statusBar = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
-    
-    //self.statusBar.title = @"P";
 
-   
-    // you can also set an image
-    self.statusBar.image = [NSImage imageNamed:@"PlutoIcon"];
-    
-    self.statusBar.menu = self.statusMenu;
-    self.statusBar.highlightMode = YES;
 }
 
 - (IBAction)preferencesClicked:(id)sender {
-    if(!_preferencesWindowController) {
-        _preferencesWindowController = [[PreferencesWindowController alloc] initWithWindowNibName:@"PreferencesWindowController"];
-    }
-    [_preferencesWindowController showWindow:self];
+    [[self preferencesWindowController] showWindow:self];
 }
 @end

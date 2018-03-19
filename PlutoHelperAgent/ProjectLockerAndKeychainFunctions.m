@@ -19,33 +19,20 @@ int communicationStatus;
 NSString *responseData;
 
 + (NSDictionary *) load_data_from_keychain {
-    
     UInt32 pwLength = 0;
-    
     void* pwData = NULL;
-    
     SecKeychainItemRef itemRef = NULL;
-    
     NSString* service = @"PlutoHelperAgent";
     
     OSStatus pwAccessStatus = SecKeychainFindGenericPassword(
-                                                             
                                                              NULL,         // Search default keychains
-                                                             
                                                              (UInt32)service.length,
-                                                             
                                                              [service UTF8String],
-                                                             
                                                              0,
-                                                             
                                                              NULL,
-                                                             
                                                              &pwLength,
-                                                             
                                                              &pwData,
-                                                             
                                                              &itemRef      // Get a reference this time
-                                                             
                                                              );
     
     if (pwAccessStatus == errSecSuccess) {
@@ -82,7 +69,6 @@ NSString *responseData;
                     nil];
             
         } else {
-            
             NSLog(@"Username not retrived from Apple Keychain");
         }
         
@@ -94,14 +80,7 @@ NSString *responseData;
     
     if (pwData) SecKeychainItemFreeContent(NULL, pwData);  // Free memory
     
-    return [NSDictionary dictionaryWithObjectsAndKeys:
-            @"",
-            @"username",
-            nil,
-            @"password",
-            @"Could not load data",
-            @"error",
-            nil];
+    return nil;
     
 }
 
@@ -191,10 +170,23 @@ NSString *responseData;
 + (void) login_to_project_server:(void (^) (enum ReturnValues))completionHandlerBlock {
     
     NSDictionary *dataFromKeychain = [self load_data_from_keychain];
+    if(!dataFromKeychain){
+        NSLog(@"Could not load login data from keychain");
+        completionHandlerBlock(MISSING_VALUES); //tell the caller about it
+        return;
+    };
     
-    [self communicate_with_server:@"/api/login" :@"POST" :@"application/json" :@{@"username": dataFromKeychain[@"username"], @"password": dataFromKeychain[@"password"]} :0 completionHandler:^(NSURLResponse *response, NSDictionary *jsonData) {
-        completionHandlerBlock([self returnValueFromStatusCode:[(NSHTTPURLResponse *)response statusCode]]);
-    }];
+    [self communicate_with_server:@"/api/login"
+                                 :@"POST"
+                                 :@"application/json"
+                                 :@{@"username": dataFromKeychain[@"username"],
+                                    @"password": dataFromKeychain[@"password"]
+                                    }
+                                 :0
+                completionHandler:^(NSURLResponse *response, NSDictionary *jsonData) {
+                    completionHandlerBlock([self returnValueFromStatusCode:[(NSHTTPURLResponse *)response statusCode]]);
+                }
+     ];
     
 }
 
