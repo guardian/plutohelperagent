@@ -15,7 +15,6 @@
 
 @implementation PreferencesWindowController
 
-
 - (void) write_data_to_keychain {
     
     NSString* service2 = @"PlutoHelperAgent";

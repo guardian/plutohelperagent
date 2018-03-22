@@ -13,7 +13,8 @@ typedef NS_ENUM(NSUInteger, ReturnValues) {
     SERVER_ERROR=1,
     DATA_ERROR=2,
     PERMISSION_DENIED=3,
-    UNKNOWN_ERROR=4
+    UNKNOWN_ERROR=4,
+    MISSING_VALUES=5
 } OperationStatus;
 
 @interface ProjectLockerAndKeychainFunctions : NSObject {}
