@@ -10,11 +10,10 @@
 
 @interface PreferencesWindowController : NSWindowController
 
-@property (weak) IBOutlet NSTextField *UsernameText;
-
-@property (weak) IBOutlet NSTextField *PasswordText;
-
-@property (weak) IBOutlet NSTextFieldCell *StatusText;
+@property NSString *username;
+@property NSString *password;
+@property NSString *statusString;
+@property NSNumber *hasChanged;
 
 - (IBAction)saveClicked:(id)sender;
 

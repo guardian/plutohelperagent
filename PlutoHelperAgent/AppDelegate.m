@@ -164,7 +164,11 @@
     self.statusBar.highlightMode = YES;
     
     [self setup_defaults];
-    [ProjectLockerAndKeychainFunctions login_to_project_server:^(enum ReturnValues loginResult) {
+    NSDictionary *keychainData = [ProjectLockerAndKeychainFunctions load_data_from_keychain];
+    
+    [ProjectLockerAndKeychainFunctions login_to_project_server:[keychainData valueForKey:@"username"]
+                                                      password:[keychainData valueForKey:@"password"]
+                                             completionHandler:^(enum ReturnValues loginResult) {
         if(loginResult!=ALLOK) {
             self.statusBar.image = [NSImage imageNamed:@"PlutoIconError"];
             [self setErrorAlert:@"Could not log in to projectlocker"];
@@ -185,10 +189,12 @@
 }
 
 - (void) awakeFromNib {
-    [self setPreferencesWindowController:[[PreferencesWindowController alloc] initWithWindowNibName:@"PreferencesWindowController"]];
+//    [self setPreferencesWindowController:[[PreferencesWindowController alloc] initWithWindowNibName:@"PreferencesWindowController"]];
 }
 
 - (IBAction)preferencesClicked:(id)sender {
-    [[self preferencesWindowController] showWindow:self];
+    NSLog(@"preferencesClicked");
+    [[[self prefsWindow] windowController] showWindow:self];
+//    [[self preferencesWindowController] showWindow:self];
 }
 @end

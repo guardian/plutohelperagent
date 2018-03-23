@@ -15,6 +15,8 @@
 @property (strong, nonatomic) NSStatusItem *statusBar;
 @property PreferencesWindowController *preferencesWindowController;
 
+@property (weak) IBOutlet NSWindow *prefsWindow;
+
 @property NSString *errorAlert;
 
 - (IBAction)preferencesClicked:(id)sender;

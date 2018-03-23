@@ -31,7 +31,10 @@ typedef NS_ENUM(NSUInteger, ReturnValues) {
 
 + (NSURLSessionTask *)check_logged_in:(void (^) (enum ReturnValues))completionHandlerBlock errorHandler:(void (^)(NSURLResponse *,NSError *))errorHandlerBlock;
 
-+ (void)login_to_project_server:(void (^) (enum ReturnValues)) completionHandlerBlock errorHandler:(void (^)(NSURLResponse *,NSError *))errorHandlerBlock;
++ (void)login_to_project_server:(NSString *)username
+                       password:(NSString *)password
+              completionHandler:(void (^) (enum ReturnValues)) completionHandlerBlock
+                   errorHandler:(void (^)(NSURLResponse *,NSError *))errorHandlerBlock;
 
 + (void)logout_of_project_server:(void (^) (enum ReturnValues)) completionHandlerBlock errorHandler:(void (^)(NSURLResponse *,NSError *))errorHandlerBlock;
 
