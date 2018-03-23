@@ -124,19 +124,23 @@
     NSDictionary *dataFromKeychain = [ProjectLockerAndKeychainFunctions load_data_from_keychain];
     _UsernameText.stringValue = dataFromKeychain[@"username"];
     _PasswordText.stringValue = dataFromKeychain[@"password"];
+    [_StatusText setPlaceholderString:@""];
 }
 
 
 - (IBAction)saveClicked:(id)sender {
-    
     [self write_data_to_keychain];
     [ProjectLockerAndKeychainFunctions logout_of_project_server:^(enum ReturnValues logoutResult) {
         if(logoutResult!=ALLOK) NSLog(@"Could not log out of server, see log for details");
         [ProjectLockerAndKeychainFunctions login_to_project_server:^(enum ReturnValues loginResult) {
             if(loginResult!=ALLOK) NSLog(@"Could not log back in to of server, see log for details");
             [super close];
-        }];
-    }];
+        } errorHandler:^(NSURLResponse *response, NSError *error){}];
+    } errorHandler:^(NSURLResponse *response, NSError *error){}];
+}
+
+- (NSString *)getErrorString:(NSError *)err {
+    return [err localizedDescription];
 }
 
 - (IBAction)testClicked:(id)sender {
@@ -162,8 +166,14 @@
                         break;
                         
                 }
+            } errorHandler:^(NSURLResponse *response, NSError *error) {
+                _StatusText.stringValue = [NSString stringWithFormat:@"Could not check login: %@", [self getErrorString: error]];
             }];
+        } errorHandler:^(NSURLResponse *response, NSError *error) {
+            _StatusText.stringValue = [NSString stringWithFormat:@"Could not log back in: %@", [self getErrorString: error]];
         }];
+    } errorHandler:^(NSURLResponse *response, NSError *error) {
+        _StatusText.stringValue = [NSString stringWithFormat:@"Could not log out: %@", [self getErrorString: error]];
     }];
 }
 
