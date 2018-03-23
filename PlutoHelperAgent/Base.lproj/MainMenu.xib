@@ -727,7 +727,11 @@
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                     <connections>
-                                        <binding destination="4UF-ix-bYJ" name="value" keyPath="username" id="T2i-Ak-Gxd"/>
+                                        <binding destination="4UF-ix-bYJ" name="value" keyPath="username" id="5Em-bU-Hrk">
+                                            <dictionary key="options">
+                                                <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                            </dictionary>
+                                        </binding>
                                     </connections>
                                 </textField>
                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="94u-jR-q09">
@@ -746,7 +750,11 @@
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                     <connections>
-                                        <binding destination="4UF-ix-bYJ" name="value" keyPath="password" id="Vfd-N7-FEd"/>
+                                        <binding destination="4UF-ix-bYJ" name="value" keyPath="password" id="se6-Nl-aFa">
+                                            <dictionary key="options">
+                                                <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                            </dictionary>
+                                        </binding>
                                     </connections>
                                 </textField>
                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pqV-HH-LHX">
