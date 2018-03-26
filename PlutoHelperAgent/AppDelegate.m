@@ -189,12 +189,11 @@
 }
 
 - (void) awakeFromNib {
-//    [self setPreferencesWindowController:[[PreferencesWindowController alloc] initWithWindowNibName:@"PreferencesWindowController"]];
+
 }
 
 - (IBAction)preferencesClicked:(id)sender {
     NSLog(@"preferencesClicked");
     [[[self prefsWindow] windowController] showWindow:self];
-//    [[self preferencesWindowController] showWindow:self];
 }
 @end
