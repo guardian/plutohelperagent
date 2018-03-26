@@ -23,14 +23,6 @@
                 <rect key="frame" x="0.0" y="0.0" width="475" height="321"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pXj-UP-TUl">
-                        <rect key="frame" x="177" y="79" width="145" height="17"/>
-                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" placeholderString="" id="aNV-JK-DfR">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                    </textField>
                     <box fixedFrame="YES" title="Projectlocker" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="kcA-LD-8rt">
                         <rect key="frame" x="6" y="171" width="452" height="141"/>
                         <view key="contentView" id="LsI-qy-zPO">
@@ -93,7 +85,7 @@
                         <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                         <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </box>
-                    <box fixedFrame="YES" title="Box" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="zSX-pF-piB">
+                    <box fixedFrame="YES" title="Client" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="zSX-pF-piB">
                         <rect key="frame" x="6" y="94" width="457" height="73"/>
                         <view key="contentView" id="5ZR-vl-98K">
                             <rect key="frame" x="1" y="1" width="455" height="57"/>
@@ -143,6 +135,14 @@
                             <action selector="testClicked:" target="-2" id="qoe-PM-ZEz"/>
                         </connections>
                     </button>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pXj-UP-TUl">
+                        <rect key="frame" x="7" y="41" width="455" height="54"/>
+                        <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="center" placeholderString="Error message" id="aNV-JK-DfR">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                 </subviews>
             </view>
             <connections>

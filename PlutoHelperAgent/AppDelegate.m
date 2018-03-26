@@ -96,8 +96,22 @@
         
         NSString *projectid = [parts objectAtIndex:2];
         
-        [ProjectLockerAndKeychainFunctions get_data_from_server:@"/api/project/" :@"/files" :projectid completionHandler:^void (NSURLResponse *response,NSDictionary *filesResult){
-            [ProjectLockerAndKeychainFunctions get_data_from_server:@"/api/storage/" :NULL :filesResult[@"files"][0][@"storage"] completionHandler:^(NSURLResponse *response, NSDictionary *storageResult) {
+        void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURLResponse *response, NSError *error){
+            NSAlert *alert = [[NSAlert alloc] init];
+            [alert addButtonWithTitle:@"Okay"];
+            [alert setMessageText:@"Could not communicate with projectlocker"];
+            [alert setInformativeText:[error localizedDescription]];
+            [alert runModal];
+        };
+        
+        [ProjectLockerAndKeychainFunctions get_data_from_server:@"/api/project/"
+                                                               :@"/files"
+                                                               :projectid
+                                              completionHandler:^void (NSURLResponse *response,NSDictionary *filesResult){
+            [ProjectLockerAndKeychainFunctions get_data_from_server:@"/api/storage/"
+                                                                   :NULL
+                                                                   :filesResult[@"files"][0][@"storage"]
+                                                  completionHandler:^(NSURLResponse *response, NSDictionary *storageResult) {
                 if (storageResult[@"result"][@"clientpath"] == NULL) {
                     NSAlert *alert = [[NSAlert alloc] init];
                     
@@ -126,8 +140,8 @@
                 
                     [task launch];
                 }
-            }];
-        }];
+            } errorHandler:errorHandlerBlock];
+        } errorHandler:errorHandlerBlock];
 
 
     } else {
@@ -156,6 +170,10 @@
             [self setErrorAlert:@"Could not log in to projectlocker"];
             NSLog(@"Could not log in to projectlocker");
         }
+    } errorHandler:^(NSURLResponse *response, NSError *err) {
+        self.statusBar.image = [NSImage imageNamed:@"PlutoIconError"];
+        [self setErrorAlert:[err localizedDescription]];
+        NSLog(@"Could not log in to projectlocker");
     }];
 }
 

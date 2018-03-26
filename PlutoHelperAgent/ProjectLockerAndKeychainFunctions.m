@@ -84,8 +84,13 @@ NSString *responseData;
     
 }
 
-+ (NSURLSessionTask *) communicate_with_server:(NSString*)url :(NSString*)method :(NSString*)type :(NSDictionary*)body :(BOOL)send_cookie
-                         completionHandler:(void (^) (NSURLResponse*, NSDictionary *))completionHandlerBlock {
++ (NSURLSessionTask *) communicate_with_server:(NSString*)url
+                                              :(NSString*)method
+                                              :(NSString*)type
+                                              :(NSDictionary*)body
+                                              :(BOOL)send_cookie
+                         completionHandler:(void (^) (NSURLResponse*, NSDictionary *))completionHandlerBlock
+                                  errorHandler:(void (^)(NSURLResponse *,NSError *))errorHandlerBlock{
   
     NSString *URLToUse = [NSString stringWithFormat: @"%@%@", [[NSUserDefaults standardUserDefaults] stringForKey:@"project_locker_url"], url];
     
@@ -123,10 +128,10 @@ NSString *responseData;
         NSLog(@"Response %@", response);
         if (error != NULL) {
             NSLog(@"Error %@", error);
+            errorHandlerBlock(response, error);
         } else {
-            communicationStatus = 0;
+            completionHandlerBlock(response,[self parse_json:datastring]);
         }
-        completionHandlerBlock(response,[self parse_json:datastring]);
     };
 
     if (body != NULL) {
@@ -161,13 +166,21 @@ NSString *responseData;
     }
 }
 
-+ (NSURLSessionTask *) check_logged_in:(void (^) (enum ReturnValues))completionHandlerBlock {
-    return [self communicate_with_server:@"/api/isLoggedIn" :@"GET" :@"application/json" :NULL :1 completionHandler:^(NSURLResponse *response,NSDictionary *jsonData) {
-        completionHandlerBlock([self returnValueFromStatusCode:[(NSHTTPURLResponse *)response statusCode]]);
-    }];
++ (NSURLSessionTask *) check_logged_in:(void (^) (enum ReturnValues))completionHandlerBlock
+                          errorHandler:(void (^)(NSURLResponse *,NSError *))errorHandlerBlock{
+    return [self communicate_with_server:@"/api/isLoggedIn"
+                                        :@"GET"
+                                        :@"application/json"
+                                        :NULL
+                                        :1
+                       completionHandler:^(NSURLResponse *response,NSDictionary *jsonData) {
+                           completionHandlerBlock([self returnValueFromStatusCode:[(NSHTTPURLResponse *)response statusCode]]);
+                       }
+                            errorHandler:errorHandlerBlock];
 }
 
-+ (void) login_to_project_server:(void (^) (enum ReturnValues))completionHandlerBlock {
++ (void) login_to_project_server:(void (^) (enum ReturnValues))completionHandlerBlock
+                    errorHandler:(void (^)(NSURLResponse *,NSError *))errorHandlerBlock{
     
     NSDictionary *dataFromKeychain = [self load_data_from_keychain];
     if(!dataFromKeychain){
@@ -186,24 +199,37 @@ NSString *responseData;
                 completionHandler:^(NSURLResponse *response, NSDictionary *jsonData) {
                     completionHandlerBlock([self returnValueFromStatusCode:[(NSHTTPURLResponse *)response statusCode]]);
                 }
+                    errorHandler:errorHandlerBlock
      ];
     
 }
 
-+ (void) logout_of_project_server:(void (^) (enum ReturnValues))completionHandlerBlock {
++ (void) logout_of_project_server:(void (^) (enum ReturnValues))completionHandlerBlock
+                     errorHandler:(void (^)(NSURLResponse *,NSError *))errorHandlerBlock{
 
-    [self communicate_with_server:@"/api/logout" :@"GET" :@"application/json" :NULL :1 completionHandler:^(NSURLResponse *response, NSDictionary *jsonData) {
-        
-        NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-        for (NSHTTPCookie *each in cookieStorage.cookies) {
-            [cookieStorage deleteCookie:each];
-        }
-        completionHandlerBlock([self returnValueFromStatusCode:[(NSHTTPURLResponse *)response statusCode]]);
-    }];
+    [self communicate_with_server:@"/api/logout"
+                                 :@"GET"
+                                 :@"application/json"
+                                 :NULL
+                                 :1
+                completionHandler:^(NSURLResponse *response, NSDictionary *jsonData){
+                        NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+                        for (NSHTTPCookie *each in cookieStorage.cookies) {
+                            [cookieStorage deleteCookie:each];
+                        }
+                        completionHandlerBlock([self returnValueFromStatusCode:[(NSHTTPURLResponse *)response statusCode]]);
+                    }
+                     errorHandler:(void (^)(NSURLResponse *,NSError *))errorHandlerBlock
+     ];
     
 }
 
-+ (NSURLSessionTask *) get_data_from_server:(NSString*)url :(NSString*)url2 :(NSString*)inputid completionHandler:(void (^) (NSURLResponse *, NSDictionary *))completionHandlerBlock{
++ (NSURLSessionTask *) get_data_from_server:(NSString*)url
+                                           :(NSString*)url2
+                                           :(NSString*)inputid
+                          completionHandler:(void (^) (NSURLResponse *, NSDictionary *))completionHandlerBlock
+                               errorHandler:(void (^)(NSURLResponse *,NSError *))errorHandlerBlock
+{
 
     NSString *urlToUse;
     
@@ -214,7 +240,8 @@ NSString *responseData;
         urlToUse = [NSString stringWithFormat: @"%@%@", url, inputid];
     }
 
-    return [self communicate_with_server:urlToUse :@"GET" :@"application/json" :NULL :0 completionHandler:completionHandlerBlock];
+    return [self communicate_with_server:urlToUse :@"GET" :@"application/json" :NULL :0
+                       completionHandler:completionHandlerBlock errorHandler:errorHandlerBlock];
 }
 
 + (NSDictionary *) parse_json:(NSString*)json {

@@ -21,15 +21,21 @@ typedef NS_ENUM(NSUInteger, ReturnValues) {
 
 + (NSDictionary *)load_data_from_keychain;
 
-+ (NSURLSessionTask *) communicate_with_server:(NSString*)url :(NSString*)method :(NSString*)type :(NSDictionary*)body :(BOOL)send_cookie completionHandler:(void (^) (NSURLResponse *,NSDictionary *))completionHandlerBlock;
++ (NSURLSessionTask *) communicate_with_server:(NSString*)url
+                                              :(NSString*)method
+                                              :(NSString*)type
+                                              :(NSDictionary*)body
+                                              :(BOOL)send_cookie
+                             completionHandler:(void (^) (NSURLResponse *,NSDictionary *))completionHandlerBlock
+                                  errorHandler:(void (^)(NSURLResponse *,NSError *))errorHandlerBlock;
 
-+ (NSURLSessionTask *)check_logged_in:(void (^) (enum ReturnValues))completionHandlerBlock;
++ (NSURLSessionTask *)check_logged_in:(void (^) (enum ReturnValues))completionHandlerBlock errorHandler:(void (^)(NSURLResponse *,NSError *))errorHandlerBlock;
 
-+ (void)login_to_project_server:(void (^) (enum ReturnValues)) completionHandlerBlock;
++ (void)login_to_project_server:(void (^) (enum ReturnValues)) completionHandlerBlock errorHandler:(void (^)(NSURLResponse *,NSError *))errorHandlerBlock;
 
-+ (void)logout_of_project_server:(void (^) (enum ReturnValues)) completionHandlerBlock;
++ (void)logout_of_project_server:(void (^) (enum ReturnValues)) completionHandlerBlock errorHandler:(void (^)(NSURLResponse *,NSError *))errorHandlerBlock;
 
-+ (NSURLSessionTask *) get_data_from_server:(NSString*)url :(NSString*)url2 :(NSString*)inputid completionHandler:(void (^) (NSURLResponse *,NSDictionary *))completionHandlerBlock;
++ (NSURLSessionTask *) get_data_from_server:(NSString*)url :(NSString*)url2 :(NSString*)inputid completionHandler:(void (^) (NSURLResponse *,NSDictionary *))completionHandlerBlock errorHandler:(void (^)(NSURLResponse *,NSError *))errorHandlerBlock;
 
 + (NSDictionary *) parse_json:(NSString*)json;
 
