@@ -8,6 +8,7 @@
 
 #import "PreferencesWindowController.h"
 #import "ProjectLockerAndKeychainFunctions.h"
+#import "AppDelegate.h"
 
 @interface PreferencesWindowController ()
 
@@ -108,18 +109,28 @@
 
 
 - (IBAction)saveClicked:(id)sender {
+    AppDelegate *appDelegate = [NSApp delegate];
     if([[self hasChanged] boolValue]){
         [self write_data_to_keychain:[self username] password:[self password]];
-    
+        
         [self setHasChanged:[NSNumber numberWithBool:NO]];
         [ProjectLockerAndKeychainFunctions logout_of_project_server:^(enum ReturnValues logoutResult) {
             if(logoutResult!=ALLOK) NSLog(@"Could not log out of server, see log for details");
             [ProjectLockerAndKeychainFunctions login_to_project_server:[self username]
                                                               password:[self password]
                                                      completionHandler:^(enum ReturnValues loginResult) {
-                if(loginResult!=ALLOK) NSLog(@"Could not log back in to of server, see log for details");
-            } errorHandler:^(NSURLResponse *response, NSError *error){}];
-        } errorHandler:^(NSURLResponse *response, NSError *error){}];
+                 if(loginResult==ALLOK){
+                     [appDelegate setConnectionWorking:[NSNumber numberWithBool:YES]];
+                 } else {
+                     [appDelegate setConnectionWorking:[NSNumber numberWithBool:NO]];
+                     NSLog(@"Could not log back in to of server, see log for details");
+                 }
+            } errorHandler:^(NSURLResponse *response, NSError *error){
+                [appDelegate setConnectionWorking:[NSNumber numberWithBool:NO]];
+            }];
+        } errorHandler:^(NSURLResponse *response, NSError *error){
+            [appDelegate setConnectionWorking:[NSNumber numberWithBool:NO]];
+        }];
     } else {
         [self close];
     }

@@ -17,6 +17,7 @@
 @implementation AppDelegate
 @synthesize errorAlert;
 @synthesize statusBar;
+@synthesize connectionWorking;
 
 - (id)init
 {
@@ -27,11 +28,30 @@
  		  forEventClass:kInternetEventClass
      andEventID:kAEGetURL];
 
+    [self addObserver:self
+           forKeyPath:@"connectionWorking"
+              options:NSKeyValueObservingOptionNew
+              context:nil];
     
     return self;
 }
 
-
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary<NSString *,id> *)change
+                       context:(void *)context {
+    if([keyPath compare:@"connectionWorking"]==0){
+        NSNumber *newValue = [change valueForKey:NSKeyValueChangeNewKey];
+        if([newValue boolValue]){   //we're now working
+            [self.statusBar setImage:[NSImage imageNamed:@"PlutoIcon"]];
+        } else {    //we're now not working
+            [self.statusBar setImage:[NSImage imageNamed:@"PlutoIconError"]];
+        }
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
+    
+}
 - (void)setup_defaults
 
 {
@@ -157,11 +177,10 @@
     self.statusBar = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
     
     //set up the status bar
-    
-    self.statusBar.image = [NSImage imageNamed:@"PlutoIcon"];
-    
+    //self.statusBar.image = [NSImage imageNamed:@"PlutoIcon"];
     self.statusBar.menu = self.statusMenu;
     self.statusBar.highlightMode = YES;
+    [self setConnectionWorking:[NSNumber numberWithBool:YES]];
     
     [self setup_defaults];
     NSDictionary *keychainData = [ProjectLockerAndKeychainFunctions load_data_from_keychain];
@@ -170,7 +189,7 @@
                                                       password:[keychainData valueForKey:@"password"]
                                              completionHandler:^(enum ReturnValues loginResult) {
         if(loginResult!=ALLOK) {
-            self.statusBar.image = [NSImage imageNamed:@"PlutoIconError"];
+            [self setConnectionWorking:[NSNumber numberWithBool:NO]];
             [self setErrorAlert:@"Could not log in to projectlocker"];
             NSLog(@"Could not log in to projectlocker");
         }
@@ -189,11 +208,13 @@
 }
 
 - (void) awakeFromNib {
-
+    
 }
 
 - (IBAction)preferencesClicked:(id)sender {
     NSLog(@"preferencesClicked");
+    [NSApp setActivationPolicy:NSApplicationActivationPolicyAccessory];
+    [[self prefsWindow] setLevel:NSFloatingWindowLevel];
     [[[self prefsWindow] windowController] showWindow:self];
 }
 @end

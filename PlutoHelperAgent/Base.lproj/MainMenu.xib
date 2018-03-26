@@ -704,7 +704,7 @@
             </items>
             <point key="canvasLocation" x="804.5" y="814.5"/>
         </menu>
-        <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" animationBehavior="default" id="gY4-Aq-XDK">
+        <window title="Preferences" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="gY4-Aq-XDK">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="167" y="1039" width="475" height="321"/>
@@ -713,9 +713,82 @@
                 <rect key="frame" x="0.0" y="0.0" width="475" height="321"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <box fixedFrame="YES" title="Projectlocker" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="5f4-b5-66q">
+                    <box ambiguous="YES" misplaced="YES" title="Client" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="erk-Zg-zQ9">
+                        <rect key="frame" x="6" y="94" width="457" height="73"/>
+                        <view key="contentView" ambiguous="YES" id="iOd-B7-vb5">
+                            <rect key="frame" x="1" y="1" width="455" height="57"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            <subviews>
+                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oSa-cV-u8N">
+                                    <rect key="frame" x="11" y="22" width="81" height="17"/>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Open Script:" id="Q9O-LB-gQh">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                </textField>
+                                <textField verticalHuggingPriority="750" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gf5-tv-lBR">
+                                    <rect key="frame" x="93" y="17" width="331" height="22"/>
+                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="PPH-3c-jZD">
+                                        <font key="font" metaFont="system"/>
+                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    </textFieldCell>
+                                    <connections>
+                                        <binding destination="lm4-VX-uY3" name="value" keyPath="values.local_shell_script" id="P69-3W-lYW"/>
+                                    </connections>
+                                </textField>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="Gf5-tv-lBR" firstAttribute="leading" secondItem="iOd-B7-vb5" secondAttribute="leading" constant="93" id="0xM-pJ-0Fx"/>
+                                <constraint firstItem="oSa-cV-u8N" firstAttribute="baseline" secondItem="Gf5-tv-lBR" secondAttribute="baseline" id="88T-xE-ctR"/>
+                                <constraint firstAttribute="trailing" secondItem="Gf5-tv-lBR" secondAttribute="trailing" constant="31" id="dvT-3q-Lag"/>
+                                <constraint firstItem="oSa-cV-u8N" firstAttribute="leading" secondItem="iOd-B7-vb5" secondAttribute="leading" constant="13" id="foQ-10-erh"/>
+                                <constraint firstItem="Gf5-tv-lBR" firstAttribute="top" secondItem="iOd-B7-vb5" secondAttribute="top" constant="18" id="jXD-rJ-0XW"/>
+                            </constraints>
+                        </view>
+                        <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
+                        <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </box>
+                    <button verticalHuggingPriority="750" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sHo-VW-7Pt">
+                        <rect key="frame" x="368" y="13" width="81" height="32"/>
+                        <buttonCell key="cell" type="push" title="Save" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="vkn-2j-mHd">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="saveClicked:" target="4UF-ix-bYJ" id="Lrd-AN-gen"/>
+                            <binding destination="4UF-ix-bYJ" name="title" keyPath="hasChanged" id="SkD-g4-4e1">
+                                <dictionary key="options">
+                                    <string key="NSValueTransformerName">PrefsCloseTransformer</string>
+                                </dictionary>
+                            </binding>
+                        </connections>
+                    </button>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="4Mv-9V-26F">
+                        <rect key="frame" x="25" y="13" width="139" height="32"/>
+                        <buttonCell key="cell" type="push" title="Test Connection" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="CFn-8i-fqn">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="testClicked:" target="4UF-ix-bYJ" id="7EK-VG-Ph1"/>
+                        </connections>
+                    </button>
+                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VdQ-90-VoM">
+                        <rect key="frame" x="7" y="41" width="455" height="54"/>
+                        <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="center" placeholderString="Error message" id="tHK-ah-UjW">
+                            <font key="font" metaFont="system"/>
+                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                        <connections>
+                            <binding destination="4UF-ix-bYJ" name="value" keyPath="statusString" id="Icj-eR-KoF"/>
+                        </connections>
+                    </textField>
+                    <box ambiguous="YES" misplaced="YES" title="Projectlocker" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="5f4-b5-66q">
                         <rect key="frame" x="6" y="171" width="452" height="141"/>
-                        <view key="contentView" id="gEg-dH-L61">
+                        <view key="contentView" ambiguous="YES" id="gEg-dH-L61">
                             <rect key="frame" x="1" y="1" width="450" height="125"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
@@ -789,73 +862,20 @@
                         <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
                         <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </box>
-                    <box fixedFrame="YES" title="Client" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="erk-Zg-zQ9">
-                        <rect key="frame" x="6" y="94" width="457" height="73"/>
-                        <view key="contentView" id="iOd-B7-vb5">
-                            <rect key="frame" x="1" y="1" width="455" height="57"/>
-                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                            <subviews>
-                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oSa-cV-u8N">
-                                    <rect key="frame" x="11" y="22" width="81" height="17"/>
-                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Open Script:" id="Q9O-LB-gQh">
-                                        <font key="font" metaFont="system"/>
-                                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                    </textFieldCell>
-                                </textField>
-                                <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Gf5-tv-lBR">
-                                    <rect key="frame" x="93" y="17" width="331" height="22"/>
-                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="PPH-3c-jZD">
-                                        <font key="font" metaFont="system"/>
-                                        <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                        <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    </textFieldCell>
-                                    <connections>
-                                        <binding destination="lm4-VX-uY3" name="value" keyPath="values.local_shell_script" id="P69-3W-lYW"/>
-                                    </connections>
-                                </textField>
-                            </subviews>
-                        </view>
-                        <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                        <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    </box>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sHo-VW-7Pt">
-                        <rect key="frame" x="368" y="13" width="81" height="32"/>
-                        <buttonCell key="cell" type="push" title="Save" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="vkn-2j-mHd">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="saveClicked:" target="4UF-ix-bYJ" id="Lrd-AN-gen"/>
-                            <binding destination="4UF-ix-bYJ" name="title" keyPath="hasChanged" id="SkD-g4-4e1">
-                                <dictionary key="options">
-                                    <string key="NSValueTransformerName">PrefsCloseTransformer</string>
-                                </dictionary>
-                            </binding>
-                        </connections>
-                    </button>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4Mv-9V-26F">
-                        <rect key="frame" x="25" y="13" width="139" height="32"/>
-                        <buttonCell key="cell" type="push" title="Test Connection" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="CFn-8i-fqn">
-                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                            <font key="font" metaFont="system"/>
-                        </buttonCell>
-                        <connections>
-                            <action selector="testClicked:" target="4UF-ix-bYJ" id="7EK-VG-Ph1"/>
-                        </connections>
-                    </button>
-                    <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VdQ-90-VoM">
-                        <rect key="frame" x="7" y="41" width="455" height="54"/>
-                        <textFieldCell key="cell" truncatesLastVisibleLine="YES" sendsActionOnEndEditing="YES" alignment="center" placeholderString="Error message" id="tHK-ah-UjW">
-                            <font key="font" metaFont="system"/>
-                            <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                        </textFieldCell>
-                        <connections>
-                            <binding destination="4UF-ix-bYJ" name="value" keyPath="statusString" id="Icj-eR-KoF"/>
-                        </connections>
-                    </textField>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="5f4-b5-66q" firstAttribute="top" secondItem="Pjo-ZG-xSI" secondAttribute="top" constant="9" id="BJP-KO-nJM"/>
+                    <constraint firstAttribute="trailing" secondItem="sHo-VW-7Pt" secondAttribute="trailing" constant="32" id="Fia-jB-dX2"/>
+                    <constraint firstAttribute="trailing" secondItem="erk-Zg-zQ9" secondAttribute="trailing" constant="15" id="Jbq-2R-bdB"/>
+                    <constraint firstItem="5f4-b5-66q" firstAttribute="leading" secondItem="Pjo-ZG-xSI" secondAttribute="leading" constant="9" id="NR8-2F-2c0"/>
+                    <constraint firstItem="iOd-B7-vb5" firstAttribute="top" secondItem="5f4-b5-66q" secondAttribute="bottom" constant="23" id="Nfd-dQ-YaU"/>
+                    <constraint firstAttribute="bottom" secondItem="sHo-VW-7Pt" secondAttribute="bottom" constant="20" id="RXL-zd-jKP"/>
+                    <constraint firstAttribute="trailing" secondItem="5f4-b5-66q" secondAttribute="trailing" constant="20" id="aoL-Av-dKs"/>
+                    <constraint firstAttribute="bottom" relation="lessThanOrEqual" secondItem="erk-Zg-zQ9" secondAttribute="bottom" constant="98" id="dnb-Lk-aU4"/>
+                    <constraint firstItem="erk-Zg-zQ9" firstAttribute="leading" secondItem="Pjo-ZG-xSI" secondAttribute="leading" constant="9" id="lTx-nq-DJ3"/>
+                    <constraint firstItem="4Mv-9V-26F" firstAttribute="leading" secondItem="Pjo-ZG-xSI" secondAttribute="leading" constant="31" id="oOu-Dj-HmH"/>
+                    <constraint firstAttribute="bottom" secondItem="4Mv-9V-26F" secondAttribute="bottom" constant="20" id="qRb-b8-FcL"/>
+                </constraints>
             </view>
             <connections>
                 <binding destination="4UF-ix-bYJ" name="documentEdited" keyPath="hasChanged" id="8Qc-YR-xE0"/>

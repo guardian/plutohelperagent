@@ -13,6 +13,8 @@
 
 @property (weak) IBOutlet NSMenu *statusMenu;
 @property (strong, nonatomic) NSStatusItem *statusBar;
+@property (strong) NSNumber *connectionWorking;
+
 @property PreferencesWindowController *preferencesWindowController;
 
 @property (weak) IBOutlet NSWindow *prefsWindow;
