@@ -179,22 +179,16 @@ NSString *responseData;
                             errorHandler:errorHandlerBlock];
 }
 
-+ (void) login_to_project_server:(void (^) (enum ReturnValues))completionHandlerBlock
++ (void) login_to_project_server:(NSString *)username
+                        password:(NSString *)password
+               completionHandler:(void (^)(enum ReturnValues))completionHandlerBlock
                     errorHandler:(void (^)(NSURLResponse *,NSError *))errorHandlerBlock{
-    
-    NSDictionary *dataFromKeychain = [self load_data_from_keychain];
-    if(!dataFromKeychain){
-        NSLog(@"Could not load login data from keychain");
-        completionHandlerBlock(MISSING_VALUES); //tell the caller about it
-        return;
-    };
     
     [self communicate_with_server:@"/api/login"
                                  :@"POST"
                                  :@"application/json"
-                                 :@{@"username": dataFromKeychain[@"username"],
-                                    @"password": dataFromKeychain[@"password"]
-                                    }
+                                 :@{@"username": username,
+                                    @"password": password}
                                  :0
                 completionHandler:^(NSURLResponse *response, NSDictionary *jsonData) {
                     completionHandlerBlock([self returnValueFromStatusCode:[(NSHTTPURLResponse *)response statusCode]]);
