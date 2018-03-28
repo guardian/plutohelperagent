@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "ProjectLockerAndKeychainFunctions.h"
+#import <dispatch/dispatch.h>
 
 @interface AppDelegate ()
 
@@ -150,14 +151,61 @@
                     }
                     
                 } else {
+                    NSAlert *alert = [[NSAlert alloc] init];
+                    NSString *helperScript = [[NSUserDefaults standardUserDefaults] stringForKey:@"local_shell_script"];
+                    
+                    if([helperScript compare:@""]==0){
+                        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                            [alert setMessageText:@"Setup problem"];
+                            [alert setInformativeText:@"Your mac does not appear to be set up correctly, no helper script is configured. Please contact multimediatech@theguardian.com."];
+                            [alert setAlertStyle:NSWarningAlertStyle];
+                            [alert runModal];
+                        });
+                        return;
+                    }
+                    
                     NSString *pathToUse = [NSString stringWithFormat: @"%@/%@", storageResult[@"result"][@"clientpath"], filesResult[@"files"][0][@"filepath"]];
-                
+                    NSLog(@"Going to run %@ %@", helperScript, pathToUse);
+                    
                     NSTask *task = [[NSTask alloc] init];
-                    [task setLaunchPath:[[NSUserDefaults standardUserDefaults] stringForKey:@"local_shell_script"]];
+                    NSPipe *stdOutPipe = [NSPipe pipe];
+                    NSPipe *stdErrPipe = [NSPipe pipe];
+                    
+                    [task setLaunchPath:helperScript];
                     [task setArguments:[NSArray arrayWithObjects:pathToUse, nil]];
-                    [task setStandardOutput:[NSPipe pipe]];
+                    [task setStandardOutput:stdOutPipe];
+                    [task setStandardError:stdErrPipe];
                     [task setStandardInput:[NSPipe pipe]];
                 
+                    [task setTerminationHandler:^(NSTask *finishedTask){
+                        if([finishedTask terminationStatus]!=0){
+                            //[alert runModal] must be called on main thread. See https://stackoverflow.com/questions/4892182/run-method-on-main-thread-from-another-thread
+                            dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                                [alert setMessageText:@"Open script failed"];
+                                [alert setInformativeText:[NSString stringWithFormat:@"Couldn't open your project, because the open script returned error code %d.\n%@\n%@\n\nPlease contact multimediatech@theguardian.com and send a copy of this message",
+                                                           [finishedTask terminationStatus],
+                                                           [self getPipeData:stdOutPipe],
+                                                           [self getPipeData:stdErrPipe]
+                                                           ]
+                                 ];
+                                 [alert setAlertStyle:NSWarningAlertStyle];
+                                 [alert runModal];
+                            });
+                        }
+                        if([finishedTask terminationReason]!=NSTaskTerminationReasonExit){
+                            dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                                [alert setInformativeText:
+                                 [NSString stringWithFormat:@"Open script failed because the open script terminated unexpectedly.\n%@\n%@\nPlease contact multimediatech@theguardian.com and send a copy of this message",
+                                  [self getPipeData:stdOutPipe],
+                                  [self getPipeData:stdErrPipe]
+                                  ]];
+                                
+                                [alert setMessageText:@"Open script failed"];
+                                [alert setAlertStyle:NSWarningAlertStyle];
+                                [alert runModal];
+                            });
+                        }
+                    }];
                     [task launch];
                 }
             } errorHandler:errorHandlerBlock];
@@ -170,6 +218,12 @@
         
     }
     
+}
+
+- (NSString *)getPipeData:(NSPipe *)pipe {
+    NSFileHandle *fp = [pipe fileHandleForReading];
+    NSData *d = [fp readDataToEndOfFile];
+    return [[NSString alloc] initWithData:d encoding:NSUTF8StringEncoding];
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
