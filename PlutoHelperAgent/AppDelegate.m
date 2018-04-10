@@ -65,6 +65,14 @@
     
 }
 
+- (void)basicErrorMessage:(NSString *)msg informativeText:(NSString *)informativeText
+{
+    NSAlert *alert = [[NSAlert alloc] init];
+    [alert setMessageText:msg];
+    [alert setInformativeText:informativeText];
+    [alert addButtonWithTitle:@"Okay"];
+    [alert runModal];
+}
 
 -    (void)getUrl:(NSAppleEventDescriptor *)event
    withReplyEvent:(NSAppleEventDescriptor *)replyEvent
@@ -100,17 +108,21 @@
         
         if (!folderToOpen){
             NSLog(@"No folder path passed.");
+            [self basicErrorMessage:@"Internal error" informativeText:@"No path to open was found, this shouldn't happen and is probably a bug in PlutoHelperAgent.  Please contact multimediatech@guardian.co.uk to report this."];
+            return;
         }
         
         if (!isDir){
             NSLog(@"%@ is not a valid path on this filesystem.", folderToOpen);
+            NSString *errorInfo = [NSString stringWithFormat:@"Could not find folder at %@.\n\nDo you have the SAN volumes mounted?\n\nContact multimediatech@theguardian.co.uk for help.", folderToOpen];
+            
+            [self basicErrorMessage:@"Asset folder not found" informativeText:errorInfo];
+            return;
         }
         
         if (folderToOpen && isDir) {
-            
             // Actually perform the action
             [ws openFile:folderToOpen withApplication:@"Finder"];
-        
         }
         
     } else if ([action isEqualToString:@"openproject"]){
