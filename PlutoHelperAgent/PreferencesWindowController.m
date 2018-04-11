@@ -71,11 +71,8 @@
 - (void)awakeFromNib {
     NSDictionary *dataFromKeychain = [ProjectLockerAndKeychainFunctions load_data_from_keychain];
     [self setUsername:dataFromKeychain[@"username"]];
-    NSLog(@"Got username from keychain: %@", username);
-    NSLog(@"Stored username: %@", [self username]);
+
     [self setPassword:dataFromKeychain[@"password"]];
-    
-    NSLog(@"adding observers\n");
     
     [self addObserver:self forKeyPath:@"username" options:NSKeyValueObservingOptionNew context:(void *)CFBridgingRetain(dataFromKeychain)];
     [self addObserver:self forKeyPath:@"password" options:NSKeyValueObservingOptionNew context:(void *)dataFromKeychain];
@@ -85,9 +82,7 @@
     
     if([keyPath compare:@"username"]==0){
         NSDictionary *dataFromKeychain = (__bridge NSDictionary *)(context);
-        NSLog(@"username changed");
         NSString *newValue = [change valueForKey:NSKeyValueChangeNewKey];
-        NSLog(@"new username: %@", newValue);
         if([newValue compare:dataFromKeychain[@"username"]]==0){
             [self setHasChanged:[NSNumber numberWithBool:NO]];
         } else {
@@ -95,7 +90,6 @@
         }
     } else if([keyPath compare:@"password"]==0){
         NSDictionary *dataFromKeychain = (__bridge NSDictionary *)(context);
-        NSLog(@"password changed");
         NSString *newValue = [change valueForKey:NSKeyValueChangeNewKey];
         if([newValue compare:dataFromKeychain[@"password"]]==0){
             [self setHasChanged:[NSNumber numberWithBool:NO]];

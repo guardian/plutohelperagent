@@ -68,7 +68,6 @@
 {
     //we are expecting something in the form of pluto:action:data
     NSString *url = [[event paramDescriptorForKeyword:keyDirectObject] stringValue];
-    NSLog(@"getURL got %@",url);
     
     
     // Now you can parse the URL and perform whatever action is needed
@@ -214,9 +213,10 @@
 
 
     } else {
-        
         NSLog(@"%@ is not a recognised action for this helper", action);
-        
+        [self basicErrorMessage:@"Action not supported"
+                informativeText:[NSString stringWithFormat:@"%@ is not a recognised action for this helper", action]
+         ];
     }
     
 }
@@ -245,12 +245,12 @@
         if(loginResult!=ALLOK) {
             [self setConnectionWorking:[NSNumber numberWithBool:NO]];
             [self setErrorAlert:@"Could not log in to projectlocker"];
-            NSLog(@"Could not log in to projectlocker");
+            NSLog(@"Could not log in to projectlocker - error was %lu", (unsigned long)loginResult);
         }
     } errorHandler:^(NSURLResponse *response, NSError *err) {
         self.statusBar.image = [NSImage imageNamed:@"PlutoIconError"];
         [self setErrorAlert:[err localizedDescription]];
-        NSLog(@"Could not log in to projectlocker");
+        NSLog(@"Could not log in to projectlocker: %@", [err localizedDescription]);
     }];
 }
 
@@ -266,7 +266,6 @@
 }
 
 - (IBAction)preferencesClicked:(id)sender {
-    NSLog(@"preferencesClicked");
     [NSApp setActivationPolicy:NSApplicationActivationPolicyAccessory];
     [[self prefsWindow] setLevel:NSFloatingWindowLevel];
     [[[self prefsWindow] windowController] showWindow:self];
