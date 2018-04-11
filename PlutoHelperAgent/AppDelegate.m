@@ -53,17 +53,6 @@
     }
     
 }
-- (void)setup_defaults
-
-{
-    
-    NSString *userDefaultsValuesPath = [@"~/Library/Preferences/com.GNM.PlutoHelperAgent.plist" stringByExpandingTildeInPath];
-    NSDictionary *userDefaultsValuesDict;
-    userDefaultsValuesDict=[NSDictionary dictionaryWithContentsOfFile:userDefaultsValuesPath];
-    [[NSUserDefaults standardUserDefaults] registerDefaults:userDefaultsValuesDict];
-    NSLog(@"Defaults %@", userDefaultsValuesDict);
-    
-}
 
 - (void)basicErrorMessage:(NSString *)msg informativeText:(NSString *)informativeText
 {
@@ -248,7 +237,6 @@
     self.statusBar.highlightMode = YES;
     [self setConnectionWorking:[NSNumber numberWithBool:YES]];
     
-    [self setup_defaults];
     NSDictionary *keychainData = [ProjectLockerAndKeychainFunctions load_data_from_keychain];
     
     [ProjectLockerAndKeychainFunctions login_to_project_server:[keychainData valueForKey:@"username"]
