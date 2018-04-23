@@ -53,8 +53,6 @@ NSString *responseData;
         
         if (unAccessStatus == errSecSuccess) {
             
-            NSLog(@"Username retrived from Apple Keychain");
-            
             NSData* data8 = [NSData dataWithBytes:attributes2.attr->data length:attributes2.attr->length];
             
             NSString* usernamedata = [[NSString alloc] initWithData:data8 encoding:NSUTF8StringEncoding];
@@ -69,7 +67,7 @@ NSString *responseData;
                     nil];
             
         } else {
-            NSLog(@"Username not retrived from Apple Keychain");
+            NSLog(@"No username found in keychain");
         }
         
     } else {
@@ -103,19 +101,12 @@ NSString *responseData;
     [request setValue:type forHTTPHeaderField:@"Content-Type"];
     
     if (send_cookie) {
-        
-        NSHTTPCookie *cookie;
         NSHTTPCookieStorage *cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-        for (cookie in [cookieJar cookies]) {
-            NSLog(@"%@", cookie);
-        }
         
         NSDictionary * headers = [NSHTTPCookie requestHeaderFieldsWithCookies:[cookieJar cookies]];
         [request setAllHTTPHeaderFields:headers];
         
     }
-    
-    NSLog(@"Request %@", request);
     
     communicationStatus = 1;
     
@@ -124,8 +115,6 @@ NSString *responseData;
     
     urlCompletionHandler = ^(NSData *data,NSURLResponse *response,NSError *error) {
         NSString *datastring = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        NSLog(@"Data %@", datastring);
-        NSLog(@"Response %@", response);
         if (error != NULL) {
             NSLog(@"Error %@", error);
             errorHandlerBlock(response, error);
@@ -249,9 +238,9 @@ NSString *responseData;
                  error:&error];
     
     if(error) {
+        NSLog(@"%@", [[NSString alloc] initWithData:returnedData encoding:NSUTF8StringEncoding]);
         NSLog(@"Could not parse JSON object: %@", error);
         return NULL;
-        
     }
     
     if([object isKindOfClass:[NSDictionary class]])
@@ -261,7 +250,8 @@ NSString *responseData;
     }
     else
     {
-        NSLog(@"Json parsed but is not a dictionary");
+        NSLog(@"Json parsed but is not a dictionary: %@", [[NSString alloc] initWithData:returnedData encoding:NSUTF8StringEncoding]);
+        
         return NULL;
     }
 }

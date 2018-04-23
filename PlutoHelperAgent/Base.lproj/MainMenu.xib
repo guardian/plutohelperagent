@@ -735,7 +735,11 @@
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                     <connections>
-                                        <binding destination="lm4-VX-uY3" name="value" keyPath="values.local_shell_script" id="P69-3W-lYW"/>
+                                        <binding destination="lm4-VX-uY3" name="value" keyPath="values.local_shell_script" id="pwm-MD-aw2">
+                                            <dictionary key="options">
+                                                <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                            </dictionary>
+                                        </binding>
                                     </connections>
                                 </textField>
                             </subviews>
@@ -854,7 +858,11 @@
                                         <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     </textFieldCell>
                                     <connections>
-                                        <binding destination="lm4-VX-uY3" name="value" keyPath="values.project_locker_url" id="Hg8-I0-lSA"/>
+                                        <binding destination="lm4-VX-uY3" name="value" keyPath="values.project_locker_url" id="S5Y-D4-9TY">
+                                            <dictionary key="options">
+                                                <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                            </dictionary>
+                                        </binding>
                                     </connections>
                                 </textField>
                             </subviews>
