@@ -125,92 +125,150 @@
             [alert runModal];
         };
         
-        [ProjectLockerAndKeychainFunctions get_data_from_server:@"/api/project/"
-                                                               :@"/files"
-                                                               :projectid
-                                              completionHandler:^void (NSURLResponse *response,NSDictionary *filesResult){
-            [ProjectLockerAndKeychainFunctions get_data_from_server:@"/api/storage/"
-                                                                   :NULL
-                                                                   :filesResult[@"files"][0][@"storage"]
-                                                  completionHandler:^(NSURLResponse *response, NSDictionary *storageResult) {
-                if (storageResult[@"result"][@"clientpath"] == NULL) {
-                    NSAlert *alert = [[NSAlert alloc] init];
-                    
-                    [alert addButtonWithTitle:@"Okay"];
-                    
-                    NSString *message = [NSString stringWithFormat: @"No client path on storage ID %@", filesResult[@"files"][0][@"storage"]];
-                    
-                    [alert setMessageText:message];
-                    
-                    [alert setInformativeText:@"Can't open project, because it's on a storage which has no client path set.\n\nPlease contact multimediatech@theguardian.com."];
-                    
-                    [alert setAlertStyle:NSWarningAlertStyle];
-                    
-                    if ([alert runModal] == NSAlertFirstButtonReturn) {
-                        
-                    }
-                    
-                } else {
-                    NSAlert *alert = [[NSAlert alloc] init];
-                    NSString *helperScript = [[NSUserDefaults standardUserDefaults] stringForKey:@"local_shell_script"];
-                    
-                    if([helperScript compare:@""]==0){
-                        dispatch_async(dispatch_get_global_queue(0, 0), ^{
-                            [alert setMessageText:@"Setup problem"];
-                            [alert setInformativeText:@"Your mac does not appear to be set up correctly, no helper script is configured. Please contact multimediatech@theguardian.com."];
+        [ProjectLockerAndKeychainFunctions check_logged_in:^(enum ReturnValues connectionStatus) {
+            
+            if (connectionStatus == ALLOK) {
+                [ProjectLockerAndKeychainFunctions get_data_from_server:@"/api/project/"
+                                                                       :@"/files"
+                                                                       :projectid
+                                                      completionHandler:^void (NSURLResponse *response,NSDictionary *filesResult){
+                    [ProjectLockerAndKeychainFunctions get_data_from_server:@"/api/storage/"
+                                                                           :NULL
+                                                                           :filesResult[@"files"][0][@"storage"]
+                                                          completionHandler:^(NSURLResponse *response, NSDictionary *storageResult) {
+                        if (storageResult[@"result"][@"clientpath"] == NULL) {
+                            NSAlert *alert = [[NSAlert alloc] init];
+                            
+                            [alert addButtonWithTitle:@"Okay"];
+                            
+                            NSString *message = [NSString stringWithFormat: @"No client path on storage ID %@", filesResult[@"files"][0][@"storage"]];
+                            
+                            [alert setMessageText:message];
+                            
+                            [alert setInformativeText:@"Can't open project, because it's on a storage which has no client path set.\n\nPlease contact multimediatech@theguardian.com."];
+                            
                             [alert setAlertStyle:NSWarningAlertStyle];
-                            [alert runModal];
-                        });
-                        return;
-                    }
-                    
-                    NSString *pathToUse = [NSString stringWithFormat: @"%@/%@", storageResult[@"result"][@"clientpath"], filesResult[@"files"][0][@"filepath"]];
-                    NSLog(@"Going to run %@ %@", helperScript, pathToUse);
-                    
-                    NSTask *task = [[NSTask alloc] init];
-                    NSPipe *stdOutPipe = [NSPipe pipe];
-                    NSPipe *stdErrPipe = [NSPipe pipe];
-                    
-                    [task setLaunchPath:helperScript];
-                    [task setArguments:[NSArray arrayWithObjects:pathToUse, nil]];
-                    [task setStandardOutput:stdOutPipe];
-                    [task setStandardError:stdErrPipe];
-                    [task setStandardInput:[NSPipe pipe]];
-                
-                    [task setTerminationHandler:^(NSTask *finishedTask){
-                        if([finishedTask terminationStatus]!=0){
-                            //[alert runModal] must be called on main thread. See https://stackoverflow.com/questions/4892182/run-method-on-main-thread-from-another-thread
-                            dispatch_async(dispatch_get_global_queue(0, 0), ^{
-                                [alert setMessageText:@"Open script failed"];
-                                [alert setInformativeText:[NSString stringWithFormat:@"Couldn't open your project, because the open script returned error code %d.\n%@\n%@\n\nPlease contact multimediatech@theguardian.com and send a copy of this message",
-                                                           [finishedTask terminationStatus],
-                                                           [self getPipeData:stdOutPipe],
-                                                           [self getPipeData:stdErrPipe]
-                                                           ]
-                                 ];
-                                 [alert setAlertStyle:NSWarningAlertStyle];
-                                 [alert runModal];
-                            });
-                        }
-                        if([finishedTask terminationReason]!=NSTaskTerminationReasonExit){
-                            dispatch_async(dispatch_get_global_queue(0, 0), ^{
-                                [alert setInformativeText:
-                                 [NSString stringWithFormat:@"Open script failed because the open script terminated unexpectedly.\n%@\n%@\nPlease contact multimediatech@theguardian.com and send a copy of this message",
-                                  [self getPipeData:stdOutPipe],
-                                  [self getPipeData:stdErrPipe]
-                                  ]];
+                            
+                            if ([alert runModal] == NSAlertFirstButtonReturn) {
                                 
-                                [alert setMessageText:@"Open script failed"];
-                                [alert setAlertStyle:NSWarningAlertStyle];
-                                [alert runModal];
-                            });
+                            }
+                            
+                        } else {
+                            NSAlert *alert = [[NSAlert alloc] init];
+                            NSString *helperScript = [[NSUserDefaults standardUserDefaults] stringForKey:@"local_shell_script"];
+                            
+                            if([helperScript compare:@""]==0){
+                                dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                                    [alert setMessageText:@"Setup problem"];
+                                    [alert setInformativeText:@"Your mac does not appear to be set up correctly, no helper script is configured. Please contact multimediatech@theguardian.com."];
+                                    [alert setAlertStyle:NSWarningAlertStyle];
+                                    [alert runModal];
+                                });
+                                return;
+                            }
+                            
+                            NSString *pathToUse = [NSString stringWithFormat: @"%@/%@", storageResult[@"result"][@"clientpath"], filesResult[@"files"][0][@"filepath"]];
+                            NSLog(@"Going to run %@ %@", helperScript, pathToUse);
+                            
+                            NSTask *task = [[NSTask alloc] init];
+                            NSPipe *stdOutPipe = [NSPipe pipe];
+                            NSPipe *stdErrPipe = [NSPipe pipe];
+                            
+                            [task setLaunchPath:helperScript];
+                            [task setArguments:[NSArray arrayWithObjects:pathToUse, nil]];
+                            [task setStandardOutput:stdOutPipe];
+                            [task setStandardError:stdErrPipe];
+                            [task setStandardInput:[NSPipe pipe]];
+                        
+                            [task setTerminationHandler:^(NSTask *finishedTask){
+                                if([finishedTask terminationStatus]!=0){
+                                    //[alert runModal] must be called on main thread. See https://stackoverflow.com/questions/4892182/run-method-on-main-thread-from-another-thread
+                                    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                                        [alert setMessageText:@"Open script failed"];
+                                        [alert setInformativeText:[NSString stringWithFormat:@"Couldn't open your project, because the open script returned error code %d.\n%@\n%@\n\nPlease contact multimediatech@theguardian.com and send a copy of this message",
+                                                                   [finishedTask terminationStatus],
+                                                                   [self getPipeData:stdOutPipe],
+                                                                   [self getPipeData:stdErrPipe]
+                                                                   ]
+                                         ];
+                                         [alert setAlertStyle:NSWarningAlertStyle];
+                                         [alert runModal];
+                                    });
+                                }
+                                if([finishedTask terminationReason]!=NSTaskTerminationReasonExit){
+                                    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                                        [alert setInformativeText:
+                                         [NSString stringWithFormat:@"Open script failed because the open script terminated unexpectedly.\n%@\n%@\nPlease contact multimediatech@theguardian.com and send a copy of this message",
+                                          [self getPipeData:stdOutPipe],
+                                          [self getPipeData:stdErrPipe]
+                                          ]];
+                                        
+                                        [alert setMessageText:@"Open script failed"];
+                                        [alert setAlertStyle:NSWarningAlertStyle];
+                                        [alert runModal];
+                                    });
+                                }
+                            }];
+                            [task launch];
                         }
-                    }];
-                    [task launch];
-                }
-            } errorHandler:errorHandlerBlock];
-        } errorHandler:errorHandlerBlock];
+                    } errorHandler:errorHandlerBlock];
+                } errorHandler:errorHandlerBlock];
+            } else if (connectionStatus == PERMISSION_DENIED) {
+                NSAlert *alert = [[NSAlert alloc] init];
+                
+                [alert addButtonWithTitle:@"Okay"];
+                
+                NSString *message = [NSString stringWithFormat: @"Permission Denied"];
+                
+                [alert setMessageText:message];
+                
+                [alert setInformativeText:@"Please check you have entered your username and password correctly."];
+                
+                [alert setAlertStyle:NSWarningAlertStyle];
+                
+                [NSApp setActivationPolicy:NSApplicationActivationPolicyAccessory];
+                [[self prefsWindow] setLevel:NSFloatingWindowLevel];
+                [[[self prefsWindow] windowController] showWindow:self];
+                
+                if ([alert runModal] == NSAlertFirstButtonReturn) {
 
+                }
+            } else if (connectionStatus == SERVER_ERROR) {
+                NSAlert *alert = [[NSAlert alloc] init];
+                
+                [alert addButtonWithTitle:@"Okay"];
+                
+                NSString *message = [NSString stringWithFormat: @"Server Error"];
+                
+                [alert setMessageText:message];
+                
+                [alert setInformativeText:@"An error occurred on the server. Please report this error to multimediatech@theguardian.com"];
+                
+                [alert setAlertStyle:NSWarningAlertStyle];
+                
+                if ([alert runModal] == NSAlertFirstButtonReturn) {
+                    
+                }
+            } else {
+                NSAlert *alert = [[NSAlert alloc] init];
+                
+                [alert addButtonWithTitle:@"Okay"];
+                
+                NSString *message = [NSString stringWithFormat: @"Unknown Error"];
+                
+                [alert setMessageText:message];
+                
+                [alert setInformativeText:@"An unknown error occurred. Please report this error to multimediatech@theguardian.com"];
+                
+                [alert setAlertStyle:NSWarningAlertStyle];
+                
+                if ([alert runModal] == NSAlertFirstButtonReturn) {
+                    
+                }
+            }
+        } errorHandler:^(NSURLResponse *response, NSError *error) {
+            NSLog(@"An error occurred when attempting to check if the user is logged in.");
+        }];
 
     } else {
         NSLog(@"%@ is not a recognised action for this helper", action);
