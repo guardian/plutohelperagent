@@ -249,6 +249,7 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
             
             } errorHandler:^(NSURLResponse *response, NSError *error) {
                 [self basicErrorMessage:@"Error Checking Log In Status" informativeText:@"An error occurred when attempting to check if the user is logged in."];
+                NSLog(@"Error Checking Log In Status: %@", error);
         }];
 
     } else {
