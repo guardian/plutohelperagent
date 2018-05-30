@@ -119,7 +119,13 @@ NSString *responseData;
             NSLog(@"Error %@", error);
             errorHandlerBlock(response, error);
         } else {
-            completionHandlerBlock(response,[self parse_json:datastring]);
+            @try {
+                completionHandlerBlock(response,[self parse_json:datastring]);
+            }
+            @catch ( NSException *e ) {
+                NSLog(@"Error %@", e);
+                errorHandlerBlock(response, error);
+            }
         }
     };
 
