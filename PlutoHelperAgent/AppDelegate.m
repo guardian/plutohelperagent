@@ -248,7 +248,9 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
                                                                  completionHandler:^(enum ReturnValues loginResult) {
                             if(loginResult!=ALLOK) {
                                 NSLog(@"Could not log in to projectlocker - error was %lu", (unsigned long)loginResult);
-                                [self showError:@"Permission Denied" informativeText:@"Please check you have entered your username and password correctly." showPrefs:YES];
+                                if(loginResult==PERMISSION_DENIED) {
+                                    [self showError:@"Permission Denied" informativeText:@"Please check you have entered your username and password correctly." showPrefs:YES];
+                                }
                             }
                         } errorHandler:^(NSURLResponse *response, NSError *err) {
                             [self setErrorAlert:[err localizedDescription]];
