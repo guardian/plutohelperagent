@@ -20,6 +20,8 @@
 @synthesize statusBar;
 @synthesize connectionWorking;
 
+int connectionAttempts = 0;
+
 - (id)init
 {
     self=[super init];
@@ -231,12 +233,31 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
         
     
         [ProjectLockerAndKeychainFunctions check_logged_in:^(enum ReturnValues connectionStatus) {
-            
+
             switch(connectionStatus){
                 case ALLOK:
                     [self tryOpenProject:projectid];
                     break;
                 case PERMISSION_DENIED:
+                    if (connectionAttempts == 0) {
+                        connectionAttempts = connectionAttempts + 1;
+                        NSDictionary *keychainData = [ProjectLockerAndKeychainFunctions load_data_from_keychain];
+                        
+                        [ProjectLockerAndKeychainFunctions login_to_project_server:[keychainData valueForKey:@"username"]
+                                                                          password:[keychainData valueForKey:@"password"]
+                                                                 completionHandler:^(enum ReturnValues loginResult) {
+                            if(loginResult!=ALLOK) {
+                                NSLog(@"Could not log in to projectlocker - error was %lu", (unsigned long)loginResult);
+                                if(loginResult==PERMISSION_DENIED) {
+                                    [self showError:@"Permission Denied" informativeText:@"Please check you have entered your username and password correctly." showPrefs:YES];
+                                }
+                            }
+                        } errorHandler:^(NSURLResponse *response, NSError *err) {
+                            [self setErrorAlert:[err localizedDescription]];
+                            NSLog(@"Could not log in to projectlocker: %@", [err localizedDescription]);
+                        }];
+                        break;
+                    }
                     [self showError:@"Permission Denied" informativeText:@"Please check you have entered your username and password correctly." showPrefs:YES];
                     break;
                 case SERVER_ERROR:
