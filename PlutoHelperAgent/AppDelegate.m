@@ -216,7 +216,7 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
         
         if (!isDir){
             NSLog(@"%@ is not a valid path on this filesystem.", folderToOpen);
-            NSString *errorInfo = [NSString stringWithFormat:@"Could not find folder at %@.\n\nDo you have the SAN volumes mounted?\n\nContact multimediatech@theguardian.co.uk for help.", folderToOpen];
+            NSString *errorInfo = [NSString stringWithFormat:@"Could not find the requested folder at:\n\n%@.\n\nDo you have the Multimedia production drives mounted?\n\nIf not, rebooting your mac should mount them or try contacting multimediatech@guardian.co.uk for help.", folderToOpen];
             
             [self basicErrorMessage:@"Asset folder not found" informativeText:errorInfo];
             return;
