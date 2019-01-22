@@ -190,7 +190,7 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
     // Check the action, and then perform it
     NSString *action = [parts objectAtIndex:1];
     
-    // Check the action string to see if we recognise it
+    // Check the action string to see if we recognise it (test)
     
     if ([action isEqualToString:@"openfolder"]){
         
