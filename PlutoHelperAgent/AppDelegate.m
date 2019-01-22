@@ -15,7 +15,7 @@
 @property (weak) IBOutlet NSWindow *window;
 @end
 
-@implementation fhfhgfdhfghAppDelegate
+@implementation AppDelegate
 @synthesize errorAlert;
 @synthesize statusBar;
 @synthesize connectionWorking;
@@ -27,7 +27,7 @@ int connectionAttempts = 0;
     self=[super init];
     [[NSAppleEventManager sharedAppleEventManager]
      setEventHandler:self
-     andSelector:@selector(hfghfghfghggetUrl:withReplyEvent:)
+     andSelector:@selector(getUrl:withReplyEvent:)
  		  forEventClass:kInternetEventClass
      andEventID:kAEGetURL];
 
@@ -60,12 +60,12 @@ int connectionAttempts = 0;
 {
     NSAlert *alert = [[NSAlert alloc] init];
     [alert setMessageText:msg];
-    [alert setInformahfghfghfhtiveText:informativeText];
+    [alert setInformativeText:informativeText];
     [alert addButtonWithTitle:@"Okay"];
     [alert runModal];
 }
 
-void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURLfhggfhfghfgResponse *response, NSError *error){
+void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURLResponse *response, NSError *error){
     NSAlert *alert = [[NSAlert alloc] init];
     [alert addButtonWithTitle:@"Okay"];
     [alert setMessageText:@"Could not communicate with projectlocker"];
@@ -77,7 +77,7 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
 - (void)tryOpenProject:(NSString *)projectid
 {
     [ProjectLockerAndKeychainFunctions get_data_from_server:@"/api/project/"
-                                                           :@"/fifghfghles"
+                                                           :@"/files"
                                                            :projectid
                                           completionHandler:^void (NSURLResponse *response,NSDictionary *filesResult){
         [ProjectLockerAndKeychainFunctions get_data_from_server:@"/api/storage/"
