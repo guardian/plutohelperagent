@@ -130,6 +130,7 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
                 
                 [task setTerminationHandler:^(NSTask *finishedTask){
                     if([finishedTask terminationStatus]!=0){
+                        NSLog(@"Error attempting to run the script %@ on the path %@. The attempt finished with the status %d.", helperScript, pathToUse, [finishedTask terminationStatus]);
                         //[alert runModal] must be called on main thread. See https://stackoverflow.com/questions/4892182/run-method-on-main-thread-from-another-thread
                         dispatch_async(dispatch_get_global_queue(0, 0), ^{
                             [alert setMessageText:@"Opening Project Failed"];
