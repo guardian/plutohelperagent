@@ -132,11 +132,8 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
                     if([finishedTask terminationStatus]!=0){
                         //[alert runModal] must be called on main thread. See https://stackoverflow.com/questions/4892182/run-method-on-main-thread-from-another-thread
                         dispatch_async(dispatch_get_global_queue(0, 0), ^{
-                            [alert setMessageText:@"Open script failed"];
-                            [alert setInformativeText:[NSString stringWithFormat:@"Couldn't open your project, because the open script returned error code %d.\n%@\n%@\n\nPlease contact multimediatech@theguardian.com and send a copy of this message",
-                                                       [finishedTask terminationStatus],
-                                                       [self getPipeData:stdOutPipe],
-                                                       [self getPipeData:stdErrPipe]
+                            [alert setMessageText:@"Opening Project Failed"];
+                            [alert setInformativeText:[NSString stringWithFormat:@"Couldn’t open your project as it appears you may not have all the required Multimedia production drives mounted.\n\nRestarting your Mac should mount the drives, if they still don’t appear try contacting multimediatech@guardian.co.uk and send a copy of this message."
                                                        ]
                              ];
                             [alert setAlertStyle:NSWarningAlertStyle];
