@@ -58,19 +58,18 @@ int connectionAttempts = 0;
 
 - (void)basicErrorMessage:(NSString *)msg informativeText:(NSString *)informativeText
 {
-    NSAlert *alert = [[NSAlert alloc] init];
-    [alert setMessageText:msg];
-    [alert setInformativeText:informativeText];
-    [alert addButtonWithTitle:@"Okay"];
-    [alert runModal];
+    [self showError:msg informativeText:informativeText showPrefs:false];
 }
 
 void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURLResponse *response, NSError *error){
-    NSAlert *alert = [[NSAlert alloc] init];
-    [alert addButtonWithTitle:@"Okay"];
-    [alert setMessageText:@"Could not communicate with projectlocker"];
-    [alert setInformativeText:[error localizedDescription]];
-    [alert runModal];
+
+    dispatch_async(dispatch_get_main_queue(), ^{    //we can't call the member function as we are not in the class here
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert addButtonWithTitle:@"Okay"];
+        [alert setMessageText:@"Could not communicate with projectlocker"];
+        [alert setInformativeText:[error localizedDescription]];
+        [alert runModal];
+    });
 };
 
 
@@ -85,28 +84,27 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
                                                                :filesResult[@"files"][0][@"storage"]
                                               completionHandler:^(NSURLResponse *response, NSDictionary *storageResult) {
             if (storageResult[@"result"][@"clientpath"] == NULL) {
-                NSAlert *alert = [[NSAlert alloc] init];
-                
-                [alert addButtonWithTitle:@"Okay"];
-                
-                NSString *message = [NSString stringWithFormat: @"No client path on storage ID %@", filesResult[@"files"][0][@"storage"]];
-                
-                [alert setMessageText:message];
-                
-                [alert setInformativeText:@"Can't open project, because it's on a storage which has no client path set.\n\nPlease contact multimediatech@theguardian.com."];
-            
-                [alert setAlertStyle:NSWarningAlertStyle];
-                
-                if ([alert runModal] == NSAlertFirstButtonReturn) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    NSAlert *alert = [[NSAlert alloc] init];
                     
-                }
+                    [alert addButtonWithTitle:@"Okay"];
+                    
+                    NSString *message = [NSString stringWithFormat: @"No client path on storage ID %@", filesResult[@"files"][0][@"storage"]];
+                    
+                    [alert setMessageText:message];
+                    
+                    [alert setInformativeText:@"Can't open project, because it's on a storage which has no client path set.\n\nPlease contact multimediatech@theguardian.com."];
                 
+                    [alert setAlertStyle:NSWarningAlertStyle];
+                
+                    [alert runModal];
+                });
             } else {
-                NSAlert *alert = [[NSAlert alloc] init];
                 NSString *helperScript = [[NSUserDefaults standardUserDefaults] stringForKey:@"local_shell_script"];
                 
                 if([helperScript compare:@""]==0){
-                    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        NSAlert *alert = [[NSAlert alloc] init];
                         [alert setMessageText:@"Setup problem"];
                         [alert setInformativeText:@"Your mac does not appear to be set up correctly, no helper script is configured. Please contact multimediatech@theguardian.com."];
                         [alert setAlertStyle:NSWarningAlertStyle];
@@ -132,7 +130,8 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
                     if([finishedTask terminationStatus]!=0){
                         NSLog(@"Error attempting to run the script %@ on the path %@. The attempt finished with the status %d.", helperScript, pathToUse, [finishedTask terminationStatus]);
                         //[alert runModal] must be called on main thread. See https://stackoverflow.com/questions/4892182/run-method-on-main-thread-from-another-thread
-                        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            NSAlert *alert = [[NSAlert alloc] init];
                             [alert setMessageText:@"Opening Project Failed"];
                             [alert setInformativeText:[NSString stringWithFormat:@"Couldn’t open your project as it appears you may not have all the required Multimedia production drives mounted.\n\nRestarting your Mac should mount the drives, if they still don’t appear try contacting multimediatech@guardian.co.uk and send a copy of this message."
                                                        ]
@@ -142,7 +141,8 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
                         });
                     }
                     if([finishedTask terminationReason]!=NSTaskTerminationReasonExit){
-                        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            NSAlert *alert = [[NSAlert alloc] init];
                             [alert setInformativeText:
                              [NSString stringWithFormat:@"Open script failed because the open script terminated unexpectedly.\n%@\n%@\nPlease contact multimediatech@theguardian.com and send a copy of this message",
                               [self getPipeData:stdOutPipe],
@@ -163,16 +163,18 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
 
 - (void)showError:(NSString *)showError informativeText:(NSString *)informativeText showPrefs:(BOOL)showPrefs
 {
-    NSAlert *alert = [[NSAlert alloc] init];
-    [alert setMessageText:showError];
-    [alert setInformativeText:informativeText];
-    [alert addButtonWithTitle:@"Okay"];
-    if (showPrefs == YES) {
-        [NSApp setActivationPolicy:NSApplicationActivationPolicyAccessory];
-        [[self prefsWindow] setLevel:NSFloatingWindowLevel];
-        [[[self prefsWindow] windowController] showWindow:self];
-    }
-    [alert runModal];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSAlert *alert = [[NSAlert alloc] init];
+        [alert setMessageText:showError];
+        [alert setInformativeText:informativeText];
+        [alert addButtonWithTitle:@"Okay"];
+        if (showPrefs == YES) {
+            [NSApp setActivationPolicy:NSApplicationActivationPolicyAccessory];
+            [[self prefsWindow] setLevel:NSFloatingWindowLevel];
+            [[[self prefsWindow] windowController] showWindow:self];
+        }
+        [alert runModal];
+    });
 }
 
 -    (void)getUrl:(NSAppleEventDescriptor *)event
