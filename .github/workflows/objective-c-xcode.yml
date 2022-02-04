@@ -16,8 +16,8 @@ jobs:
         uses: actions/checkout@v2
       - name: Set Build Number
         run: |
-          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion Build ${GITHUB_RUN_NUMBER}" "PlutoHelperAgent/Supporting Files/Info.plist"
-          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString ${GITHUB_RUN_NUMBER}" "PlutoHelperAgent/Supporting Files/Info.plist"
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion Build ${GITHUB_RUN_NUMBER}" "PlutoHelperAgent/Info.plist"
+          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString ${GITHUB_RUN_NUMBER}" "PlutoHelperAgent/Info.plist"
       - name: Set Default Scheme
         run: |
           scheme_list=$(xcodebuild -list -json | tr -d "\n")
