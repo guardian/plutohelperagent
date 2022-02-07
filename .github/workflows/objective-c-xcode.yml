@@ -40,7 +40,7 @@ jobs:
       - name: Package Executable
         run: |
           mkdir $PWD/package
-          pkgbuild --install-location /Applications --component /application/PlutoHelperAgent.app /package/PlutoHelperAgent.pkg
+          pkgbuild --install-location /Applications --component $PWD/application/PlutoHelperAgent.app $PWD/package/PlutoHelperAgent.pkg
       - name: Make GITHUB_RUN_NUMBER env var available outside of shells
         working-directory: ${{env.GITHUB_WORKSPACE}}
         shell: bash
