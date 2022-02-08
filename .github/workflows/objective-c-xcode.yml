@@ -14,10 +14,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Generate Build Number
+        id: buildnumber
+        uses: einaregilsson/build-number@v3
+        with:
+          token: ${{secrets.github_token}}
       - name: Set Build Number
         run: |
-          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion Build ${GITHUB_RUN_NUMBER}" "PlutoHelperAgent/Info.plist"
-          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString ${GITHUB_RUN_NUMBER}" "PlutoHelperAgent/Info.plist"
+          /usr/libexec/PlistBuddy -c "Set :CFBundleShortVersionString ${BUILD_NUMBER}" "PlutoHelperAgent/Info.plist"
       - name: Set Default Scheme
         run: |
           scheme_list=$(xcodebuild -list -json | tr -d "\n")
@@ -41,16 +45,11 @@ jobs:
         run: |
           mkdir $PWD/package
           pkgbuild --install-location /Applications --component $PWD/application/PlutoHelperAgent.app $PWD/package/PlutoHelperAgent.pkg
-      - name: Make GITHUB_RUN_NUMBER env var available outside of shells
-        working-directory: ${{env.GITHUB_WORKSPACE}}
-        shell: bash
-        run: |
-          echo GITHUB_RUN_NUMBER=$GITHUB_RUN_NUMBER>> $GITHUB_ENV
       - name: Upload Package
         uses: actions/upload-artifact@v2.3.1
         with:
           # Artifact name
-          name: PlutoHelperAgent-${{ env.GITHUB_RUN_NUMBER }}
+          name: PlutoHelperAgent-$BUILD_NUMBER
           # A file, directory or wildcard pattern that describes what to upload
           path: ./package/
           # The desired behavior if no files are found using the provided path.
