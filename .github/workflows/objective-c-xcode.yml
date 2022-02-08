@@ -45,11 +45,6 @@ jobs:
         run: |
           mkdir $PWD/package
           pkgbuild --install-location /Applications --component $PWD/application/PlutoHelperAgent.app $PWD/package/PlutoHelperAgent.pkg
-      - name: Make BUILD_NUMBER env var available outside of shells
-        working-directory: ${{env.GITHUB_WORKSPACE}}
-        shell: bash
-        run: |
-          echo BUILD_NUMBER=$BUILD_NUMBER>> $GITHUB_ENV
       - name: Upload Package
         uses: actions/upload-artifact@v2.3.1
         with:
