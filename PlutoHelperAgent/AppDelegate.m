@@ -17,7 +17,6 @@
 @implementation AppDelegate
 @synthesize errorAlert;
 @synthesize statusBar;
-@synthesize connectionWorking;
 
 - (id)init
 {
@@ -27,7 +26,7 @@
      andSelector:@selector(getUrl:withReplyEvent:)
  		  forEventClass:kInternetEventClass
      andEventID:kAEGetURL];
-    
+     
     return self;
 }
 
@@ -255,10 +254,9 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
     self.statusBar = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
     
     //set up the status bar
-    //self.statusBar.image = [NSImage imageNamed:@"PlutoIcon"];
+    self.statusBar.image = [NSImage imageNamed:@"PlutoIcon"];
     self.statusBar.menu = self.statusMenu;
     self.statusBar.highlightMode = YES;
-    [self setConnectionWorking:[NSNumber numberWithBool:YES]];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {

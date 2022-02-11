@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		557A42CA20446B4F00CC23AF /* PreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 557A42C820446B4F00CC23AF /* PreferencesWindowController.m */; };
-		55969406204D52C900FEF363 /* ProjectLockerAndKeychainFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 55969405204D52C900FEF363 /* ProjectLockerAndKeychainFunctions.m */; };
 		9B2CAF201D23F2990081FA45 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2CAF1F1D23F2990081FA45 /* AppDelegate.m */; };
 		9B2CAF221D23F2990081FA45 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2CAF211D23F2990081FA45 /* main.m */; };
 		9B2CAF241D23F2990081FA45 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B2CAF231D23F2990081FA45 /* Images.xcassets */; };
@@ -30,8 +29,6 @@
 /* Begin PBXFileReference section */
 		557A42C720446B4F00CC23AF /* PreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesWindowController.h; sourceTree = "<group>"; };
 		557A42C820446B4F00CC23AF /* PreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesWindowController.m; sourceTree = "<group>"; };
-		55969405204D52C900FEF363 /* ProjectLockerAndKeychainFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProjectLockerAndKeychainFunctions.m; sourceTree = "<group>"; };
-		55969407204D563B00FEF363 /* ProjectLockerAndKeychainFunctions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProjectLockerAndKeychainFunctions.h; sourceTree = "<group>"; };
 		9B2CAF191D23F2990081FA45 /* PlutoHelperAgent.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlutoHelperAgent.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B2CAF1D1D23F2990081FA45 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9B2CAF1E1D23F2990081FA45 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -91,8 +88,6 @@
 				557A42C720446B4F00CC23AF /* PreferencesWindowController.h */,
 				557A42C820446B4F00CC23AF /* PreferencesWindowController.m */,
 				9B2CAF1C1D23F2990081FA45 /* Supporting Files */,
-				55969405204D52C900FEF363 /* ProjectLockerAndKeychainFunctions.m */,
-				55969407204D563B00FEF363 /* ProjectLockerAndKeychainFunctions.h */,
 				9BEBABC920651EF80056A62F /* PrefsCloseTransformer.m */,
 			);
 			path = PlutoHelperAgent;
@@ -225,7 +220,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9BEBABCA20651EF80056A62F /* PrefsCloseTransformer.m in Sources */,
-				55969406204D52C900FEF363 /* ProjectLockerAndKeychainFunctions.m in Sources */,
 				9B2CAF221D23F2990081FA45 /* main.m in Sources */,
 				557A42CA20446B4F00CC23AF /* PreferencesWindowController.m in Sources */,
 				9B2CAF201D23F2990081FA45 /* AppDelegate.m in Sources */,
