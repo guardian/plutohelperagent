@@ -171,11 +171,10 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
             return;
         }
         
-        NSString *assetWhiteListString = [[NSUserDefaults standardUserDefaults] stringForKey:@"asset_white_list"];
-        NSArray *assetWhiteList = [assetWhiteListString componentsSeparatedByString:@","];
+        NSArray *assetWhiteListArray = [[NSUserDefaults standardUserDefaults] arrayForKey:@"asset_list"];
         BOOL pathGood = false;
-        for (id item in assetWhiteList) {
-            if ([folderToOpen hasPrefix:item]) {
+        for (id item in assetWhiteListArray) {
+            if ([folderToOpen hasPrefix:item[@"path"]]) {
                 pathGood = true;
             }
         }
@@ -195,20 +194,18 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
     } else if ([action isEqualToString:@"openproject"]){
         NSString *projectPath = [parts objectAtIndex:2];
         
-        NSString *pathsWhiteListString = [[NSUserDefaults standardUserDefaults] stringForKey:@"paths_white_list"];
-        NSArray *pathsWhiteList = [pathsWhiteListString componentsSeparatedByString:@","];
+        NSArray *pathsWhiteListArray = [[NSUserDefaults standardUserDefaults] arrayForKey:@"paths_list"];
         BOOL pathGood = false;
-        for (id item in pathsWhiteList) {
-            if ([projectPath hasPrefix:item]) {
+        for (id item in pathsWhiteListArray) {
+            if ([projectPath hasPrefix:item[@"path"]]) {
                 pathGood = true;
             }
         }
 
-        NSString *extensionsWhiteListString = [[NSUserDefaults standardUserDefaults] stringForKey:@"extensions_white_list"];
-        NSArray *extensionsWhiteList = [extensionsWhiteListString componentsSeparatedByString:@","];
+        NSArray *extensionsWhiteListArray = [[NSUserDefaults standardUserDefaults] arrayForKey:@"extensions_list"];
         BOOL extensionGood = false;
-        for (id item in extensionsWhiteList) {
-            if ([projectPath hasSuffix:item]) {
+        for (id item in extensionsWhiteListArray) {
+            if ([projectPath hasSuffix:item[@"extension"]]) {
                 extensionGood = true;
             }
         }
