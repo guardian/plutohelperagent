@@ -174,8 +174,10 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
         NSArray *assetWhiteListArray = [[NSUserDefaults standardUserDefaults] arrayForKey:@"asset_list"];
         BOOL pathGood = false;
         for (id item in assetWhiteListArray) {
-            if ([folderToOpen hasPrefix:item[@"path"]]) {
-                pathGood = true;
+            if ([item[@"path"] isNotEqualTo:@""]) {
+                if ([folderToOpen hasPrefix:item[@"path"]]) {
+                    pathGood = true;
+                }
             }
         }
         
@@ -197,16 +199,20 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
         NSArray *pathsWhiteListArray = [[NSUserDefaults standardUserDefaults] arrayForKey:@"paths_list"];
         BOOL pathGood = false;
         for (id item in pathsWhiteListArray) {
-            if ([projectPath hasPrefix:item[@"path"]]) {
-                pathGood = true;
+            if ([item[@"path"] isNotEqualTo:@""]) {
+                if ([projectPath hasPrefix:item[@"path"]]) {
+                    pathGood = true;
+                }
             }
         }
 
         NSArray *extensionsWhiteListArray = [[NSUserDefaults standardUserDefaults] arrayForKey:@"extensions_list"];
         BOOL extensionGood = false;
         for (id item in extensionsWhiteListArray) {
-            if ([projectPath hasSuffix:item[@"extension"]]) {
-                extensionGood = true;
+            if ([item[@"extension"] isNotEqualTo:@""]) {
+                if ([projectPath hasSuffix:item[@"extension"]]) {
+                    extensionGood = true;
+                }
             }
         }
         
