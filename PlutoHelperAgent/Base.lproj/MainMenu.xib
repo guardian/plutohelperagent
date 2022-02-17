@@ -757,7 +757,7 @@
                             <rect key="frame" x="1" y="0.0" width="504" height="134"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="ZC9-p4-0mL" viewBased="YES" id="ekH-Ub-ORc">
+                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="ZC9-p4-0mL" id="ekH-Ub-ORc">
                                     <rect key="frame" x="0.0" y="0.0" width="504" height="109"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <size key="intercellSpacing" width="3" height="2"/>
@@ -773,46 +773,26 @@
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                <connections>
+                                                    <binding destination="FH9-Ph-EFZ" name="value" keyPath="arrangedObjects.path" id="tO4-FE-NTc">
+                                                        <dictionary key="options">
+                                                            <bool key="NSConditionallySetsEnabled" value="YES"/>
+                                                            <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                                            <bool key="NSValidatesImmediately" value="YES"/>
+                                                        </dictionary>
+                                                    </binding>
+                                                </connections>
                                             </textFieldCell>
                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
-                                            <prototypeCellViews>
-                                                <tableCellView id="rso-Kr-Lek">
-                                                    <rect key="frame" x="1" y="1" width="493" height="17"/>
-                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                    <subviews>
-                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="51z-HL-Mcu">
-                                                            <rect key="frame" x="0.0" y="1" width="493" height="16"/>
-                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="6OR-2n-jc9">
-                                                                <font key="font" usesAppearanceFont="YES"/>
-                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                <connections>
-                                                                    <binding destination="rso-Kr-Lek" name="value" keyPath="objectValue.path" id="6rq-A4-s7n">
-                                                                        <dictionary key="options">
-                                                                            <bool key="NSConditionallySetsEditable" value="YES"/>
-                                                                            <bool key="NSConditionallySetsEnabled" value="YES"/>
-                                                                            <bool key="NSContinuouslyUpdatesValue" value="YES"/>
-                                                                            <string key="NSMultipleValuesPlaceholder">/replace</string>
-                                                                            <string key="NSNoSelectionPlaceholder">/replace</string>
-                                                                            <string key="NSNotApplicablePlaceholder">/replace</string>
-                                                                            <string key="NSNullPlaceholder">/replace</string>
-                                                                            <bool key="NSValidatesImmediately" value="YES"/>
-                                                                        </dictionary>
-                                                                    </binding>
-                                                                </connections>
-                                                            </textFieldCell>
-                                                        </textField>
-                                                    </subviews>
-                                                    <connections>
-                                                        <outlet property="textField" destination="51z-HL-Mcu" id="6ih-4d-0Vv"/>
-                                                    </connections>
-                                                </tableCellView>
-                                            </prototypeCellViews>
                                             <connections>
-                                                <binding destination="FH9-Ph-EFZ" name="value" keyPath="arrangedObjects.path" id="ll1-Z7-KYf">
+                                                <binding destination="FH9-Ph-EFZ" name="value" keyPath="arrangedObjects.path" id="Cue-Sb-RQp">
                                                     <dictionary key="options">
                                                         <bool key="NSConditionallySetsEnabled" value="YES"/>
+                                                        <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                                        <string key="NSMultipleValuesPlaceholder">/replace</string>
+                                                        <string key="NSNoSelectionPlaceholder">/replace</string>
+                                                        <string key="NSNotApplicablePlaceholder">/replace</string>
+                                                        <string key="NSNullPlaceholder">/replace</string>
                                                         <bool key="NSValidatesImmediately" value="YES"/>
                                                     </dictionary>
                                                 </binding>
@@ -853,7 +833,7 @@
                             <rect key="frame" x="1" y="0.0" width="200" height="134"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="YLl-vo-1DU" viewBased="YES" id="2Ad-Vn-pBZ">
+                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="YLl-vo-1DU" id="2Ad-Vn-pBZ">
                                     <rect key="frame" x="0.0" y="0.0" width="200" height="109"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <size key="intercellSpacing" width="3" height="2"/>
@@ -865,50 +845,30 @@
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                             </tableHeaderCell>
-                                            <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" title="Text Cell" id="4L6-0k-V2r">
+                                            <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" title="Text Cell" id="4L6-0k-V2r">
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                <connections>
+                                                    <binding destination="cUV-hS-Jl2" name="value" keyPath="arrangedObjects.extension" id="R5b-oW-i8Q">
+                                                        <dictionary key="options">
+                                                            <bool key="NSConditionallySetsEnabled" value="YES"/>
+                                                            <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                                            <bool key="NSValidatesImmediately" value="YES"/>
+                                                        </dictionary>
+                                                    </binding>
+                                                </connections>
                                             </textFieldCell>
                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
-                                            <prototypeCellViews>
-                                                <tableCellView id="GEx-Cj-7qC">
-                                                    <rect key="frame" x="1" y="1" width="197" height="17"/>
-                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                    <subviews>
-                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uhu-Wh-2xU">
-                                                            <rect key="frame" x="0.0" y="1" width="197" height="16"/>
-                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="tWO-Ka-eol">
-                                                                <font key="font" usesAppearanceFont="YES"/>
-                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                <connections>
-                                                                    <binding destination="GEx-Cj-7qC" name="value" keyPath="objectValue.extension" id="qTq-XD-RuR">
-                                                                        <dictionary key="options">
-                                                                            <bool key="NSConditionallySetsEditable" value="YES"/>
-                                                                            <bool key="NSConditionallySetsEnabled" value="YES"/>
-                                                                            <bool key="NSContinuouslyUpdatesValue" value="YES"/>
-                                                                            <string key="NSMultipleValuesPlaceholder">replace</string>
-                                                                            <string key="NSNoSelectionPlaceholder">replace</string>
-                                                                            <string key="NSNotApplicablePlaceholder">replace</string>
-                                                                            <string key="NSNullPlaceholder">replace</string>
-                                                                            <bool key="NSValidatesImmediately" value="YES"/>
-                                                                        </dictionary>
-                                                                    </binding>
-                                                                </connections>
-                                                            </textFieldCell>
-                                                        </textField>
-                                                    </subviews>
-                                                    <connections>
-                                                        <outlet property="textField" destination="uhu-Wh-2xU" id="ZB6-AW-Kxf"/>
-                                                    </connections>
-                                                </tableCellView>
-                                            </prototypeCellViews>
                                             <connections>
-                                                <binding destination="cUV-hS-Jl2" name="value" keyPath="arrangedObjects.extension" id="iTn-EG-BBP">
+                                                <binding destination="cUV-hS-Jl2" name="value" keyPath="arrangedObjects.extension" id="2Z2-zL-FQ5">
                                                     <dictionary key="options">
                                                         <bool key="NSConditionallySetsEnabled" value="YES"/>
+                                                        <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                                        <string key="NSMultipleValuesPlaceholder">replace</string>
+                                                        <string key="NSNoSelectionPlaceholder">replace</string>
+                                                        <string key="NSNotApplicablePlaceholder">replace</string>
+                                                        <string key="NSNullPlaceholder">replace</string>
                                                         <bool key="NSValidatesImmediately" value="YES"/>
                                                     </dictionary>
                                                 </binding>
@@ -960,7 +920,7 @@
                             <rect key="frame" x="1" y="0.0" width="504" height="134"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
-                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="DjG-vb-P2d" viewBased="YES" id="toj-Je-26T">
+                                <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" headerView="DjG-vb-P2d" id="toj-Je-26T">
                                     <rect key="frame" x="0.0" y="0.0" width="504" height="109"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <size key="intercellSpacing" width="3" height="2"/>
@@ -976,46 +936,26 @@
                                                 <font key="font" metaFont="system"/>
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                                <connections>
+                                                    <binding destination="j5R-Rs-JUB" name="value" keyPath="arrangedObjects.path" id="xst-Lr-5Y7">
+                                                        <dictionary key="options">
+                                                            <bool key="NSConditionallySetsEnabled" value="YES"/>
+                                                            <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                                            <bool key="NSValidatesImmediately" value="YES"/>
+                                                        </dictionary>
+                                                    </binding>
+                                                </connections>
                                             </textFieldCell>
                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
-                                            <prototypeCellViews>
-                                                <tableCellView id="INU-HZ-p6Z">
-                                                    <rect key="frame" x="1" y="1" width="493" height="17"/>
-                                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                                    <subviews>
-                                                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VBn-9P-Ha5">
-                                                            <rect key="frame" x="0.0" y="1" width="493" height="16"/>
-                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
-                                                            <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="WYz-jH-3Kd">
-                                                                <font key="font" usesAppearanceFont="YES"/>
-                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                                <connections>
-                                                                    <binding destination="INU-HZ-p6Z" name="value" keyPath="objectValue.path" id="TNl-3j-vjd">
-                                                                        <dictionary key="options">
-                                                                            <bool key="NSConditionallySetsEditable" value="YES"/>
-                                                                            <bool key="NSConditionallySetsEnabled" value="YES"/>
-                                                                            <bool key="NSContinuouslyUpdatesValue" value="YES"/>
-                                                                            <string key="NSMultipleValuesPlaceholder">/replace</string>
-                                                                            <string key="NSNoSelectionPlaceholder">/replace</string>
-                                                                            <string key="NSNotApplicablePlaceholder">/replace</string>
-                                                                            <string key="NSNullPlaceholder">/replace</string>
-                                                                            <bool key="NSValidatesImmediately" value="YES"/>
-                                                                        </dictionary>
-                                                                    </binding>
-                                                                </connections>
-                                                            </textFieldCell>
-                                                        </textField>
-                                                    </subviews>
-                                                    <connections>
-                                                        <outlet property="textField" destination="VBn-9P-Ha5" id="asO-Yd-iji"/>
-                                                    </connections>
-                                                </tableCellView>
-                                            </prototypeCellViews>
                                             <connections>
-                                                <binding destination="j5R-Rs-JUB" name="value" keyPath="arrangedObjects.path" id="SLU-VA-dtV">
+                                                <binding destination="j5R-Rs-JUB" name="value" keyPath="arrangedObjects.path" id="AxY-E2-eha">
                                                     <dictionary key="options">
                                                         <bool key="NSConditionallySetsEnabled" value="YES"/>
+                                                        <bool key="NSContinuouslyUpdatesValue" value="YES"/>
+                                                        <string key="NSMultipleValuesPlaceholder">/replace</string>
+                                                        <string key="NSNoSelectionPlaceholder">/replace</string>
+                                                        <string key="NSNotApplicablePlaceholder">/replace</string>
+                                                        <string key="NSNullPlaceholder">/replace</string>
                                                         <bool key="NSValidatesImmediately" value="YES"/>
                                                     </dictionary>
                                                 </binding>
@@ -1061,7 +1001,7 @@
                         </connections>
                     </button>
                     <button verticalHuggingPriority="750" id="sHo-VW-7Pt">
-                        <rect key="frame" x="455" y="13" width="81" height="32"/>
+                        <rect key="frame" x="455" y="7" width="81" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="push" title="Save" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="vkn-2j-mHd">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
@@ -1097,12 +1037,13 @@
             </connections>
         </customObject>
         <userDefaultsController representsSharedInstance="YES" id="lm4-VX-uY3"/>
+        <userDefaultsController id="uL1-We-2sg"/>
         <arrayController automaticallyPreparesContent="YES" id="FH9-Ph-EFZ">
             <declaredKeys>
                 <string>path</string>
             </declaredKeys>
             <connections>
-                <binding destination="lm4-VX-uY3" name="contentArray" keyPath="values.paths_list" id="uIf-sa-TMl">
+                <binding destination="uL1-We-2sg" name="contentArray" keyPath="values.paths_list" id="guv-jX-aVl">
                     <dictionary key="options">
                         <bool key="NSHandlesContentAsCompoundValue" value="YES"/>
                         <bool key="NSValidatesImmediately" value="YES"/>
@@ -1115,7 +1056,7 @@
                 <string>extension</string>
             </declaredKeys>
             <connections>
-                <binding destination="lm4-VX-uY3" name="contentArray" keyPath="values.extensions_list" id="2KU-Sc-5bX">
+                <binding destination="uL1-We-2sg" name="contentArray" keyPath="values.extensions_list" id="nAd-ER-uo7">
                     <dictionary key="options">
                         <bool key="NSHandlesContentAsCompoundValue" value="YES"/>
                         <bool key="NSValidatesImmediately" value="YES"/>
@@ -1128,7 +1069,7 @@
                 <string>path</string>
             </declaredKeys>
             <connections>
-                <binding destination="lm4-VX-uY3" name="contentArray" keyPath="values.asset_list" id="eFL-p4-Bnb">
+                <binding destination="uL1-We-2sg" name="contentArray" keyPath="values.asset_list" id="UIU-s8-NLX">
                     <dictionary key="options">
                         <bool key="NSHandlesContentAsCompoundValue" value="YES"/>
                         <bool key="NSValidatesImmediately" value="YES"/>
