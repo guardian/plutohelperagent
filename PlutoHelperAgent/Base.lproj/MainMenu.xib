@@ -774,7 +774,7 @@
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 <connections>
-                                                    <binding destination="FH9-Ph-EFZ" name="value" keyPath="arrangedObjects.path" id="tO4-FE-NTc">
+                                                    <binding destination="FH9-Ph-EFZ" name="value" keyPath="arrangedObjects.string" id="6pG-Ts-JRJ">
                                                         <dictionary key="options">
                                                             <bool key="NSConditionallySetsEnabled" value="YES"/>
                                                             <bool key="NSContinuouslyUpdatesValue" value="YES"/>
@@ -785,7 +785,7 @@
                                             </textFieldCell>
                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                             <connections>
-                                                <binding destination="FH9-Ph-EFZ" name="value" keyPath="arrangedObjects.path" id="Cue-Sb-RQp">
+                                                <binding destination="FH9-Ph-EFZ" name="value" keyPath="arrangedObjects.string" id="8dW-4H-sR5">
                                                     <dictionary key="options">
                                                         <bool key="NSConditionallySetsEnabled" value="YES"/>
                                                         <bool key="NSContinuouslyUpdatesValue" value="YES"/>
@@ -850,7 +850,7 @@
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 <connections>
-                                                    <binding destination="cUV-hS-Jl2" name="value" keyPath="arrangedObjects.extension" id="R5b-oW-i8Q">
+                                                    <binding destination="cUV-hS-Jl2" name="value" keyPath="arrangedObjects.string" id="Tga-YD-vVD">
                                                         <dictionary key="options">
                                                             <bool key="NSConditionallySetsEnabled" value="YES"/>
                                                             <bool key="NSContinuouslyUpdatesValue" value="YES"/>
@@ -861,7 +861,7 @@
                                             </textFieldCell>
                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                             <connections>
-                                                <binding destination="cUV-hS-Jl2" name="value" keyPath="arrangedObjects.extension" id="2Z2-zL-FQ5">
+                                                <binding destination="cUV-hS-Jl2" name="value" keyPath="arrangedObjects.string" id="mj7-3o-P90">
                                                     <dictionary key="options">
                                                         <bool key="NSConditionallySetsEnabled" value="YES"/>
                                                         <bool key="NSContinuouslyUpdatesValue" value="YES"/>
@@ -937,7 +937,7 @@
                                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                 <connections>
-                                                    <binding destination="j5R-Rs-JUB" name="value" keyPath="arrangedObjects.path" id="xst-Lr-5Y7">
+                                                    <binding destination="j5R-Rs-JUB" name="value" keyPath="arrangedObjects.string" id="chu-lJ-7Z6">
                                                         <dictionary key="options">
                                                             <bool key="NSConditionallySetsEnabled" value="YES"/>
                                                             <bool key="NSContinuouslyUpdatesValue" value="YES"/>
@@ -948,7 +948,7 @@
                                             </textFieldCell>
                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                             <connections>
-                                                <binding destination="j5R-Rs-JUB" name="value" keyPath="arrangedObjects.path" id="AxY-E2-eha">
+                                                <binding destination="j5R-Rs-JUB" name="value" keyPath="arrangedObjects.string" id="NrZ-i6-e3N">
                                                     <dictionary key="options">
                                                         <bool key="NSConditionallySetsEnabled" value="YES"/>
                                                         <bool key="NSContinuouslyUpdatesValue" value="YES"/>
@@ -1040,7 +1040,7 @@
         <userDefaultsController id="uL1-We-2sg"/>
         <arrayController automaticallyPreparesContent="YES" id="FH9-Ph-EFZ">
             <declaredKeys>
-                <string>path</string>
+                <string>string</string>
             </declaredKeys>
             <connections>
                 <binding destination="uL1-We-2sg" name="contentArray" keyPath="values.paths_list" id="guv-jX-aVl">
@@ -1053,7 +1053,7 @@
         </arrayController>
         <arrayController automaticallyPreparesContent="YES" id="cUV-hS-Jl2" userLabel="Array Controller 2">
             <declaredKeys>
-                <string>extension</string>
+                <string>string</string>
             </declaredKeys>
             <connections>
                 <binding destination="uL1-We-2sg" name="contentArray" keyPath="values.extensions_list" id="nAd-ER-uo7">
@@ -1066,7 +1066,7 @@
         </arrayController>
         <arrayController automaticallyPreparesContent="YES" id="j5R-Rs-JUB" userLabel="Array Controller 3">
             <declaredKeys>
-                <string>path</string>
+                <string>string</string>
             </declaredKeys>
             <connections>
                 <binding destination="uL1-We-2sg" name="contentArray" keyPath="values.asset_list" id="UIU-s8-NLX">

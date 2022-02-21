@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import <dispatch/dispatch.h>
+#import "WhiteListProcessor.h"
 
 @interface AppDelegate ()
 
@@ -63,22 +64,21 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
         return;
     }
 
-    NSString *pathToUse = [NSString stringWithFormat: @"%@", projectPath];
-    NSLog(@"Going to run %@ %@", helperScript, pathToUse);
+    NSLog(@"Going to run %@ %@", helperScript, projectPath);
 
     NSTask *task = [[NSTask alloc] init];
     NSPipe *stdOutPipe = [NSPipe pipe];
     NSPipe *stdErrPipe = [NSPipe pipe];
 
     [task setLaunchPath:helperScript];
-    [task setArguments:[NSArray arrayWithObjects:pathToUse, nil]];
+    [task setArguments:[NSArray arrayWithObjects:projectPath, nil]];
     [task setStandardOutput:stdOutPipe];
     [task setStandardError:stdErrPipe];
     [task setStandardInput:[NSPipe pipe]];
 
     [task setTerminationHandler:^(NSTask *finishedTask){
         if([finishedTask terminationStatus]!=0){
-            NSLog(@"Error attempting to run the script %@ on the path %@. The attempt finished with the status %d.", helperScript, pathToUse, [finishedTask terminationStatus]);
+            NSLog(@"Error attempting to run the script %@ on the path %@. The attempt finished with the status %d.", helperScript, projectPath, [finishedTask terminationStatus]);
             //[alert runModal] must be called on main thread. See https://stackoverflow.com/questions/4892182/run-method-on-main-thread-from-another-thread
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSAlert *alert = [[NSAlert alloc] init];
@@ -94,7 +94,7 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSAlert *alert = [[NSAlert alloc] init];
                 [alert setInformativeText:
-                 [NSString stringWithFormat:@"Open script failed because the open script terminated unexpectedly.\n%@\n%@\nPlease contact multimediatech@theguardian.com and send a copy of this message",
+                 [NSString stringWithFormat:@"Open script failed because the open script terminated unexpectedly.\n%@\n%@\nPlease contact multimediatech@theguardian.com and send a copy of this message along with the asset tag number of this computer.",
                   [self getPipeData:stdOutPipe],
                   [self getPipeData:stdErrPipe]
                   ]];
@@ -170,16 +170,8 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
             [self basicErrorMessage:@"Asset folder not found" informativeText:errorInfo];
             return;
         }
-        
-        NSArray *assetWhiteListArray = [[NSUserDefaults standardUserDefaults] arrayForKey:@"asset_list"];
-        BOOL pathGood = false;
-        for (id item in assetWhiteListArray) {
-            if ([item[@"path"] isNotEqualTo:@""]) {
-                if ([folderToOpen hasPrefix:item[@"path"]]) {
-                    pathGood = true;
-                }
-            }
-        }
+
+        BOOL pathGood = [WhiteListProcessor checkIsInWhitelist:folderToOpen whiteListName:@"asset_list" prefix:true];
         
         if (!pathGood) {
             NSLog(@"PlutoHelperAgent could not open the folder at: %@ due to its path not being in the white list.", folderToOpen);
@@ -196,26 +188,10 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
     } else if ([action isEqualToString:@"openproject"]){
         NSString *projectPath = [parts objectAtIndex:2];
         
-        NSArray *pathsWhiteListArray = [[NSUserDefaults standardUserDefaults] arrayForKey:@"paths_list"];
-        BOOL pathGood = false;
-        for (id item in pathsWhiteListArray) {
-            if ([item[@"path"] isNotEqualTo:@""]) {
-                if ([projectPath hasPrefix:item[@"path"]]) {
-                    pathGood = true;
-                }
-            }
-        }
-
-        NSArray *extensionsWhiteListArray = [[NSUserDefaults standardUserDefaults] arrayForKey:@"extensions_list"];
-        BOOL extensionGood = false;
-        for (id item in extensionsWhiteListArray) {
-            if ([item[@"extension"] isNotEqualTo:@""]) {
-                if ([projectPath hasSuffix:item[@"extension"]]) {
-                    extensionGood = true;
-                }
-            }
-        }
+        BOOL pathGood = [WhiteListProcessor checkIsInWhitelist:projectPath whiteListName:@"paths_list" prefix:true];
         
+        BOOL extensionGood = [WhiteListProcessor checkIsInWhitelist:projectPath whiteListName:@"extensions_list" prefix:false];
+              
         if (pathGood && extensionGood) {
             [self tryOpenProject:projectPath];
         } else {
