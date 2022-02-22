@@ -10,19 +10,23 @@
 
 @implementation WhiteListProcessor
 
-+ (bool)checkIsInWhitelist:(NSString *)thing whiteListName:(NSString *)whiteListName prefix:(BOOL)prefix
++ (bool) checkIsInWhitelist:(NSString *)thing whiteListName:(NSString *)whiteListName prefix:(BOOL)prefix
 {
-    NSArray *whiteListArray = [[NSUserDefaults standardUserDefaults] arrayForKey:whiteListName];
+  return [WhiteListProcessor checkIsInWhitelistCustom:thing whiteListName:whiteListName prefix:prefix defaults:[NSUserDefaults standardUserDefaults]];
+}
+
++ (bool)checkIsInWhitelistCustom:(NSString *)thing whiteListName:(NSString *)whiteListName prefix:(BOOL)prefix defaults:(NSUserDefaults *)defaults
+{
+    NSArray *whiteListArray = [defaults arrayForKey:whiteListName];
     for (id item in whiteListArray) {
-        if ([item[@"string"] isNotEqualTo:@""]) {
-            if (prefix) {
-                if ([thing hasPrefix:item[@"string"]]) {
-                    return true;
-                }
-            } else {
-                if ([thing hasSuffix:item[@"string"]]) {
-                    return true;
-                }
+        if ([item[@"string"] isEqualTo:@""]) continue;
+        if (prefix) {
+            if ([thing hasPrefix:item[@"string"]]) {
+                return true;
+            }
+        } else {
+            if ([thing hasSuffix:item[@"string"]]) {
+                return true;
             }
         }
     }

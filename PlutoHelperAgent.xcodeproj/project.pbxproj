@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		557A42CA20446B4F00CC23AF /* PreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 557A42C820446B4F00CC23AF /* PreferencesWindowController.m */; };
+		900DDA9327C4E89D000F2906 /* WhiteListProcessorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 900DDA9227C4E89D000F2906 /* WhiteListProcessorTests.m */; };
+		900DDAA127C506A7000F2906 /* CCTestingUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 900DDA9F27C506A7000F2906 /* CCTestingUserDefaults.m */; };
 		903F969C27C3D8280074AF72 /* WhiteListProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 903F969B27C3D8280074AF72 /* WhiteListProcessor.m */; };
 		9B2CAF201D23F2990081FA45 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2CAF1F1D23F2990081FA45 /* AppDelegate.m */; };
 		9B2CAF221D23F2990081FA45 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2CAF211D23F2990081FA45 /* main.m */; };
@@ -30,6 +32,9 @@
 /* Begin PBXFileReference section */
 		557A42C720446B4F00CC23AF /* PreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesWindowController.h; sourceTree = "<group>"; };
 		557A42C820446B4F00CC23AF /* PreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesWindowController.m; sourceTree = "<group>"; };
+		900DDA9227C4E89D000F2906 /* WhiteListProcessorTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WhiteListProcessorTests.m; sourceTree = "<group>"; };
+		900DDA9F27C506A7000F2906 /* CCTestingUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCTestingUserDefaults.m; sourceTree = "<group>"; };
+		900DDAA027C506A7000F2906 /* CCTestingUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCTestingUserDefaults.h; sourceTree = "<group>"; };
 		903F969A27C3D8280074AF72 /* WhiteListProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WhiteListProcessor.h; sourceTree = "<group>"; };
 		903F969B27C3D8280074AF72 /* WhiteListProcessor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WhiteListProcessor.m; sourceTree = "<group>"; };
 		9B2CAF191D23F2990081FA45 /* PlutoHelperAgent.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlutoHelperAgent.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -92,6 +97,8 @@
 				9B2CAF251D23F2990081FA45 /* MainMenu.xib */,
 				557A42C720446B4F00CC23AF /* PreferencesWindowController.h */,
 				557A42C820446B4F00CC23AF /* PreferencesWindowController.m */,
+				900DDAA027C506A7000F2906 /* CCTestingUserDefaults.h */,
+				900DDA9F27C506A7000F2906 /* CCTestingUserDefaults.m */,
 				9B2CAF1C1D23F2990081FA45 /* Supporting Files */,
 				9BEBABC920651EF80056A62F /* PrefsCloseTransformer.m */,
 			);
@@ -111,6 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				9B2CAF321D23F2990081FA45 /* PlutoHelperAgentTests.m */,
+				900DDA9227C4E89D000F2906 /* WhiteListProcessorTests.m */,
 				9B2CAF301D23F2990081FA45 /* Supporting Files */,
 			);
 			path = PlutoHelperAgentTests;
@@ -227,6 +235,7 @@
 				9BEBABCA20651EF80056A62F /* PrefsCloseTransformer.m in Sources */,
 				9B2CAF221D23F2990081FA45 /* main.m in Sources */,
 				903F969C27C3D8280074AF72 /* WhiteListProcessor.m in Sources */,
+				900DDAA127C506A7000F2906 /* CCTestingUserDefaults.m in Sources */,
 				557A42CA20446B4F00CC23AF /* PreferencesWindowController.m in Sources */,
 				9B2CAF201D23F2990081FA45 /* AppDelegate.m in Sources */,
 			);
@@ -236,6 +245,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				900DDA9327C4E89D000F2906 /* WhiteListProcessorTests.m in Sources */,
 				9B2CAF331D23F2990081FA45 /* PlutoHelperAgentTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

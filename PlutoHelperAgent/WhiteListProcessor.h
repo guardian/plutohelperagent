@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (bool) checkIsInWhitelist:(NSString *)thing whiteListName:(NSString *)whiteListName prefix:(BOOL)prefix;
 
++ (bool) checkIsInWhitelistCustom:(NSString *)thing whiteListName:(NSString *)whiteListName prefix:(BOOL)prefix defaults:(NSUserDefaults *)defaults;
+
 @end
 
 NS_ASSUME_NONNULL_END
