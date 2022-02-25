@@ -1,3 +1,8 @@
+/*
+This code was downloaded from this URL: https://github.com/zoul/TestingUserDefaults
+It is used because we need to run tests on the white list processor.
+This involves setting keys in UserDefaults which this code allows us to do in tests.
+ */
 @import Foundation;
 
 @interface CCTestingUserDefaults : NSObject
