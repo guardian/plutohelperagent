@@ -176,7 +176,7 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
         if (!pathGood) {
             NSLog(@"PlutoHelperAgent could not open the folder at: %@ due to its path not being in the white list.", folderToOpen);
             [self basicErrorMessage:@"Could not open folder"
-                    informativeText:[NSString stringWithFormat:@"The folder at %@ could not be opened because its path is not in the white list.", folderToOpen]
+                    informativeText:[NSString stringWithFormat:@"The folder at %@ could not be opened because its path is not in the white list. Please contact multimediatech@theguardian.com if you see this error message.", folderToOpen]
              ];
         }
         
@@ -198,17 +198,17 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
             if (pathGood) {
                 NSLog(@"PlutoHelperAgent could not open the file at: %@ due to its extension not being in the white list.", projectPath);
                 [self basicErrorMessage:@"Could not open file"
-                        informativeText:[NSString stringWithFormat:@"The file at %@ could not be opened because its extension is not in the white list.", projectPath]
+                        informativeText:[NSString stringWithFormat:@"The file at %@ could not be opened because its extension is not in the white list. Please contact multimediatech@theguardian.com if you see this error message.", projectPath]
                  ];
             } else if (extensionGood) {
                 NSLog(@"PlutoHelperAgent could not open the file at: %@ due to its path not being in the white list.", projectPath);
                 [self basicErrorMessage:@"Could not open file"
-                        informativeText:[NSString stringWithFormat:@"The file at %@ could not be opened because its path is not in the white list.", projectPath]
+                        informativeText:[NSString stringWithFormat:@"The file at %@ could not be opened because its path is not in the white list. Please contact multimediatech@theguardian.com if you see this error message.", projectPath]
                  ];
             } else {
                 NSLog(@"PlutoHelperAgent could not open the file at: %@ due to its path and extension not being in the correct white lists.", projectPath);
                 [self basicErrorMessage:@"Could not open file"
-                        informativeText:[NSString stringWithFormat:@"The file at %@ could not be opened because its path and extension are not in the correct white lists.", projectPath]
+                        informativeText:[NSString stringWithFormat:@"The file at %@ could not be opened because its path and extension are not in the correct white lists. Please contact multimediatech@theguardian.com if you see this error message.", projectPath]
                  ];
             }
         }
