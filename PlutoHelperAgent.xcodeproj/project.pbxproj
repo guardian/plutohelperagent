@@ -357,7 +357,7 @@
 				INFOPLIST_FILE = PlutoHelperAgent/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 3;
+				MARKETING_VERSION = 3.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -371,7 +371,7 @@
 				INFOPLIST_FILE = PlutoHelperAgent/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.12;
-				MARKETING_VERSION = 3;
+				MARKETING_VERSION = 3.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
