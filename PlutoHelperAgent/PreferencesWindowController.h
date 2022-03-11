@@ -10,13 +10,8 @@
 
 @interface PreferencesWindowController : NSWindowController
 
-@property NSString *username;
-@property NSString *password;
-@property NSString *statusString;
 @property NSNumber *hasChanged;
 
 - (IBAction)saveClicked:(id)sender;
-
-- (IBAction)testClicked:(id)sender;
 
 @end

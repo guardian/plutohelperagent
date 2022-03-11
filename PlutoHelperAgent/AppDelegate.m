@@ -7,8 +7,8 @@
 //
 
 #import "AppDelegate.h"
-#import "ProjectLockerAndKeychainFunctions.h"
 #import <dispatch/dispatch.h>
+#import "WhiteListProcessor.h"
 
 @interface AppDelegate ()
 
@@ -18,9 +18,6 @@
 @implementation AppDelegate
 @synthesize errorAlert;
 @synthesize statusBar;
-@synthesize connectionWorking;
-
-int connectionAttempts = 0;
 
 - (id)init
 {
@@ -30,30 +27,8 @@ int connectionAttempts = 0;
      andSelector:@selector(getUrl:withReplyEvent:)
  		  forEventClass:kInternetEventClass
      andEventID:kAEGetURL];
-
-    [self addObserver:self
-           forKeyPath:@"connectionWorking"
-              options:NSKeyValueObservingOptionNew
-              context:nil];
-    
+     
     return self;
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath
-                      ofObject:(id)object
-                        change:(NSDictionary<NSString *,id> *)change
-                       context:(void *)context {
-    if([keyPath compare:@"connectionWorking"]==0){
-        NSNumber *newValue = [change valueForKey:NSKeyValueChangeNewKey];
-        if([newValue boolValue]){   //we're now working
-            [self.statusBar setImage:[NSImage imageNamed:@"PlutoIcon"]];
-        } else {    //we're now not working
-            [self.statusBar setImage:[NSImage imageNamed:@"PlutoIconError"]];
-        }
-    } else {
-        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
-    }
-    
 }
 
 - (void)basicErrorMessage:(NSString *)msg informativeText:(NSString *)informativeText
@@ -73,92 +48,66 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
 };
 
 
-- (void)tryOpenProject:(NSString *)projectid
+- (void)tryOpenProject:(NSString *)projectPath
 {
-    [ProjectLockerAndKeychainFunctions get_data_from_server:@"/api/project/"
-                                                           :@"/files"
-                                                           :projectid
-                                          completionHandler:^void (NSURLResponse *response,NSDictionary *filesResult){
-        [ProjectLockerAndKeychainFunctions get_data_from_server:@"/api/storage/"
-                                                               :NULL
-                                                               :filesResult[@"files"][0][@"storage"]
-                                              completionHandler:^(NSURLResponse *response, NSDictionary *storageResult) {
-            if (storageResult[@"result"][@"clientpath"] == NULL) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    NSAlert *alert = [[NSAlert alloc] init];
-                    
-                    [alert addButtonWithTitle:@"Okay"];
-                    
-                    NSString *message = [NSString stringWithFormat: @"No client path on storage ID %@", filesResult[@"files"][0][@"storage"]];
-                    
-                    [alert setMessageText:message];
-                    
-                    [alert setInformativeText:@"Can't open project, because it's on a storage which has no client path set.\n\nPlease contact multimediatech@theguardian.com."];
+
+    NSString *helperScript = [[NSUserDefaults standardUserDefaults] stringForKey:@"local_shell_script"];
+
+    if([helperScript compare:@""]==0){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSAlert *alert = [[NSAlert alloc] init];
+            [alert setMessageText:@"Setup problem"];
+            [alert setInformativeText:@"Your mac does not appear to be set up correctly, no helper script is configured. Please contact multimediatech@theguardian.com."];
+            [alert setAlertStyle:NSWarningAlertStyle];
+            [alert runModal];
+        });
+        return;
+    }
+
+    NSLog(@"Going to run %@ %@", helperScript, projectPath);
+
+    NSTask *task = [[NSTask alloc] init];
+    NSPipe *stdOutPipe = [NSPipe pipe];
+    NSPipe *stdErrPipe = [NSPipe pipe];
+
+    [task setLaunchPath:helperScript];
+    [task setArguments:[NSArray arrayWithObjects:projectPath, nil]];
+    [task setStandardOutput:stdOutPipe];
+    [task setStandardError:stdErrPipe];
+    [task setStandardInput:[NSPipe pipe]];
+
+    [task setTerminationHandler:^(NSTask *finishedTask){
+        if([finishedTask terminationStatus]!=0){
+            NSLog(@"Error attempting to run the script %@ on the path %@. The attempt finished with the status %d.", helperScript, projectPath, [finishedTask terminationStatus]);
+            //[alert runModal] must be called on main thread. See https://stackoverflow.com/questions/4892182/run-method-on-main-thread-from-another-thread
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSAlert *alert = [[NSAlert alloc] init];
+                [alert setMessageText:@"Opening Project Failed"];
+                [alert setInformativeText:[NSString stringWithFormat:@"Couldn’t open your project as it appears you may not have all the required Multimedia production drives mounted.\n\nRestarting your Mac should mount the drives, if they still don’t appear try contacting multimediatech@guardian.co.uk and send a copy of this message."
+                                           ]
+                 ];
+                [alert setAlertStyle:NSWarningAlertStyle];
+                [alert runModal];
+            });
+        }
+        if([finishedTask terminationReason]!=NSTaskTerminationReasonExit){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                NSAlert *alert = [[NSAlert alloc] init];
+                [alert setInformativeText:
+                 [NSString stringWithFormat:@"Open script failed because the open script terminated unexpectedly.\n%@\n%@\nPlease contact multimediatech@theguardian.com and send a copy of this message along with the asset tag number of this computer.",
+                  [self getPipeData:stdOutPipe],
+                  [self getPipeData:stdErrPipe]
+                  ]];
                 
-                    [alert setAlertStyle:NSWarningAlertStyle];
-                
-                    [alert runModal];
-                });
-            } else {
-                NSString *helperScript = [[NSUserDefaults standardUserDefaults] stringForKey:@"local_shell_script"];
-                
-                if([helperScript compare:@""]==0){
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        NSAlert *alert = [[NSAlert alloc] init];
-                        [alert setMessageText:@"Setup problem"];
-                        [alert setInformativeText:@"Your mac does not appear to be set up correctly, no helper script is configured. Please contact multimediatech@theguardian.com."];
-                        [alert setAlertStyle:NSWarningAlertStyle];
-                        [alert runModal];
-                    });
-                    return;
-                }
-                
-                NSString *pathToUse = [NSString stringWithFormat: @"%@/%@", storageResult[@"result"][@"clientpath"], filesResult[@"files"][0][@"filepath"]];
-                NSLog(@"Going to run %@ %@", helperScript, pathToUse);
-                
-                NSTask *task = [[NSTask alloc] init];
-                NSPipe *stdOutPipe = [NSPipe pipe];
-                NSPipe *stdErrPipe = [NSPipe pipe];
-                
-                [task setLaunchPath:helperScript];
-                [task setArguments:[NSArray arrayWithObjects:pathToUse, nil]];
-                [task setStandardOutput:stdOutPipe];
-                [task setStandardError:stdErrPipe];
-                [task setStandardInput:[NSPipe pipe]];
-                
-                [task setTerminationHandler:^(NSTask *finishedTask){
-                    if([finishedTask terminationStatus]!=0){
-                        NSLog(@"Error attempting to run the script %@ on the path %@. The attempt finished with the status %d.", helperScript, pathToUse, [finishedTask terminationStatus]);
-                        //[alert runModal] must be called on main thread. See https://stackoverflow.com/questions/4892182/run-method-on-main-thread-from-another-thread
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            NSAlert *alert = [[NSAlert alloc] init];
-                            [alert setMessageText:@"Opening Project Failed"];
-                            [alert setInformativeText:[NSString stringWithFormat:@"Couldn’t open your project as it appears you may not have all the required Multimedia production drives mounted.\n\nRestarting your Mac should mount the drives, if they still don’t appear try contacting multimediatech@guardian.co.uk and send a copy of this message."
-                                                       ]
-                             ];
-                            [alert setAlertStyle:NSWarningAlertStyle];
-                            [alert runModal];
-                        });
-                    }
-                    if([finishedTask terminationReason]!=NSTaskTerminationReasonExit){
-                        dispatch_async(dispatch_get_main_queue(), ^{
-                            NSAlert *alert = [[NSAlert alloc] init];
-                            [alert setInformativeText:
-                             [NSString stringWithFormat:@"Open script failed because the open script terminated unexpectedly.\n%@\n%@\nPlease contact multimediatech@theguardian.com and send a copy of this message",
-                              [self getPipeData:stdOutPipe],
-                              [self getPipeData:stdErrPipe]
-                              ]];
-                            
-                            [alert setMessageText:@"Open script failed"];
-                            [alert setAlertStyle:NSWarningAlertStyle];
-                            [alert runModal];
-                        });
-                    }
-                }];
-                [task launch];
-            }
-        } errorHandler:errorHandlerBlock];
-    } errorHandler:errorHandlerBlock];
+                [alert setMessageText:@"Open script failed"];
+                [alert setAlertStyle:NSWarningAlertStyle];
+                [alert runModal];
+            });
+        }
+    }];
+    [task launch];
+
+
 }
 
 - (void)showError:(NSString *)showError informativeText:(NSString *)informativeText showPrefs:(BOOL)showPrefs
@@ -221,57 +170,48 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
             [self basicErrorMessage:@"Asset folder not found" informativeText:errorInfo];
             return;
         }
+
+        BOOL pathGood = [WhiteListProcessor checkIsInWhitelist:folderToOpen whiteListName:@"asset_list" prefix:true];
         
-        if (folderToOpen && isDir) {
+        if (!pathGood) {
+            NSLog(@"PlutoHelperAgent could not open the folder at: %@ due to its path not being in the white list.", folderToOpen);
+            [self basicErrorMessage:@"Could not open folder"
+                    informativeText:[NSString stringWithFormat:@"The folder at %@ could not be opened because its path is not in the white list.\n\nPlease contact multimediatech@theguardian.com if you see this error message.", folderToOpen]
+             ];
+        }
+        
+        if (folderToOpen && isDir && pathGood) {
             // Actually perform the action
             [ws openFile:folderToOpen withApplication:@"Finder"];
         }
         
     } else if ([action isEqualToString:@"openproject"]){
+        NSString *projectPath = [parts objectAtIndex:2];
         
-        NSString *projectid = [parts objectAtIndex:2];
+        BOOL pathGood = [WhiteListProcessor checkIsInWhitelist:projectPath whiteListName:@"paths_list" prefix:true];
         
-    
-        [ProjectLockerAndKeychainFunctions check_logged_in:^(enum ReturnValues connectionStatus) {
-
-            switch(connectionStatus){
-                case ALLOK:
-                    [self tryOpenProject:projectid];
-                    break;
-                case PERMISSION_DENIED:
-                    if (connectionAttempts == 0) {
-                        connectionAttempts = connectionAttempts + 1;
-                        NSDictionary *keychainData = [ProjectLockerAndKeychainFunctions load_data_from_keychain];
-                        
-                        [ProjectLockerAndKeychainFunctions login_to_project_server:[keychainData valueForKey:@"username"]
-                                                                          password:[keychainData valueForKey:@"password"]
-                                                                 completionHandler:^(enum ReturnValues loginResult) {
-                            if(loginResult!=ALLOK) {
-                                NSLog(@"Could not log in to projectlocker - error was %lu", (unsigned long)loginResult);
-                                if(loginResult==PERMISSION_DENIED) {
-                                    [self showError:@"Permission Denied" informativeText:@"Please check you have entered your username and password correctly." showPrefs:YES];
-                                }
-                            }
-                        } errorHandler:^(NSURLResponse *response, NSError *err) {
-                            [self setErrorAlert:[err localizedDescription]];
-                            NSLog(@"Could not log in to projectlocker: %@", [err localizedDescription]);
-                        }];
-                        break;
-                    }
-                    [self showError:@"Permission Denied" informativeText:@"Please check you have entered your username and password correctly." showPrefs:YES];
-                    break;
-                case SERVER_ERROR:
-                    [self showError:@"Server Error" informativeText:@"An error occurred on the server. Please report this error to multimediatech@theguardian.com" showPrefs:NO];
-                    break;
-                default:
-                    [self showError:@"Unknown Error" informativeText:@"An unknown error occurred. Please report this error to multimediatech@theguardian.com" showPrefs:NO];
-                    break;
+        BOOL extensionGood = [WhiteListProcessor checkIsInWhitelist:projectPath whiteListName:@"extensions_list" prefix:false];
+              
+        if (pathGood && extensionGood) {
+            [self tryOpenProject:projectPath];
+        } else {
+            if (pathGood) {
+                NSLog(@"PlutoHelperAgent could not open the file at: %@ due to its extension not being in the white list.", projectPath);
+                [self basicErrorMessage:@"Could not open file"
+                        informativeText:[NSString stringWithFormat:@"The file at %@ could not be opened because its extension is not in the white list.\n\nPlease contact multimediatech@theguardian.com if you see this error message.", projectPath]
+                 ];
+            } else if (extensionGood) {
+                NSLog(@"PlutoHelperAgent could not open the file at: %@ due to its path not being in the white list.", projectPath);
+                [self basicErrorMessage:@"Could not open file"
+                        informativeText:[NSString stringWithFormat:@"The file at %@ could not be opened because its path is not in the white list.\n\nPlease contact multimediatech@theguardian.com if you see this error message.", projectPath]
+                 ];
+            } else {
+                NSLog(@"PlutoHelperAgent could not open the file at: %@ due to its path and extension not being in the correct white lists.", projectPath);
+                [self basicErrorMessage:@"Could not open file"
+                        informativeText:[NSString stringWithFormat:@"The file at %@ could not be opened because its path and extension are not in the correct white lists.\n\nPlease contact multimediatech@theguardian.com if you see this error message.", projectPath]
+                 ];
             }
-            
-            } errorHandler:^(NSURLResponse *response, NSError *error) {
-                [self basicErrorMessage:@"Error Checking Log In Status" informativeText:@"An error occurred when attempting to check if the user is logged in."];
-                NSLog(@"Error Checking Log In Status: %@", error);
-        }];
+        }
 
     } else {
         NSLog(@"%@ is not a recognised action for this helper", action);
@@ -293,32 +233,14 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
     self.statusBar = [[NSStatusBar systemStatusBar] statusItemWithLength:NSVariableStatusItemLength];
     
     //set up the status bar
-    //self.statusBar.image = [NSImage imageNamed:@"PlutoIcon"];
+    self.statusBar.image = [NSImage imageNamed:@"PlutoIcon"];
     self.statusBar.menu = self.statusMenu;
     self.statusBar.highlightMode = YES;
-    [self setConnectionWorking:[NSNumber numberWithBool:YES]];
-    
-    NSDictionary *keychainData = [ProjectLockerAndKeychainFunctions load_data_from_keychain];
-    
-    [ProjectLockerAndKeychainFunctions login_to_project_server:[keychainData valueForKey:@"username"]
-                                                      password:[keychainData valueForKey:@"password"]
-                                             completionHandler:^(enum ReturnValues loginResult) {
-        if(loginResult!=ALLOK) {
-            [self setConnectionWorking:[NSNumber numberWithBool:NO]];
-            [self setErrorAlert:@"Could not log in to projectlocker"];
-            NSLog(@"Could not log in to projectlocker - error was %lu", (unsigned long)loginResult);
-        }
-    } errorHandler:^(NSURLResponse *response, NSError *err) {
-        self.statusBar.image = [NSImage imageNamed:@"PlutoIconError"];
-        [self setErrorAlert:[err localizedDescription]];
-        NSLog(@"Could not log in to projectlocker: %@", [err localizedDescription]);
-    }];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
     // Insert code here to tear down your application
     NSLog(@"Application about to quit.");
-//    [ProjectLockerAndKeychainFunctions logout_of_project_server];
 //    sleep(1);
 }
 

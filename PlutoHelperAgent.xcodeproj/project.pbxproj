@@ -8,7 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		557A42CA20446B4F00CC23AF /* PreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 557A42C820446B4F00CC23AF /* PreferencesWindowController.m */; };
-		55969406204D52C900FEF363 /* ProjectLockerAndKeychainFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 55969405204D52C900FEF363 /* ProjectLockerAndKeychainFunctions.m */; };
+		900DDA9327C4E89D000F2906 /* WhiteListProcessorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 900DDA9227C4E89D000F2906 /* WhiteListProcessorTests.m */; };
+		900DDAA127C506A7000F2906 /* CCTestingUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 900DDA9F27C506A7000F2906 /* CCTestingUserDefaults.m */; };
+		903F969C27C3D8280074AF72 /* WhiteListProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 903F969B27C3D8280074AF72 /* WhiteListProcessor.m */; };
 		9B2CAF201D23F2990081FA45 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2CAF1F1D23F2990081FA45 /* AppDelegate.m */; };
 		9B2CAF221D23F2990081FA45 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2CAF211D23F2990081FA45 /* main.m */; };
 		9B2CAF241D23F2990081FA45 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B2CAF231D23F2990081FA45 /* Images.xcassets */; };
@@ -30,8 +32,11 @@
 /* Begin PBXFileReference section */
 		557A42C720446B4F00CC23AF /* PreferencesWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PreferencesWindowController.h; sourceTree = "<group>"; };
 		557A42C820446B4F00CC23AF /* PreferencesWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreferencesWindowController.m; sourceTree = "<group>"; };
-		55969405204D52C900FEF363 /* ProjectLockerAndKeychainFunctions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProjectLockerAndKeychainFunctions.m; sourceTree = "<group>"; };
-		55969407204D563B00FEF363 /* ProjectLockerAndKeychainFunctions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProjectLockerAndKeychainFunctions.h; sourceTree = "<group>"; };
+		900DDA9227C4E89D000F2906 /* WhiteListProcessorTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WhiteListProcessorTests.m; sourceTree = "<group>"; };
+		900DDA9F27C506A7000F2906 /* CCTestingUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCTestingUserDefaults.m; sourceTree = "<group>"; };
+		900DDAA027C506A7000F2906 /* CCTestingUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCTestingUserDefaults.h; sourceTree = "<group>"; };
+		903F969A27C3D8280074AF72 /* WhiteListProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WhiteListProcessor.h; sourceTree = "<group>"; };
+		903F969B27C3D8280074AF72 /* WhiteListProcessor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WhiteListProcessor.m; sourceTree = "<group>"; };
 		9B2CAF191D23F2990081FA45 /* PlutoHelperAgent.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlutoHelperAgent.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B2CAF1D1D23F2990081FA45 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9B2CAF1E1D23F2990081FA45 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -86,13 +91,15 @@
 			children = (
 				9B2CAF1E1D23F2990081FA45 /* AppDelegate.h */,
 				9B2CAF1F1D23F2990081FA45 /* AppDelegate.m */,
+				903F969A27C3D8280074AF72 /* WhiteListProcessor.h */,
+				903F969B27C3D8280074AF72 /* WhiteListProcessor.m */,
 				9B2CAF231D23F2990081FA45 /* Images.xcassets */,
 				9B2CAF251D23F2990081FA45 /* MainMenu.xib */,
 				557A42C720446B4F00CC23AF /* PreferencesWindowController.h */,
 				557A42C820446B4F00CC23AF /* PreferencesWindowController.m */,
+				900DDAA027C506A7000F2906 /* CCTestingUserDefaults.h */,
+				900DDA9F27C506A7000F2906 /* CCTestingUserDefaults.m */,
 				9B2CAF1C1D23F2990081FA45 /* Supporting Files */,
-				55969405204D52C900FEF363 /* ProjectLockerAndKeychainFunctions.m */,
-				55969407204D563B00FEF363 /* ProjectLockerAndKeychainFunctions.h */,
 				9BEBABC920651EF80056A62F /* PrefsCloseTransformer.m */,
 			);
 			path = PlutoHelperAgent;
@@ -111,6 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				9B2CAF321D23F2990081FA45 /* PlutoHelperAgentTests.m */,
+				900DDA9227C4E89D000F2906 /* WhiteListProcessorTests.m */,
 				9B2CAF301D23F2990081FA45 /* Supporting Files */,
 			);
 			path = PlutoHelperAgentTests;
@@ -225,8 +233,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				9BEBABCA20651EF80056A62F /* PrefsCloseTransformer.m in Sources */,
-				55969406204D52C900FEF363 /* ProjectLockerAndKeychainFunctions.m in Sources */,
 				9B2CAF221D23F2990081FA45 /* main.m in Sources */,
+				903F969C27C3D8280074AF72 /* WhiteListProcessor.m in Sources */,
+				900DDAA127C506A7000F2906 /* CCTestingUserDefaults.m in Sources */,
 				557A42CA20446B4F00CC23AF /* PreferencesWindowController.m in Sources */,
 				9B2CAF201D23F2990081FA45 /* AppDelegate.m in Sources */,
 			);
@@ -236,6 +245,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				900DDA9327C4E89D000F2906 /* WhiteListProcessorTests.m in Sources */,
 				9B2CAF331D23F2990081FA45 /* PlutoHelperAgentTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -296,7 +306,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -332,7 +342,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 			};
@@ -346,8 +356,8 @@
 				CURRENT_PROJECT_VERSION = 3;
 				INFOPLIST_FILE = PlutoHelperAgent/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				MARKETING_VERSION = 2.2;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MARKETING_VERSION = 3.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -360,8 +370,8 @@
 				CURRENT_PROJECT_VERSION = 3;
 				INFOPLIST_FILE = PlutoHelperAgent/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
-				MARKETING_VERSION = 2.2;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
+				MARKETING_VERSION = 3.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

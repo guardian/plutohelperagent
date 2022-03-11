@@ -13,7 +13,6 @@
 
 @property (weak) IBOutlet NSMenu *statusMenu;
 @property (strong, nonatomic) NSStatusItem *statusBar;
-@property (strong) NSNumber *connectionWorking;
 
 @property PreferencesWindowController *preferencesWindowController;
 
@@ -24,5 +23,3 @@
 - (IBAction)preferencesClicked:(id)sender;
 
 @end
-
-extern int connectionAttempts;
