@@ -25,7 +25,9 @@
                 return true;
             }
         } else {
-            if ([thing hasSuffix:item[@"string"]]) {
+            NSArray *parts = [thing componentsSeparatedByString:@"?"];
+            NSString *partZero = [parts objectAtIndex:0];
+            if ([partZero hasSuffix:item[@"string"]]) {
                 return true;
             }
         }

@@ -11,6 +11,7 @@
 		900DDA9327C4E89D000F2906 /* WhiteListProcessorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 900DDA9227C4E89D000F2906 /* WhiteListProcessorTests.m */; };
 		900DDAA127C506A7000F2906 /* CCTestingUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 900DDA9F27C506A7000F2906 /* CCTestingUserDefaults.m */; };
 		903F969C27C3D8280074AF72 /* WhiteListProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 903F969B27C3D8280074AF72 /* WhiteListProcessor.m */; };
+		907744ED27F31AC20046E567 /* XMLDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 907744EC27F31AC20046E567 /* XMLDictionary.m */; };
 		9B2CAF201D23F2990081FA45 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2CAF1F1D23F2990081FA45 /* AppDelegate.m */; };
 		9B2CAF221D23F2990081FA45 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2CAF211D23F2990081FA45 /* main.m */; };
 		9B2CAF241D23F2990081FA45 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B2CAF231D23F2990081FA45 /* Images.xcassets */; };
@@ -37,6 +38,8 @@
 		900DDAA027C506A7000F2906 /* CCTestingUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCTestingUserDefaults.h; sourceTree = "<group>"; };
 		903F969A27C3D8280074AF72 /* WhiteListProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WhiteListProcessor.h; sourceTree = "<group>"; };
 		903F969B27C3D8280074AF72 /* WhiteListProcessor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WhiteListProcessor.m; sourceTree = "<group>"; };
+		907744EB27F31AC20046E567 /* XMLDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLDictionary.h; sourceTree = "<group>"; };
+		907744EC27F31AC20046E567 /* XMLDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XMLDictionary.m; sourceTree = "<group>"; };
 		9B2CAF191D23F2990081FA45 /* PlutoHelperAgent.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlutoHelperAgent.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B2CAF1D1D23F2990081FA45 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9B2CAF1E1D23F2990081FA45 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -89,6 +92,8 @@
 		9B2CAF1B1D23F2990081FA45 /* PlutoHelperAgent */ = {
 			isa = PBXGroup;
 			children = (
+				907744EB27F31AC20046E567 /* XMLDictionary.h */,
+				907744EC27F31AC20046E567 /* XMLDictionary.m */,
 				9B2CAF1E1D23F2990081FA45 /* AppDelegate.h */,
 				9B2CAF1F1D23F2990081FA45 /* AppDelegate.m */,
 				903F969A27C3D8280074AF72 /* WhiteListProcessor.h */,
@@ -235,6 +240,7 @@
 				9BEBABCA20651EF80056A62F /* PrefsCloseTransformer.m in Sources */,
 				9B2CAF221D23F2990081FA45 /* main.m in Sources */,
 				903F969C27C3D8280074AF72 /* WhiteListProcessor.m in Sources */,
+				907744ED27F31AC20046E567 /* XMLDictionary.m in Sources */,
 				900DDAA127C506A7000F2906 /* CCTestingUserDefaults.m in Sources */,
 				557A42CA20446B4F00CC23AF /* PreferencesWindowController.m in Sources */,
 				9B2CAF201D23F2990081FA45 /* AppDelegate.m in Sources */,

@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import <dispatch/dispatch.h>
 #import "WhiteListProcessor.h"
+#import "XMLDictionary.h"
 
 @interface AppDelegate ()
 
@@ -126,6 +127,31 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
     });
 }
 
+- (NSMutableDictionary *)parseUrlQueryToDiction:(NSString *)url {
+    NSMutableDictionary *queryStringDictionary = [[NSMutableDictionary alloc] init];
+    NSRange range = [url rangeOfString:@"?"];
+    if (range.location == NSNotFound) {
+        return queryStringDictionary;
+    }
+    url = [url substringFromIndex:(range.location + 1)];
+    range = [url rangeOfString:@"#"];
+    if (range.location != NSNotFound) {
+        url = [url substringToIndex:(range.location)];
+    }
+    NSArray *urlComponents = [url componentsSeparatedByString:@"&"];
+    for (NSString *keyValuePair in urlComponents)
+    {
+        NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
+        NSString *key = [[pairComponents firstObject] stringByRemovingPercentEncoding];
+        NSString *value = [[pairComponents lastObject] stringByRemovingPercentEncoding];
+        if ([key length] == 0) {
+            continue;
+        }
+        [queryStringDictionary setObject:value forKey:key];
+    }
+    return queryStringDictionary;
+}
+
 -    (void)getUrl:(NSAppleEventDescriptor *)event
    withReplyEvent:(NSAppleEventDescriptor *)replyEvent
 {
@@ -138,6 +164,8 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
     
     // Check the action, and then perform it
     NSString *action = [parts objectAtIndex:1];
+    
+    NSDictionary * urlParams = [self parseUrlQueryToDiction:url];
     
     // Check the action string to see if we recognise it
     
@@ -193,7 +221,46 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
         BOOL extensionGood = [WhiteListProcessor checkIsInWhitelist:projectPath whiteListName:@"extensions_list" prefix:false];
               
         if (pathGood && extensionGood) {
-            [self tryOpenProject:projectPath];
+            NSArray *pathParts = [projectPath componentsSeparatedByString:@"?"];
+            NSString *partZero = [pathParts objectAtIndex:0];
+            if (urlParams[@"premiereVersion"]) {
+                NSDictionary * premiereVersions = [[NSUserDefaults standardUserDefaults] objectForKey:@"Premiere_versions"];
+                if (premiereVersions[urlParams[@"premiereVersion"]]) {
+                    NSTask *openTask = [[NSTask alloc] init];
+                    [openTask setLaunchPath:@"/usr/bin/open"];
+                    [openTask setCurrentDirectoryPath:@"/"];
+                    [openTask setArguments:@[ premiereVersions[urlParams[@"premiereVersion"]], partZero ]];
+                    [openTask launch];
+                } else {
+                    NSArray *pathPartsTwo = [partZero componentsSeparatedByString:@"/"];
+                    NSString *lastPart = [pathPartsTwo lastObject];
+                    NSArray *versionsArray = [premiereVersions allKeys];
+                    NSMutableArray *processedVersionsArray = [NSMutableArray new];
+                    for (id version in versionsArray) {
+                        NSString *versionForProcessing = version;
+                        NSUInteger numberOfOccurrencesInVersion = [[versionForProcessing componentsSeparatedByString:@"."] count] - 1;
+                        if (numberOfOccurrencesInVersion == 0) {
+                            versionForProcessing = [NSString stringWithFormat:@"%@00", versionForProcessing];
+                        } else if (numberOfOccurrencesInVersion == 1) {
+                            versionForProcessing = [NSString stringWithFormat:@"%@0", versionForProcessing];
+                        }
+                        versionForProcessing = [versionForProcessing stringByReplacingOccurrencesOfString:@"." withString:@""];
+                        [processedVersionsArray addObject:versionForProcessing];
+                    }
+                    NSArray *sortedProcessedVersionsArray = [processedVersionsArray sortedArrayUsingComparator:
+                                                ^NSComparisonResult(id obj1, id obj2){
+                                                    return [obj2 compare:obj1];
+                                                }];
+                    NSMutableString *requiredVersion = sortedProcessedVersionsArray[0];
+                    NSUInteger stringLength = [requiredVersion length];
+                    [requiredVersion insertString:@"." atIndex:stringLength-2];
+                    [requiredVersion insertString:@"." atIndex:stringLength];
+                    NSString *plutoURL = [NSString stringWithFormat:@"%@pluto-core/file/changePremiereVersion?project=%@&requiredVersion=%@", [[NSUserDefaults standardUserDefaults] stringForKey:@"pluto_url"], lastPart, requiredVersion];
+                    [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:plutoURL]];
+                }
+            } else {
+                [self tryOpenProject:partZero];
+            }
         } else {
             if (pathGood) {
                 NSLog(@"PlutoHelperAgent could not open the file at: %@ due to its extension not being in the white list.", projectPath);
@@ -227,6 +294,27 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
     NSData *d = [fp readDataToEndOfFile];
     return [[NSString alloc] initWithData:d encoding:NSUTF8StringEncoding];
 }
+   
+- (void)getVersionData {
+    NSTask *task = [[NSTask alloc] init];
+    [task setLaunchPath:@"/usr/sbin/system_profiler"];
+    [task setArguments:@[ @"SPApplicationsDataType", @"-xml" ]];
+    [task setCurrentDirectoryPath:@"/"];
+    NSPipe *outputData = [NSPipe pipe];
+    [task setStandardOutput:outputData];
+    [task launch];
+    NSFileHandle * read = [outputData fileHandleForReading];
+    NSData * dataRead = [read readDataToEndOfFile];
+    [task waitUntilExit];
+    NSDictionary *xmlDoc = [NSDictionary dictionaryWithXMLData:dataRead];
+    NSMutableDictionary *premiereVersions = [NSMutableDictionary dictionary];
+    for (id element in xmlDoc[@"array"][@"dict"][@"array"][1][@"dict"]) {
+        if (!([element[@"string"][0] rangeOfString:@"Adobe Premiere Pro"].location == NSNotFound)) {
+            premiereVersions[[element[@"string"] lastObject]] = element[@"string"][4];
+        }
+    }
+    [[NSUserDefaults standardUserDefaults] setObject:premiereVersions forKey:@"Premiere_versions"];
+}
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
@@ -236,6 +324,7 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
     self.statusBar.image = [NSImage imageNamed:@"PlutoIcon"];
     self.statusBar.menu = self.statusMenu;
     self.statusBar.highlightMode = YES;
+    [self getVersionData];
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
