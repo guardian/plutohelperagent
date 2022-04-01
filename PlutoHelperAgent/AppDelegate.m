@@ -223,7 +223,7 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
         if (pathGood && extensionGood) {
             NSArray *pathParts = [projectPath componentsSeparatedByString:@"?"];
             NSString *partZero = [pathParts objectAtIndex:0];
-            if (urlParams[@"premiereVersion"]) {
+            if ((urlParams[@"premiereVersion"]) && (!urlParams[@"force"])) {
                 NSDictionary * premiereVersions = [[NSUserDefaults standardUserDefaults] objectForKey:@"Premiere_versions"];
                 if (premiereVersions[urlParams[@"premiereVersion"]]) {
                     NSTask *openTask = [[NSTask alloc] init];
@@ -232,8 +232,6 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
                     [openTask setArguments:@[ premiereVersions[urlParams[@"premiereVersion"]], partZero ]];
                     [openTask launch];
                 } else {
-                    NSArray *pathPartsTwo = [partZero componentsSeparatedByString:@"/"];
-                    NSString *lastPart = [pathPartsTwo lastObject];
                     NSArray *versionsArray = [premiereVersions allKeys];
                     NSMutableArray *processedVersionsArray = [NSMutableArray new];
                     for (id version in versionsArray) {
@@ -245,6 +243,10 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
                             versionForProcessing = [NSString stringWithFormat:@"%@0", versionForProcessing];
                         }
                         versionForProcessing = [versionForProcessing stringByReplacingOccurrencesOfString:@"." withString:@""];
+                        NSUInteger versionStringLength = [versionForProcessing length];
+                        if (versionStringLength == 3) {
+                            versionForProcessing = [NSString stringWithFormat:@"0%@", versionForProcessing];
+                        }
                         [processedVersionsArray addObject:versionForProcessing];
                     }
                     NSArray *sortedProcessedVersionsArray = [processedVersionsArray sortedArrayUsingComparator:
@@ -255,7 +257,7 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
                     NSUInteger stringLength = [requiredVersion length];
                     [requiredVersion insertString:@"." atIndex:stringLength-2];
                     [requiredVersion insertString:@"." atIndex:stringLength];
-                    NSString *plutoURL = [NSString stringWithFormat:@"%@pluto-core/file/changePremiereVersion?project=%@&requiredVersion=%@", [[NSUserDefaults standardUserDefaults] stringForKey:@"pluto_url"], lastPart, requiredVersion];
+                    NSString *plutoURL = [NSString stringWithFormat:@"%@pluto-core/file/changePremiereVersion?project=%@&requiredVersion=%@", [[NSUserDefaults standardUserDefaults] stringForKey:@"pluto_url"], partZero, requiredVersion];
                     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:plutoURL]];
                 }
             } else {
@@ -310,7 +312,14 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
     NSMutableDictionary *premiereVersions = [NSMutableDictionary dictionary];
     for (id element in xmlDoc[@"array"][@"dict"][@"array"][1][@"dict"]) {
         if (!([element[@"string"][0] rangeOfString:@"Adobe Premiere Pro"].location == NSNotFound)) {
-            premiereVersions[[element[@"string"] lastObject]] = element[@"string"][4];
+            NSString *versionForKey = [element[@"string"] lastObject];
+            NSUInteger numberOfOccurrencesInVersion = [[versionForKey componentsSeparatedByString:@"."] count] - 1;
+            if (numberOfOccurrencesInVersion == 0) {
+                versionForKey = [NSString stringWithFormat:@"%@.0.0", versionForKey];
+            } else if (numberOfOccurrencesInVersion == 1) {
+                versionForKey = [NSString stringWithFormat:@"%@.0", versionForKey];
+            }
+            premiereVersions[versionForKey] = element[@"string"][4];
         }
     }
     [[NSUserDefaults standardUserDefaults] setObject:premiereVersions forKey:@"Premiere_versions"];
