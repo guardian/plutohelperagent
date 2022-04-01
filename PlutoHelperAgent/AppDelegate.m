@@ -257,6 +257,10 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
                     NSUInteger stringLength = [requiredVersion length];
                     [requiredVersion insertString:@"." atIndex:stringLength-2];
                     [requiredVersion insertString:@"." atIndex:stringLength];
+                    if ([[requiredVersion substringToIndex:1] isEqualTo:@"0"]) {
+                        NSRange range = {0,1};
+                        [requiredVersion deleteCharactersInRange:range];
+                    }
                     NSString *plutoURL = [NSString stringWithFormat:@"%@pluto-core/file/changePremiereVersion?project=%@&requiredVersion=%@", [[NSUserDefaults standardUserDefaults] stringForKey:@"pluto_url"], partZero, requiredVersion];
                     [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:plutoURL]];
                 }
