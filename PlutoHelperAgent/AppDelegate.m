@@ -229,7 +229,7 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
                     NSTask *openTask = [[NSTask alloc] init];
                     [openTask setLaunchPath:@"/usr/bin/open"];
                     [openTask setCurrentDirectoryPath:@"/"];
-                    [openTask setArguments:@[ premiereVersions[urlParams[@"premiereVersion"]], partZero ]];
+                    [openTask setArguments:@[ @"-a", premiereVersions[urlParams[@"premiereVersion"]], partZero ]];
                     [openTask launch];
                 } else {
                     NSArray *versionsArray = [premiereVersions allKeys];
