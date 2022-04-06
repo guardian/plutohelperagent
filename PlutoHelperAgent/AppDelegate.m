@@ -308,7 +308,7 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
 // getVersionData uses the built in macOS application system_profiler to output XML about all applications installed on the computer.
 // This XML data is then processed, searching for data about just those applications who's name contains the string 'Adobe Premiere Pro'.
 // The version numbers and paths found are then stored in a NSUserPreferences key for later use.
-// Please note that this function may take a few seconds or as much as several minutes to run if the computer is connected a slow storage device.
+// Please note that this function may take a few seconds or as much as several minutes to run if the computer is connected to a slow storage device.
 - (void)getVersionData {
     NSTask *task = [[NSTask alloc] init];
     [task setLaunchPath:@"/usr/sbin/system_profiler"];
