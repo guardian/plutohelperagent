@@ -10,6 +10,7 @@
 #import <dispatch/dispatch.h>
 #import "WhiteListProcessor.h"
 #import "XMLDictionary.h"
+#import "GetRequiredVersion.h"
 
 @interface AppDelegate ()
 
@@ -152,34 +153,6 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
     return queryStringDictionary;
 }
 
-- (NSString *) getRequiredVersion:(NSArray *)versionsArray {
-    NSMutableArray *processedVersionsArray = [NSMutableArray new];
-    for (id version in versionsArray) {
-        NSString *versionForProcessing = version;
-        NSUInteger numberOfOccurrencesInVersion = [[versionForProcessing componentsSeparatedByString:@"."] count] - 1;
-        if (numberOfOccurrencesInVersion == 0) {
-            versionForProcessing = [NSString stringWithFormat:@"%@00", versionForProcessing];
-        } else if (numberOfOccurrencesInVersion == 1) {
-            versionForProcessing = [NSString stringWithFormat:@"%@0", versionForProcessing];
-        }
-        NSUInteger versionStringLength = [versionForProcessing length];
-        if (versionStringLength == 5) {
-            versionForProcessing = [NSString stringWithFormat:@"0%@", versionForProcessing];
-        }
-        [processedVersionsArray addObject:versionForProcessing];
-    }
-    NSArray *sortedProcessedVersionsArray = [processedVersionsArray sortedArrayUsingComparator:
-                                ^NSComparisonResult(id obj1, id obj2){
-                                    return [obj2 compare:obj1];
-                                }];
-    NSMutableString *requiredVersion = sortedProcessedVersionsArray[0];
-    if ([[requiredVersion substringToIndex:1] isEqualTo:@"0"]) {
-        NSRange range = {0,1};
-        [requiredVersion deleteCharactersInRange:range];
-    }
-    return requiredVersion;
-}
-
 - (void) processVersion:(NSString *)premiereVersion filePath:(NSString *)filePath {
     NSDictionary * premiereVersions = [[NSUserDefaults standardUserDefaults] objectForKey:@"Premiere_versions"];
     if (premiereVersions[premiereVersion]) {
@@ -189,7 +162,7 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
         [openTask setArguments:@[ @"-a", premiereVersions[premiereVersion], filePath ]];
         [openTask launch];
     } else {
-        NSString *requiredVersion = [self getRequiredVersion:[premiereVersions allKeys]];
+        NSString *requiredVersion = [GetRequiredVersion getRequiredVersion:[premiereVersions allKeys]];
         NSString *plutoURL = [NSString stringWithFormat:@"%@pluto-core/file/changePremiereVersion?project=%@&requiredVersion=%@", [[NSUserDefaults standardUserDefaults] stringForKey:@"pluto_url"], filePath, requiredVersion];
         [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:plutoURL]];
     }
@@ -265,11 +238,11 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
               
         if (pathGood && extensionGood) {
             NSArray *pathParts = [projectPath componentsSeparatedByString:@"?"];
-            NSString *partZero = [pathParts objectAtIndex:0];
+            NSString *pathPartZero = [pathParts objectAtIndex:0];
             if ((urlParams[@"premiereVersion"]) && (!urlParams[@"force"])) {
-                [self processVersion:urlParams[@"premiereVersion"] filePath:partZero];
+                [self processVersion:urlParams[@"premiereVersion"] filePath:pathPartZero];
             } else {
-                [self tryOpenProject:partZero];
+                [self tryOpenProject:pathPartZero];
             }
         } else {
             if (pathGood) {
