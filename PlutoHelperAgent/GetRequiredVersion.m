@@ -33,7 +33,6 @@
     NSString *requiredVersion = sortedProcessedVersionsArray[0];
     if ([[requiredVersion substringToIndex:1] isEqualTo:@"0"]) {
         requiredVersion = [requiredVersion substringFromIndex:1];
-        //return [requiredVersion substringFromIndex:1];
     }
     return requiredVersion;
 }
