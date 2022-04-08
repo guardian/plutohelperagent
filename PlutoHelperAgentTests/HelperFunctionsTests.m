@@ -49,7 +49,6 @@
 
 - (void)testParseUrlQueryToDiction {
     NSMutableDictionary *outputDictionary = [HelperFunctions parseURLQueryToDictionary:@"http://test/test.html?test=1&test2=2&test3=3"];
-    NSLog(@"dictionary: %@", outputDictionary);
     NSDictionary *testDictionary = @{ @"test"  : @"1",
                                       @"test2" : @"2",
                                       @"test3" : @"3" };
