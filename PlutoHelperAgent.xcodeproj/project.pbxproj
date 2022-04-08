@@ -10,8 +10,8 @@
 		557A42CA20446B4F00CC23AF /* PreferencesWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 557A42C820446B4F00CC23AF /* PreferencesWindowController.m */; };
 		900DDA9327C4E89D000F2906 /* WhiteListProcessorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 900DDA9227C4E89D000F2906 /* WhiteListProcessorTests.m */; };
 		900DDAA127C506A7000F2906 /* CCTestingUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = 900DDA9F27C506A7000F2906 /* CCTestingUserDefaults.m */; };
-		902B5F1127FF2DF1006952F1 /* GetRequiredVersion.m in Sources */ = {isa = PBXBuildFile; fileRef = 902B5F1027FF2DF1006952F1 /* GetRequiredVersion.m */; };
-		902B5F1527FF3150006952F1 /* GetRequiredVersionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 902B5F1427FF3150006952F1 /* GetRequiredVersionTests.m */; };
+		900E8763280048750005ADE1 /* HelperFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = 900E8762280048750005ADE1 /* HelperFunctions.m */; };
+		902B5F1527FF3150006952F1 /* HelperFunctionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 902B5F1427FF3150006952F1 /* HelperFunctionsTests.m */; };
 		903F969C27C3D8280074AF72 /* WhiteListProcessor.m in Sources */ = {isa = PBXBuildFile; fileRef = 903F969B27C3D8280074AF72 /* WhiteListProcessor.m */; };
 		907744ED27F31AC20046E567 /* XMLDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = 907744EC27F31AC20046E567 /* XMLDictionary.m */; };
 		9B2CAF201D23F2990081FA45 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9B2CAF1F1D23F2990081FA45 /* AppDelegate.m */; };
@@ -38,9 +38,9 @@
 		900DDA9227C4E89D000F2906 /* WhiteListProcessorTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WhiteListProcessorTests.m; sourceTree = "<group>"; };
 		900DDA9F27C506A7000F2906 /* CCTestingUserDefaults.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CCTestingUserDefaults.m; sourceTree = "<group>"; };
 		900DDAA027C506A7000F2906 /* CCTestingUserDefaults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CCTestingUserDefaults.h; sourceTree = "<group>"; };
-		902B5F0F27FF2DF1006952F1 /* GetRequiredVersion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GetRequiredVersion.h; sourceTree = "<group>"; };
-		902B5F1027FF2DF1006952F1 /* GetRequiredVersion.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GetRequiredVersion.m; sourceTree = "<group>"; };
-		902B5F1427FF3150006952F1 /* GetRequiredVersionTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GetRequiredVersionTests.m; sourceTree = "<group>"; };
+		900E8761280048750005ADE1 /* HelperFunctions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HelperFunctions.h; sourceTree = "<group>"; };
+		900E8762280048750005ADE1 /* HelperFunctions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HelperFunctions.m; sourceTree = "<group>"; };
+		902B5F1427FF3150006952F1 /* HelperFunctionsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HelperFunctionsTests.m; sourceTree = "<group>"; };
 		903F969A27C3D8280074AF72 /* WhiteListProcessor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WhiteListProcessor.h; sourceTree = "<group>"; };
 		903F969B27C3D8280074AF72 /* WhiteListProcessor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WhiteListProcessor.m; sourceTree = "<group>"; };
 		907744EB27F31AC20046E567 /* XMLDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLDictionary.h; sourceTree = "<group>"; };
@@ -101,8 +101,8 @@
 				907744EC27F31AC20046E567 /* XMLDictionary.m */,
 				9B2CAF1E1D23F2990081FA45 /* AppDelegate.h */,
 				9B2CAF1F1D23F2990081FA45 /* AppDelegate.m */,
-				902B5F0F27FF2DF1006952F1 /* GetRequiredVersion.h */,
-				902B5F1027FF2DF1006952F1 /* GetRequiredVersion.m */,
+				900E8761280048750005ADE1 /* HelperFunctions.h */,
+				900E8762280048750005ADE1 /* HelperFunctions.m */,
 				903F969A27C3D8280074AF72 /* WhiteListProcessor.h */,
 				903F969B27C3D8280074AF72 /* WhiteListProcessor.m */,
 				9B2CAF231D23F2990081FA45 /* Images.xcassets */,
@@ -131,7 +131,7 @@
 			children = (
 				9B2CAF321D23F2990081FA45 /* PlutoHelperAgentTests.m */,
 				900DDA9227C4E89D000F2906 /* WhiteListProcessorTests.m */,
-				902B5F1427FF3150006952F1 /* GetRequiredVersionTests.m */,
+				902B5F1427FF3150006952F1 /* HelperFunctionsTests.m */,
 				9B2CAF301D23F2990081FA45 /* Supporting Files */,
 			);
 			path = PlutoHelperAgentTests;
@@ -245,13 +245,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				900E8763280048750005ADE1 /* HelperFunctions.m in Sources */,
 				9BEBABCA20651EF80056A62F /* PrefsCloseTransformer.m in Sources */,
 				9B2CAF221D23F2990081FA45 /* main.m in Sources */,
 				903F969C27C3D8280074AF72 /* WhiteListProcessor.m in Sources */,
 				907744ED27F31AC20046E567 /* XMLDictionary.m in Sources */,
 				900DDAA127C506A7000F2906 /* CCTestingUserDefaults.m in Sources */,
 				557A42CA20446B4F00CC23AF /* PreferencesWindowController.m in Sources */,
-				902B5F1127FF2DF1006952F1 /* GetRequiredVersion.m in Sources */,
 				9B2CAF201D23F2990081FA45 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -262,7 +262,7 @@
 			files = (
 				900DDA9327C4E89D000F2906 /* WhiteListProcessorTests.m in Sources */,
 				9B2CAF331D23F2990081FA45 /* PlutoHelperAgentTests.m in Sources */,
-				902B5F1527FF3150006952F1 /* GetRequiredVersionTests.m in Sources */,
+				902B5F1527FF3150006952F1 /* HelperFunctionsTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

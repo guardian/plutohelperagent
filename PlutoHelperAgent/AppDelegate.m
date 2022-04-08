@@ -10,7 +10,7 @@
 #import <dispatch/dispatch.h>
 #import "WhiteListProcessor.h"
 #import "XMLDictionary.h"
-#import "GetRequiredVersion.h"
+#import "HelperFunctions.h"
 
 @interface AppDelegate ()
 
@@ -128,31 +128,6 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
     });
 }
 
-- (NSMutableDictionary *)parseUrlQueryToDiction:(NSString *)url {
-    NSMutableDictionary *queryStringDictionary = [[NSMutableDictionary alloc] init];
-    NSRange range = [url rangeOfString:@"?"];
-    if (range.location == NSNotFound) {
-        return queryStringDictionary;
-    }
-    url = [url substringFromIndex:(range.location + 1)];
-    range = [url rangeOfString:@"#"];
-    if (range.location != NSNotFound) {
-        url = [url substringToIndex:(range.location)];
-    }
-    NSArray *urlComponents = [url componentsSeparatedByString:@"&"];
-    for (NSString *keyValuePair in urlComponents)
-    {
-        NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-        NSString *key = [[pairComponents firstObject] stringByRemovingPercentEncoding];
-        NSString *value = [[pairComponents lastObject] stringByRemovingPercentEncoding];
-        if ([key length] == 0) {
-            continue;
-        }
-        [queryStringDictionary setObject:value forKey:key];
-    }
-    return queryStringDictionary;
-}
-
 - (void) processVersion:(NSString *)premiereVersion filePath:(NSString *)filePath {
     NSDictionary * premiereVersions = [[NSUserDefaults standardUserDefaults] objectForKey:@"Premiere_versions"];
     if (premiereVersions[premiereVersion]) {
@@ -162,7 +137,7 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
         [openTask setArguments:@[ @"-a", premiereVersions[premiereVersion], filePath ]];
         [openTask launch];
     } else {
-        NSString *requiredVersion = [GetRequiredVersion getRequiredVersion:[premiereVersions allKeys]];
+        NSString *requiredVersion = [HelperFunctions getLatestVersion:[premiereVersions allKeys]];
         NSString *plutoURL = [NSString stringWithFormat:@"%@pluto-core/file/changePremiereVersion?project=%@&requiredVersion=%@", [[NSUserDefaults standardUserDefaults] stringForKey:@"pluto_url"], filePath, requiredVersion];
         [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:plutoURL]];
     }
@@ -181,7 +156,7 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
     // Check the action, and then perform it
     NSString *action = [parts objectAtIndex:1];
     
-    NSDictionary * urlParams = [self parseUrlQueryToDiction:url];
+    NSDictionary * urlParams = [HelperFunctions parseURLQueryToDictionary:url];
     
     // Check the action string to see if we recognise it
     

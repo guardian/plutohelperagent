@@ -1,5 +1,5 @@
 //
-//  GetRequiredVersionTests.m
+//  HelperFunctionsTests.m
 //  PlutoHelperAgentTests
 //
 //  Created by David Allison on 07/04/2022.
@@ -7,13 +7,13 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "GetRequiredVersion.h"
+#import "HelperFunctions.h"
 
-@interface GetRequiredVersionTests : XCTestCase
+@interface HelperFunctionsTests : XCTestCase
 
 @end
 
-@implementation GetRequiredVersionTests
+@implementation HelperFunctionsTests
 
 - (void)setUp {
     // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -23,28 +23,37 @@
     // Put teardown code here. This method is called after the invocation of each test method in the class.
 }
 
-- (void)testGetRequiredVersion {
+- (void)testGetLatestVersion {
     NSArray *testArray = [[NSArray alloc] initWithObjects:@"2.0.0",@"1.0.0",nil];
-    NSString *outputVersion = [GetRequiredVersion getRequiredVersion:testArray];
+    NSString *outputVersion = [HelperFunctions getLatestVersion:testArray];
     XCTAssertEqualObjects(outputVersion, @"2.0.0");
 }
 
-- (void)testGetRequiredVersionWithFourVersions {
+- (void)testGetLatestVersionWithFourVersions {
     NSArray *testArray = [[NSArray alloc] initWithObjects:@"2.0.0",@"1.0.0",@"15.2.1",@"15.2.2",nil];
-    NSString *outputVersion = [GetRequiredVersion getRequiredVersion:testArray];
+    NSString *outputVersion = [HelperFunctions getLatestVersion:testArray];
     XCTAssertEqualObjects(outputVersion, @"15.2.2");
 }
 
-- (void)testGetRequiredVersionWithFiveVersions {
+- (void)testGetLatestVersionWithFiveVersions {
     NSArray *testArray = [[NSArray alloc] initWithObjects:@"2.0.0",@"1.0.0",@"15.2.1",@"15.2.2",@"16.1.0",nil];
-    NSString *outputVersion = [GetRequiredVersion getRequiredVersion:testArray];
+    NSString *outputVersion = [HelperFunctions getLatestVersion:testArray];
     XCTAssertEqualObjects(outputVersion, @"16.1.0");
 }
 
-- (void)testGetRequiredVersionWithSixVersions {
+- (void)testGetLatestVersionWithSixVersions {
     NSArray *testArray = [[NSArray alloc] initWithObjects:@"2.0.0",@"1.0.0",@"15.2.1",@"15.2.2",@"16.1.0",@"18.0.0",nil];
-    NSString *outputVersion = [GetRequiredVersion getRequiredVersion:testArray];
+    NSString *outputVersion = [HelperFunctions getLatestVersion:testArray];
     XCTAssertEqualObjects(outputVersion, @"18.0.0");
+}
+
+- (void)testParseUrlQueryToDiction {
+    NSMutableDictionary *outputDictionary = [HelperFunctions parseURLQueryToDictionary:@"http://test/test.html?test=1&test2=2&test3=3"];
+    NSLog(@"dictionary: %@", outputDictionary);
+    NSDictionary *testDictionary = @{ @"test"  : @"1",
+                                      @"test2" : @"2",
+                                      @"test3" : @"3" };
+    XCTAssertEqualObjects(outputDictionary, testDictionary);
 }
 
 @end
