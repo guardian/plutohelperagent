@@ -11,6 +11,7 @@
 #import "WhiteListProcessor.h"
 #import "XMLDictionary.h"
 #import "HelperFunctions.h"
+#import "PremiereVersionUtilities.h"
 
 @interface AppDelegate ()
 
@@ -261,7 +262,18 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
     self.statusBar.image = [NSImage imageNamed:@"PlutoIcon"];
     self.statusBar.menu = self.statusMenu;
     self.statusBar.highlightMode = YES;
-    //[self getVersionData];
+    [self getVersionData];
+}
+
+- (void) getVersionData {
+    NSString *tempFile = [PremiereVersionUtilities getApplicationsXmlToFile];
+    if(tempFile) {
+        NSDictionary *premiereData = [PremiereVersionUtilities refreshVersionData:tempFile];
+        NSLog(@"Refreshed premiere data, found %lu versions", [premiereData count]);
+        [[NSFileManager defaultManager] removeItemAtPath:tempFile error:nil];
+    } else {
+        NSLog(@"ERROR Could not update available premiere versions");
+    }
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {

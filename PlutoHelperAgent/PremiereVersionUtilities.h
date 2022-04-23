@@ -11,7 +11,10 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PremiereVersionUtilities : NSObject
-+ (NSDictionary *)refreshVersionData:(NSString *)filePath;
++ (NSDictionary *)refreshVersionData:(nullable NSString *)filePath;
++ (NSString *) getApplicationsXmlToFile;
++ (NSData *) getApplicationsXml;
++ (NSString *) normaliseVersionParts:(NSString *)rawVersionString;
 
 @end
 
