@@ -7,8 +7,8 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "WhiteListProcessor.h"
-#import "CCTestingUserDefaults.h"
+#import "../PlutoHelperAgent/WhiteListProcessor.h"
+#import "../PlutoHelperAgent/CCTestingUserDefaults.h"
 
 @interface WhiteListProcessorTests : XCTestCase
 @property (nonatomic, strong) CCTestingUserDefaults* defaults;

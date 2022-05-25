@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>_SPCommandLineArguments</key>
+		<array>
+			<string>/usr/sbin/system_profiler</string>
+			<string>-nospawn</string>
+			<string>-xml</string>
+			<string>SPApplicationsDataType</string>
+			<string>-detailLevel</string>
+			<string>full</string>
+		</array>
+		<key>_SPCompletionInterval</key>
+		<real>8.4945189952850342</real>
+		<key>_SPResponseTime</key>
+		<real>8.5341780185699463</real>
+		<key>_dataType</key>
+		<string>SPApplicationsDataType</string>
+		<key>_detailLevel</key>
+		<integer>1</integer>
+		<key>_items</key>
+		<array>
+			<dict>
+				<key>_name</key>
+				<string>Screen Sharing</string>
+				<key>arch_kind</key>
+				<string>arch_i64</string>
+				<key>lastModified</key>
+				<date>2020-06-18T01:49:24Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Library/CoreServices/Applications/Screen Sharing.app</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.7.2</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Screenshot</string>
+				<key>arch_kind</key>
+				<string>arch_i64</string>
+				<key>lastModified</key>
+				<date>2020-06-06T04:28:45Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Applications/Utilities/Screenshot.app</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Activity Monitor</string>
+				<key>arch_kind</key>
+				<string>arch_i64</string>
+				<key>lastModified</key>
+				<date>2020-06-06T06:28:57Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Applications/Utilities/Activity Monitor.app</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>10.14</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>AirPort Utility</string>
+				<key>arch_kind</key>
+				<string>arch_i64</string>
+				<key>info</key>
+				<string>6.3.9, Copyright 2001 -2019 Apple Inc.</string>
+				<key>lastModified</key>
+				<date>2020-06-06T06:28:29Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Applications/Utilities/AirPort Utility.app</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>6.3.9</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Podcasts</string>
+				<key>arch_kind</key>
+				<string>arch_i64</string>
+				<key>lastModified</key>
+				<date>2020-06-06T07:25:08Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Applications/Podcasts.app</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>1.0.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>System Preferences</string>
+				<key>arch_kind</key>
+				<string>arch_i64</string>
+				<key>lastModified</key>
+				<date>2021-05-19T12:46:40Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Applications/System Preferences.app</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>14.0</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Calculator</string>
+				<key>arch_kind</key>
+				<string>arch_i64</string>
+				<key>info</key>
+				<string>10.14, Copyright © 2000-2018, Apple Inc.</string>
+				<key>lastModified</key>
+				<date>2020-06-06T05:33:56Z</date>
+				<key>obtained_from</key>
+				<string>apple</string>
+				<key>path</key>
+				<string>/System/Applications/Calculator.app</string>
+				<key>signed_by</key>
+				<array>
+					<string>Software Signing</string>
+					<string>Apple Code Signing Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>10.15.4</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Adobe Premiere Pro 2020</string>
+				<key>arch_kind</key>
+				<string>arch_i64</string>
+				<key>info</key>
+				<string>14.9, Copyright (C) 1991-2021 Adobe. All rights reserved.</string>
+				<key>lastModified</key>
+				<date>2021-05-19T18:15:41Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Adobe Premiere Pro 2020/Adobe Premiere Pro 2020.app</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Adobe Systems, Inc. (JQ525L2MZD)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>14.9</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Adobe Update Helper</string>
+				<key>arch_kind</key>
+				<string>arch_i64</string>
+				<key>lastModified</key>
+				<date>2022-04-18T20:50:47Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Library/Application Support/Adobe/Adobe Desktop Common/HDBox/Adobe Update Helper.app</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Adobe Inc. (JQ525L2MZD)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>5.7.0.1307</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Creative Cloud Uninstaller</string>
+				<key>arch_kind</key>
+				<string>arch_i64</string>
+				<key>lastModified</key>
+				<date>2022-04-18T20:50:49Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Utilities/Adobe Creative Cloud/Utils/Creative Cloud Uninstaller.app</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Adobe Inc. (JQ525L2MZD)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>5.7.0.1307</string>
+			</dict>
+			<dict>
+				<key>_name</key>
+				<string>Creative Cloud Installer</string>
+				<key>arch_kind</key>
+				<string>arch_i64</string>
+				<key>lastModified</key>
+				<date>2022-04-18T20:50:49Z</date>
+				<key>obtained_from</key>
+				<string>identified_developer</string>
+				<key>path</key>
+				<string>/Applications/Utilities/Adobe Creative Cloud/Utils/Creative Cloud Installer.app</string>
+				<key>signed_by</key>
+				<array>
+					<string>Developer ID Application: Adobe Inc. (JQ525L2MZD)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>version</key>
+				<string>5.7.0.1307</string>
+			</dict>
+		</array>
+		<key>_parentDataType</key>
+		<string>SPSoftwareDataType</string>
+		<key>_properties</key>
+		<dict>
+			<key>_name</key>
+			<dict>
+				<key>_isColumn</key>
+				<string>YES</string>
+				<key>_order</key>
+				<string>0</string>
+			</dict>
+			<key>lastModified</key>
+			<dict>
+				<key>_isColumn</key>
+				<string>YES</string>
+				<key>_order</key>
+				<string>20</string>
+			</dict>
+			<key>obtained_from</key>
+			<dict>
+				<key>_isColumn</key>
+				<string>YES</string>
+				<key>_order</key>
+				<string>15</string>
+			</dict>
+			<key>path</key>
+			<dict>
+				<key>_order</key>
+				<string>90</string>
+			</dict>
+			<key>signed_by</key>
+			<dict>
+				<key>_order</key>
+				<string>60</string>
+			</dict>
+			<key>version</key>
+			<dict>
+				<key>_isColumn</key>
+				<string>YES</string>
+				<key>_order</key>
+				<string>10</string>
+			</dict>
+			<key>volumes</key>
+			<dict>
+				<key>_detailLevel</key>
+				<string>0</string>
+			</dict>
+		</dict>
+		<key>_timeStamp</key>
+		<date>2022-04-23T13:28:28Z</date>
+		<key>_versionInfo</key>
+		<dict>
+			<key>com.apple.SystemProfiler.SPApplicationsReporter</key>
+			<string>915</string>
+		</dict>
+	</dict>
+</array>
+</plist>

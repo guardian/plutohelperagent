@@ -7,7 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "HelperFunctions.h"
+#import "../PlutoHelperAgent/HelperFunctions.h"
 
 @interface HelperFunctionsTests : XCTestCase
 

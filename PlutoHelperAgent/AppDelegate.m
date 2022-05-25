@@ -11,6 +11,7 @@
 #import "WhiteListProcessor.h"
 #import "XMLDictionary.h"
 #import "HelperFunctions.h"
+#import "PremiereVersionUtilities.h"
 
 @interface AppDelegate ()
 
@@ -252,38 +253,6 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
     NSData *d = [fp readDataToEndOfFile];
     return [[NSString alloc] initWithData:d encoding:NSUTF8StringEncoding];
 }
-   
-// getVersionData uses the built in macOS application system_profiler to output XML about all applications installed on the computer.
-// This XML data is then processed, searching for data about just those applications who's name contains the string 'Adobe Premiere Pro'.
-// The version numbers and paths found are then stored in a NSUserPreferences key for later use.
-// Please note that this function may take a few seconds or as much as several minutes to run if the computer is connected to a slow storage device.
-- (void)getVersionData {
-    NSTask *task = [[NSTask alloc] init];
-    [task setLaunchPath:@"/usr/sbin/system_profiler"];
-    [task setArguments:@[ @"SPApplicationsDataType", @"-xml" ]];
-    [task setCurrentDirectoryPath:@"/"];
-    NSPipe *outputData = [NSPipe pipe];
-    [task setStandardOutput:outputData];
-    [task launch];
-    NSFileHandle * read = [outputData fileHandleForReading];
-    NSData * dataRead = [read readDataToEndOfFile];
-    [task waitUntilExit];
-    NSDictionary *xmlDoc = [NSDictionary dictionaryWithXMLData:dataRead];
-    NSMutableDictionary *premiereVersions = [NSMutableDictionary dictionary];
-    for (id element in xmlDoc[@"array"][@"dict"][@"array"][1][@"dict"]) {
-        if (!([element[@"string"][0] rangeOfString:@"Adobe Premiere Pro"].location == NSNotFound)) {
-            NSString *versionForKey = [element[@"string"] lastObject];
-            NSUInteger numberOfOccurrencesInVersion = [[versionForKey componentsSeparatedByString:@"."] count] - 1;
-            if (numberOfOccurrencesInVersion == 0) {
-                versionForKey = [NSString stringWithFormat:@"%@.0.0", versionForKey];
-            } else if (numberOfOccurrencesInVersion == 1) {
-                versionForKey = [NSString stringWithFormat:@"%@.0", versionForKey];
-            }
-            premiereVersions[versionForKey] = element[@"string"][4];
-        }
-    }
-    [[NSUserDefaults standardUserDefaults] setObject:premiereVersions forKey:@"Premiere_versions"];
-}
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
     // Insert code here to initialize your application
@@ -294,6 +263,17 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
     self.statusBar.menu = self.statusMenu;
     self.statusBar.highlightMode = YES;
     [self getVersionData];
+}
+
+- (void) getVersionData {
+    NSString *tempFile = [PremiereVersionUtilities getApplicationsXmlToFile];
+    if(tempFile) {
+        NSDictionary *premiereData = [PremiereVersionUtilities refreshVersionData:tempFile];
+        NSLog(@"Refreshed premiere data, found %lu versions", [premiereData count]);
+        [[NSFileManager defaultManager] removeItemAtPath:tempFile error:nil];
+    } else {
+        NSLog(@"ERROR Could not update available premiere versions");
+    }
 }
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification {
