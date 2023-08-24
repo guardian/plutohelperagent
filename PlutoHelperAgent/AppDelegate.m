@@ -130,7 +130,8 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
 }
 
 - (void) processVersion:(NSString *)premiereVersion filePath:(NSString *)filePath {
-    NSDictionary * premiereVersions = [[NSUserDefaults standardUserDefaults] objectForKey:@"Premiere_versions"];
+    NSDictionary *premiereVersions = [[NSUserDefaults standardUserDefaults] objectForKey:@"Premiere_versions"];
+
     if (premiereVersions[premiereVersion]) {
         NSTask *openTask = [[NSTask alloc] init];
         [openTask setLaunchPath:@"/usr/bin/open"];
@@ -139,8 +140,19 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
         [openTask launch];
     } else {
         NSString *requiredVersion = [HelperFunctions getLatestVersion:[premiereVersions allKeys]];
-        NSString *plutoURL = [NSString stringWithFormat:@"%@pluto-core/file/changePremiereVersion?project=%@&requiredVersion=%@", [[NSUserDefaults standardUserDefaults] stringForKey:@"pluto_url"], filePath, requiredVersion];
-        [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:plutoURL]];
+
+        // Extract major versions
+        NSArray *premiereVersionParts = [premiereVersion componentsSeparatedByString:@"."];
+        NSString *premiereMajorVersion = premiereVersionParts[0];
+
+        NSArray *requiredVersionParts = [requiredVersion componentsSeparatedByString:@"."];
+        NSString *requiredMajorVersion = requiredVersionParts[0];
+
+        // Compare major versions
+        if (![premiereMajorVersion isEqualToString:requiredMajorVersion]) {
+            NSString *plutoURL = [NSString stringWithFormat:@"%@pluto-core/file/changePremiereVersion?project=%@&requiredVersion=%@", [[NSUserDefaults standardUserDefaults] stringForKey:@"pluto_url"], filePath, requiredVersion];
+            [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:plutoURL]];
+        }
     }
 }
 
