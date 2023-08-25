@@ -130,29 +130,49 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
 }
 
 - (void) processVersion:(NSString *)premiereVersion filePath:(NSString *)filePath {
-    NSDictionary *premiereVersions = [[NSUserDefaults standardUserDefaults] objectForKey:@"Premiere_versions"];
+    NSLog(@"Starting processVersion with premiereVersion: %@ and filePath: %@", premiereVersion, filePath);
 
-    if (premiereVersions[premiereVersion]) {
+    NSDictionary * premiereVersions = [[NSUserDefaults standardUserDefaults] objectForKey:@"Premiere_versions"];
+    if (!premiereVersions) {
+        NSLog(@"Warning: premiereVersions dictionary not found in UserDefaults.");
+        return;
+    }
+    NSLog(@"Fetched premiereVersions from UserDefaults: %@", premiereVersions);
+
+    NSArray *allKeys = [premiereVersions allKeys];
+    NSLog(@"All available versions: %@", allKeys);
+
+    NSArray *versionComponents = [premiereVersion componentsSeparatedByString:@"."];
+    if ([versionComponents count] < 1) {
+        NSLog(@"Error: Invalid premiereVersion format");
+        return;
+    }
+
+    NSString *majorVersion = versionComponents[0];
+    NSLog(@"Extracted major version: %@", majorVersion);
+
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF BEGINSWITH %@", majorVersion];
+    NSArray *filteredKeys = [allKeys filteredArrayUsingPredicate:predicate];
+    NSLog(@"Filtered versions with the same major version: %@", filteredKeys);
+
+    if ([filteredKeys count] > 0) {
+        NSString *latestVersion = [HelperFunctions getLatestVersion:filteredKeys];
+        NSLog(@"Latest available version with the same major version: %@", latestVersion);
+
+        NSLog(@"Launched app with version: %@", premiereVersions[latestVersion]);
         NSTask *openTask = [[NSTask alloc] init];
         [openTask setLaunchPath:@"/usr/bin/open"];
         [openTask setCurrentDirectoryPath:@"/"];
-        [openTask setArguments:@[ @"-a", premiereVersions[premiereVersion], filePath ]];
+        [openTask setArguments:@[ @"-a", premiereVersions[latestVersion], filePath ]];
         [openTask launch];
     } else {
-        NSString *requiredVersion = [HelperFunctions getLatestVersion:[premiereVersions allKeys]];
+        NSString *requiredVersion = [HelperFunctions getLatestVersion:allKeys];
+        NSLog(@"No matching versions found. Falling back to latest version: %@", requiredVersion);
 
-        // Extract major versions
-        NSArray *premiereVersionParts = [premiereVersion componentsSeparatedByString:@"."];
-        NSString *premiereMajorVersion = premiereVersionParts[0];
+        NSString *plutoURL = [NSString stringWithFormat:@"%@pluto-core/file/changePremiereVersion?project=%@&requiredVersion=%@", [[NSUserDefaults standardUserDefaults] stringForKey:@"pluto_url"], filePath, requiredVersion];
+        [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:plutoURL]];
 
-        NSArray *requiredVersionParts = [requiredVersion componentsSeparatedByString:@"."];
-        NSString *requiredMajorVersion = requiredVersionParts[0];
-
-        // Compare major versions
-        if (![premiereMajorVersion isEqualToString:requiredMajorVersion]) {
-            NSString *plutoURL = [NSString stringWithFormat:@"%@pluto-core/file/changePremiereVersion?project=%@&requiredVersion=%@", [[NSUserDefaults standardUserDefaults] stringForKey:@"pluto_url"], filePath, requiredVersion];
-            [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:plutoURL]];
-        }
+        NSLog(@"Opened URL for version change: %@", plutoURL);
     }
 }
 
