@@ -14,12 +14,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Calculate New Run Number
-        run: echo "NEW_RUN_NUMBER=$(($GITHUB_RUN_NUMBER + 20))" >> $GITHUB_ENV
       - name: Set Build Number
         run: |
-          NEW_BUILD_NUMBER=$((GITHUB_RUN_NUMBER + 20))
-          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion Build $NEW_RUN_NUMBER" "PlutoHelperAgent/Info.plist"
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion Build $GITHUB_RUN_NUMBER" "PlutoHelperAgent/Info.plist"
       - name: Test
         run: |
           xcodebuild test -project PlutoHelperAgent.xcodeproj -scheme PlutoHelperAgent -destination 'platform=OS X,arch=x86_64'  
@@ -41,7 +38,7 @@ jobs:
         uses: actions/upload-artifact@v2.3.1
         with:
           # Artifact name
-          name: PlutoHelperAgent-${{ env.NEW_RUN_NUMBER }}
+          name: PlutoHelperAgent-${{ github.run_number }}
           # A file, directory or wildcard pattern that describes what to upload
           path: ./package/
           # The desired behavior if no files are found using the provided path.
