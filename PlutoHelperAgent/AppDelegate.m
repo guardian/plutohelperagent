@@ -86,7 +86,7 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSAlert *alert = [[NSAlert alloc] init];
                 [alert setMessageText:@"Opening Project Failed"];
-                [alert setInformativeText:[NSString stringWithFormat:@"Couldn’t open your project as it appears you may not have all the required Multimedia production drives mounted.\n\nRestarting your Mac should mount the drives, if they still don’t appear try contacting multimediatech@guardian.co.uk and send a copy of this message."
+                [alert setInformativeText:[NSString stringWithFormat:@"Couldn’t open your project as it appears you may not have all the required Multimedia production drives mounted.\n\nTry “Mount Multimedia Drives” found on your application Dock, or in the \n“Hard Disk X/Applications” folder.\n\nRestarting your Mac should mount the drives, if they still don’t appear try contacting multimediatech@guardian.co.uk and send a copy of this message."
                                            ]
                  ];
                 [alert setAlertStyle:NSWarningAlertStyle];
