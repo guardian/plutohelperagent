@@ -86,7 +86,7 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSAlert *alert = [[NSAlert alloc] init];
                 [alert setMessageText:@"Opening Project Failed"];
-                [alert setInformativeText:[NSString stringWithFormat:@"Couldn’t open your project as it appears you may not have all the required Multimedia production drives mounted.\n\nTry “Mount Multimedia Drives” found on your application Dock, or in the \n“Hard Disk X/Applications” folder.\n\nRestarting your Mac should mount the drives, if they still don’t appear try contacting multimediatech@guardian.co.uk and send a copy of this message."
+                [alert setInformativeText:[NSString stringWithFormat:@"Your project file could not be opened as it appears you may not have all the required Multimedia production drives mounted on your desktop.\n\nTry the “Mount Multimedia Drives” icon found on your application Dock, or in the “Hard Disk X/Applications” folder.\n\nAdditionally, try restarting your Mac. If they still do not appear after these steps contact multimediatech@guardian.co.uk and send a screenshot of this message."
                                            ]
                  ];
                 [alert setAlertStyle:NSWarningAlertStyle];
@@ -217,9 +217,9 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
         
         if (!isDir){
             NSLog(@"%@ is not a valid path on this filesystem.", folderToOpen);
-            NSString *errorInfo = [NSString stringWithFormat:@"Could not find the requested folder at:\n\n%@.\n\nDo you have the Multimedia production drives mounted?\n\nIf not, rebooting your mac should mount them or try contacting multimediatech@guardian.co.uk for help.", folderToOpen];
+            NSString *errorInfo = [NSString stringWithFormat:@"Your Asset Folder could not be opened as it appears you may not have all the required Multimedia production drives mounted on your desktop.\n\nTry the “Mount Multimedia Drives” icon found on your application Dock, or in the “Hard Disk X/Applications” folder.\n\nAdditionally, try restarting your Mac. If they still do not appear after these steps contact multimediatech@guardian.co.uk and send a screenshot of this message.", folderToOpen];
             
-            [self basicErrorMessage:@"Asset folder not found" informativeText:errorInfo];
+            [self basicErrorMessage:@"Unable to Open Asset Folder" informativeText:errorInfo];
             return;
         }
 
