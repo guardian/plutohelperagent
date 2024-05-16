@@ -239,13 +239,15 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
         
     } else if ([action isEqualToString:@"openproject"]){
         NSString *projectPath = [parts objectAtIndex:2];
+        NSString *decodedPath = [projectPath stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
         
-        BOOL pathGood = [WhiteListProcessor checkIsInWhitelist:projectPath whiteListName:@"paths_list" prefix:true];
+        BOOL pathGood = [WhiteListProcessor checkIsInWhitelist:decodedPath whiteListName:@"paths_list" prefix:true];
         
-        BOOL extensionGood = [WhiteListProcessor checkIsInWhitelist:projectPath whiteListName:@"extensions_list" prefix:false];
+        BOOL extensionGood = [WhiteListProcessor checkIsInWhitelist:decodedPath whiteListName:@"extensions_list" prefix:false];
               
         if (pathGood && extensionGood) {
-            NSArray *pathParts = [projectPath componentsSeparatedByString:@"?"];
+            NSArray *pathParts = [decodedPath componentsSeparatedByString:@"?"];
             NSString *pathPartZero = [pathParts objectAtIndex:0];
             if ((urlParams[@"premiereVersion"]) && (!urlParams[@"force"])) {
                 [self processVersion:urlParams[@"premiereVersion"] filePath:pathPartZero];
@@ -254,19 +256,19 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
             }
         } else {
             if (pathGood) {
-                NSLog(@"PlutoHelperAgent could not open the file at: %@ due to its extension not being in the white list.", projectPath);
+                NSLog(@"PlutoHelperAgent could not open the file at: %@ due to its extension not being in the white list.", decodedPath);
                 [self basicErrorMessage:@"Could not open file"
-                        informativeText:[NSString stringWithFormat:@"The file at %@ could not be opened because its extension is not in the white list.\n\nPlease contact multimediatech@theguardian.com if you see this error message.", projectPath]
+                        informativeText:[NSString stringWithFormat:@"The file at %@ could not be opened because its extension is not in the white list.\n\nPlease contact multimediatech@theguardian.com if you see this error message.", decodedPath]
                  ];
             } else if (extensionGood) {
-                NSLog(@"PlutoHelperAgent could not open the file at: %@ due to its path not being in the white list.", projectPath);
+                NSLog(@"PlutoHelperAgent could not open the file at: %@ due to its path not being in the white list.", decodedPath);
                 [self basicErrorMessage:@"Could not open file"
-                        informativeText:[NSString stringWithFormat:@"The file at %@ could not be opened because its path is not in the white list.\n\nPlease contact multimediatech@theguardian.com if you see this error message.", projectPath]
+                        informativeText:[NSString stringWithFormat:@"The file at %@ could not be opened because its path is not in the white list.\n\nPlease contact multimediatech@theguardian.com if you see this error message.", decodedPath]
                  ];
             } else {
-                NSLog(@"PlutoHelperAgent could not open the file at: %@ due to its path and extension not being in the correct white lists.", projectPath);
+                NSLog(@"PlutoHelperAgent could not open the file at: %@ due to its path and extension not being in the correct white lists.", decodedPath);
                 [self basicErrorMessage:@"Could not open file"
-                        informativeText:[NSString stringWithFormat:@"The file at %@ could not be opened because its path and extension are not in the correct white lists.\n\nPlease contact multimediatech@theguardian.com if you see this error message.", projectPath]
+                        informativeText:[NSString stringWithFormat:@"The file at %@ could not be opened because its path and extension are not in the correct white lists.\n\nPlease contact multimediatech@theguardian.com if you see this error message.", decodedPath]
                  ];
             }
         }
