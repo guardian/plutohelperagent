@@ -85,6 +85,8 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
             //[alert runModal] must be called on main thread. See https://stackoverflow.com/questions/4892182/run-method-on-main-thread-from-another-thread
             dispatch_async(dispatch_get_main_queue(), ^{
                 NSAlert *alert = [[NSAlert alloc] init];
+                NSImage *iconImage = [NSImage imageNamed:@"DriveIcon"];
+                [alert setIcon: iconImage];
                 [alert setMessageText:@"Opening Project Failed"];
                 [alert setInformativeText:[NSString stringWithFormat:@"Your project file could not be opened as it appears you may not have all the required Multimedia production drives mounted on your desktop.\n\nTry the “Mount Multimedia Drives” icon found on your application Dock, or in the “Hard Disk X/Applications” folder.\n\nAdditionally, try restarting your Mac. If they still do not appear after these steps contact multimediatech@guardian.co.uk and send a screenshot of this message."
                                            ]
@@ -120,6 +122,10 @@ void (^errorHandlerBlock)(NSURLResponse *response, NSError *error) = ^void(NSURL
         [alert setMessageText:showError];
         [alert setInformativeText:informativeText];
         [alert addButtonWithTitle:@"Okay"];
+        if ([showError isEqualToString:@"Unable to Open Asset Folder"]){
+            NSImage *iconImage = [NSImage imageNamed:@"DriveIcon"];
+            [alert setIcon: iconImage];
+        }
         if (showPrefs == YES) {
             [NSApp setActivationPolicy:NSApplicationActivationPolicyAccessory];
             [[self prefsWindow] setLevel:NSFloatingWindowLevel];
